@@ -761,6 +761,8 @@ Future<EventObject> getReceiveFromTeacherShow(
     String Staffid,
     String ClassStudent) async {
   String myUrl = ApiConstants.GET_STUDENT_OF_RECEIVE_FROM_TEACHER_API;
+  print(
+      "[getReceiveFromTeacherShow] ==> Body{$section, $year , $stage , $grade , $semester , $subject , $Staffid , $ClassStudent} URL: $myUrl");
   Map mapValue;
   EventObject eventObject = new EventObject();
   try {
@@ -1205,6 +1207,35 @@ Future<EventObject> getUserDataRec(String id) async {
   eventObject.object = "Some error happened.. try again later";
   String myUrl = ApiConstants.GET_STUDENT_OF_RECEIVE_FROM_TEACHER_DATA_API;
   print("Fetching Audio API ==== > [$myUrl] [$id]");
+  try {
+    var response = await http.post(Uri.parse(myUrl),
+        headers: {'Accept': 'application/json'}, body: {"id": id});
+    if (response != null) {
+      Map mapValue = json.decode(response.body);
+      if (mapValue['success']) {
+        eventObject.success = true;
+        eventObject.object = mapValue;
+        return eventObject;
+      } else {
+        eventObject.success = false;
+        eventObject.object = mapValue['message'];
+        return eventObject;
+      }
+    } else {
+      return eventObject;
+    }
+  } catch (e) {
+    return eventObject;
+  }
+}
+
+//####################Chat Reply test ##########
+Future<EventObject> getUserMessages(String id) async {
+  EventObject eventObject = new EventObject();
+  eventObject.success = false;
+  eventObject.object = "Some error happened.. try again later";
+  String myUrl = ApiConstants.TEST_CHAT_MESSAGES;
+  print("Fetching Reply to class messages API ==== > [$myUrl] [$id]");
   try {
     var response = await http.post(Uri.parse(myUrl),
         headers: {'Accept': 'application/json'}, body: {"id": id});
@@ -5793,6 +5824,7 @@ Future<EventObject> ReplySendToClassStudent(
   eventObject.object = "Some error happened.. try again later";
 
   String myUrl = ApiConstants.REPLY_SENDTOCLASS_STUDENT_API;
+  print("Reply : $myUrl");
   try {
     dynamic files = jsonEncode(fileslist);
     Map body = {
@@ -5828,7 +5860,8 @@ Future<EventObject> getStudentReplySendtoclassFromStaff(
     String subjectId,
     String classId) async {
   String myUrl = ApiConstants.GET_STUDENT_REPLY_FROM_STAFF_OF_SENDTOCLASS_API;
-  print("send to class Reply from student ==> {$myUrl}");
+  print(
+      "send to class Reply from student ==> {$myUrl} Data :  $year, $staffId , $sectionId , $stageId , $gradeId , $subjectId , $classId");
   Map mapValue;
   EventObject eventObject = new EventObject();
   try {

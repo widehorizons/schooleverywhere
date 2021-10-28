@@ -260,7 +260,7 @@ class _CambrigeRegistrationState extends State<CambrigeRegistration> {
         userChildren!,
         sessionValue!,
         subjectValue!,
-        subSubjectValue!,
+        subSubjectValue ?? "",
         statusValue!);
 
     if (objectEvent.success!) {
@@ -383,7 +383,7 @@ class _CambrigeRegistrationState extends State<CambrigeRegistration> {
           onChanged: (String? newValue) {
             setState(() {
               subSubjectSelected = true;
-              subSubjectValue = newValue!;
+              subSubjectValue = newValue ?? null;
             });
           },
           items: subsubjectOption

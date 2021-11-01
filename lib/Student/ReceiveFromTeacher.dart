@@ -2,7 +2,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:schooleverywhere/Pages/chat.dart';
+import 'package:schooleverywhere/Chat/chat.dart';
 import '../Constants/StringConstants.dart';
 import '../Modules/EventObject.dart';
 import '../Modules/Parent.dart';

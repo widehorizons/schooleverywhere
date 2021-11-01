@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:schooleverywhere/const.dart';
 
 class FullPhoto extends StatelessWidget {
   final String? url;
@@ -13,7 +12,7 @@ class FullPhoto extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'FULL PHOTO',
-          style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),

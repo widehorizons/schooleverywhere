@@ -590,6 +590,7 @@ Future<EventObject> homePageOptions(String type, String Sectionid, String ID,
       });
     } else if (type == STUDENT_TYPE) {
       myUrl = ApiConstants.PAGES_STUDENT_API;
+      print("Get Student pages API ===> $myUrl  , $ID , $Year , $Sectionid  ");
       response = await http.post(Uri.parse(myUrl), headers: {
         'Accept': 'application/json'
       }, body: {
@@ -608,6 +609,9 @@ Future<EventObject> homePageOptions(String type, String Sectionid, String ID,
       });
     } else if (type == MANAGEMENT_TYPE) {
       myUrl = ApiConstants.PAGES_MANAGEMENT_API;
+      print(
+          "Get Management pages API ===> $myUrl  , $ID , $Year , $Sectionid  ");
+
       response = await http.post(Uri.parse(myUrl),
           headers: {'Accept': 'application/json'},
           body: {"staffId": ID.toString()});
@@ -1230,15 +1234,16 @@ Future<EventObject> getUserDataRec(String id) async {
 }
 
 //####################Chat Reply test ##########
-Future<EventObject> getUserMessages(String id) async {
+Future<EventObject> getStudentMessages(String messageId, String regno) async {
   EventObject eventObject = new EventObject();
   eventObject.success = false;
   eventObject.object = "Some error happened.. try again later";
-  String myUrl = ApiConstants.TEST_CHAT_MESSAGES;
-  print("Fetching Reply to class messages API ==== > [$myUrl] [$id]");
+  String myUrl = ApiConstants.STUDENT_CHAT_MESSAGES;
+  print("Fetching Studnt Replies API ==== > [$myUrl] [$messageId]  [$regno]");
   try {
     var response = await http.post(Uri.parse(myUrl),
-        headers: {'Accept': 'application/json'}, body: {"id": id});
+        headers: {'Accept': 'application/json'},
+        body: {"id": messageId, "regno": regno});
     if (response != null) {
       Map mapValue = json.decode(response.body);
       if (mapValue['success']) {

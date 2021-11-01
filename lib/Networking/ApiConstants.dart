@@ -70,8 +70,8 @@ class ApiConstants extends MainConstant {
       BASE_URL + "student/getSubjectRecevieFromTeacherData.php";
   static const String GET_STUDENT_OF_RECEIVE_FROM_TEACHER_DATA_API =
       BASE_URL + "student/getSubjectRecevieFromTeacherDataOne.php";
-  static const String TEST_CHAT_MESSAGES =
-      BASE_URL + "staff/getreplayfromsendtoclass.php";
+  static const String STUDENT_CHAT_MESSAGES =
+      BASE_URL + "student/getreplayfromsendtoclass.php";
   static const String GET_STUDENT_OF_RECEIVE_FROM_TEACHER_DATA_SEEN_API =
       BASE_URL + "student/getSubjectRecevieFromTeacherDataOneSeen.php";
   static const String Teacher_Data_Mail_Inbox_API =

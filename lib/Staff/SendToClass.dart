@@ -544,7 +544,7 @@ class _SendToClassState extends State<SendToClass> {
         child: SingleChildScrollView(
           child: ConstrainedBox(
             constraints: BoxConstraints.tightFor(
-              height: MediaQuery.of(context).size.height * 0.88,
+              height: MediaQuery.of(context).size.height,
             ),
             child: Container(
               height: double.infinity,

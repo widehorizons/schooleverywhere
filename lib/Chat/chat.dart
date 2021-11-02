@@ -12,6 +12,7 @@ import 'package:schooleverywhere/Modules/EventObject.dart';
 import 'package:schooleverywhere/Modules/Parent.dart';
 import 'package:schooleverywhere/Modules/Student.dart';
 import 'package:schooleverywhere/Networking/Futures.dart';
+import 'package:schooleverywhere/Pages/DownloadList.dart';
 import 'package:schooleverywhere/SharedPreferences/Prefs.dart';
 import 'package:schooleverywhere/Style/theme.dart';
 import 'package:schooleverywhere/widget/full_photo.dart';
@@ -302,16 +303,14 @@ class ChatScreenState extends State<ChatScreen> {
                     )
                   // Sticker
                   : Container(
-                      // child: Image.asset(
-                      //   'images/${message['content']}.gif',
-                      //   width: 100.0,
-                      //   height: 100.0,
-                      //   fit: BoxFit.cover,
-                      // ),
-                      // margin: EdgeInsets.only(
-                      //     bottom: isLastMessageRight(index) ? 20.0 : 10.0,
-                      //     right: 10.0),
+                      height: 100,
+                      width: 200,
+                      child: DownloadList(
+                        [message.file!.toJson()],
+                        platform: Theme.of(context).platform,
+                        title: '',
                       ),
+                    ),
             if (message.voice != null)
               Container(
                 child: ChatPlayerWidget(url: message.voice!),

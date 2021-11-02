@@ -356,19 +356,6 @@ class DownloadListState extends State<DownloadList> {
           Permission.storage,
         ].request();
       }
-      // PermissionStatus permission = await PermissionHandler()
-      //     .checkPermissionStatus(PermissionGroup.storage);
-      // if (permission != PermissionStatus.granted) {
-      //   Map<PermissionGroup, PermissionStatus> permissions =
-      //       await PermissionHandler()
-      //           .requestPermissions([PermissionGroup.storage]);
-      //   if (permissions[PermissionGroup.storage] == PermissionStatus.granted) {
-      //     return true;
-      //   }
-      // } else {
-      //   return true;
-      // }
-      // return true;
     } else {
       return true;
     }

@@ -1067,7 +1067,6 @@ class _HomePageState extends State<HomePage> {
                         int staffConMan = 0;
                         int AdvstaffConMan = 0;
                         for (int i = 0; i < y.length; i++) {
-                          print(data['page'][i].toString());
                           Pagearr[data['page'][i]] = data['url'][i];
                           if ((data['page'][i].toString() == "Conference" ||
                                   data['page'][i].toString() ==

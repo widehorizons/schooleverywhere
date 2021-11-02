@@ -88,6 +88,7 @@ class ReplyMessage {
   String? staffname;
   String? studentname;
   MessageFile? file;
+  String? voice;
 
   ReplyMessage(
       {this.id,
@@ -96,7 +97,8 @@ class ReplyMessage {
       this.sendertype,
       this.staffname,
       this.studentname,
-      this.file});
+      this.file,
+      this.voice});
 
   ReplyMessage.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -106,6 +108,7 @@ class ReplyMessage {
     staffname = json['staffname'];
     studentname = json['studentname'];
     file = json['File'] != null ? new MessageFile.fromJson(json['File']) : null;
+    voice = json['voice'];
   }
 
   Map<String, dynamic> toJson() {
@@ -118,6 +121,9 @@ class ReplyMessage {
     data['studentname'] = this.studentname;
     if (this.file != null) {
       data['File'] = this.file!.toJson();
+    }
+    if (this.voice != null) {
+      data['voice'] = this.voice!.toString();
     }
     return data;
   }

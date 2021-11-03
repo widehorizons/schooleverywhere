@@ -247,12 +247,29 @@ class ChatScreenState extends State<ChatScreen> {
     return Row(
       children: <Widget>[
         // Text
+
         Column(
           children: [
+            // Align(
+            //   alignment: Alignment.topLeft,
+            //   child: Text((message.sendertype == "student")
+            //       ? message.studentname!
+            //       : message.staffname!),
+            // ),
             if (message.file != null)
               message.file!.filetype == "image"
                   // Image
                   ? Container(
+                      padding: EdgeInsets.all(3),
+                      // width: 200.0,
+                      decoration: BoxDecoration(
+                          color: isCurrentUserMessage(message)
+                              ? Colors.grey.shade300
+                              : AppTheme.appColor,
+                          borderRadius: BorderRadius.circular(8.0)),
+                      // margin: EdgeInsets.only(
+                      //     bottom: isLastMessageRight(index) ? 20.0 : 5.0,
+                      //     right: 10.0),
                       child: FlatButton(
                         child: Material(
                           child: CachedNetworkImage(
@@ -346,18 +363,27 @@ class ChatScreenState extends State<ChatScreen> {
                       right: 10.0),
                 ),
                 Container(
-                  child: Text(
-                    DateFormat('dd MMM kk:mm').format(
-                        DateTime.fromMillisecondsSinceEpoch(int.parse(
-                            DateTime.parse(message.date!)
-                                .millisecondsSinceEpoch
-                                .toString()))),
-                    style: TextStyle(
-                        color: Colors.grey.shade500,
-                        fontSize: 12.0,
-                        fontStyle: FontStyle.italic),
+                  width: MediaQuery.of(context).size.width * 0.46,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        DateFormat('dd MMM kk:mm').format(
+                            DateTime.fromMillisecondsSinceEpoch(int.parse(
+                                DateTime.parse(message.date!)
+                                    .millisecondsSinceEpoch
+                                    .toString()))),
+                        style: TextStyle(
+                            color: Colors.grey.shade500,
+                            fontSize: 12.0,
+                            fontStyle: FontStyle.italic),
+                      ),
+                      Text((message.sendertype == "student")
+                          ? message.studentname!.split(' ').first
+                          : message.staffname!)
+                    ],
                   ),
-                  margin: EdgeInsets.only(top: 2.0, bottom: 2.0),
+                  // margin: EdgeInsets.only(top: .0, bottom: 2.0),
                 )
               ],
             ),
@@ -519,6 +545,8 @@ class ChatScreenState extends State<ChatScreen> {
                     : null,
                 replymessage: chatMessages!.comment,
                 sendertype: "staff",
+                staffname: (widget.type == "Staff") ? "" : "",
+                studentname: "",
                 voice: chatMessages!.voice),
             ...messages!
           ];

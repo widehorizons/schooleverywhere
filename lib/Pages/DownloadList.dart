@@ -36,7 +36,7 @@ class DownloadListState extends State<DownloadList> {
     _bindBackgroundIsolate();
 
     FlutterDownloader.registerCallback(downloadCallback);
-
+    print("Attached Files here ${widget.Attachment}");
     _isLoading = true;
     _permissionReady = false;
 
@@ -96,6 +96,9 @@ class DownloadListState extends State<DownloadList> {
             : _permissionReady
                 ? new Expanded(
                     child: new ListView(
+                      physics: (_items.length <= 1)
+                          ? NeverScrollableScrollPhysics()
+                          : BouncingScrollPhysics(),
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       children: _items
                           .map((item) => item.task == null
@@ -370,7 +373,7 @@ class DownloadListState extends State<DownloadList> {
     _items = [];
 
     _tasks!.addAll(_documents.map((document) =>
-        _TaskInfo(name: document['name'], link: document['link'])));
+        _TaskInfo(name: document['name'] ?? "", link: document['link'])));
 
     // _items.add(_ItemHolder(name: 'Documents', task: null));
     for (int i = count; i < _tasks!.length; i++) {

@@ -117,6 +117,10 @@ class ApiConstants extends MainConstant {
       BASE_URL + "student/getSubjectAssignmentsData.php";
   static const String GET_STUDENT_OF_ASSIGNMENTS_DATA_API =
       BASE_URL + "student/getSubjectAssignmentsDataOne.php";
+  static const String GET_STUDENT_UPLOADED_TIME_TABLE_API =
+      BASE_URL + "student/uploadTimeTable.php";
+  static const String GET_MANAGEMENT_UPLOADED_TIME_TABLE_API =
+      BASE_URL + "management/uploadTimeTable.php";
   static const String GET_TIME_TABLE_STAFF_DATE_API =
       BASE_URL + "staff/timeTable.php";
   static const String GET_CHANGE_LOGIN_USER_NAME_API =
@@ -183,6 +187,8 @@ class ApiConstants extends MainConstant {
       BASE_URL + "management/uploadFiles.php";
   static const String ADD_BY_SELECT_MANAGEMENT_API =
       BASE_URL + "management/addBySelect.php";
+  static const String ADD_UPLOADED_TIME_TABLE_API =
+      BASE_URL + "management/uploadTimeTableadd.php";
   static const String STAGE_MANAGEMENT_API =
       BASE_URL + "management/getStage.php";
   static const String GRADE_MANAGEMENT_API =

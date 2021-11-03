@@ -290,6 +290,7 @@ Future<EventObject> gradeStaffOptions(
 Future<EventObject> semesterOptions(
     String section, String year, String id) async {
   String myUrl = ApiConstants.SEMESTER_API;
+  print("Senester selection ===> $myUrl [$section] [$year] [$id]");
   Map mapValue;
   EventObject eventObject = new EventObject();
   try {
@@ -361,6 +362,9 @@ Future<EventObject> semesterStaffOptions(
   String myUrl = ApiConstants.SEMESTER_STAFF_API;
   Map mapValue;
   EventObject eventObject = new EventObject();
+  print(
+      "Senester selection ===> $myUrl [$section] [$stage]  [$grade] [$year] ");
+
   try {
     var response = await http.post(Uri.parse(myUrl), headers: {
       'Accept': 'application/json'
@@ -590,7 +594,6 @@ Future<EventObject> homePageOptions(String type, String Sectionid, String ID,
       });
     } else if (type == STUDENT_TYPE) {
       myUrl = ApiConstants.PAGES_STUDENT_API;
-      print("Get Student pages API ===> $myUrl  , $ID , $Year , $Sectionid  ");
       response = await http.post(Uri.parse(myUrl), headers: {
         'Accept': 'application/json'
       }, body: {
@@ -609,8 +612,6 @@ Future<EventObject> homePageOptions(String type, String Sectionid, String ID,
       });
     } else if (type == MANAGEMENT_TYPE) {
       myUrl = ApiConstants.PAGES_MANAGEMENT_API;
-      print(
-          "Get Management pages API ===> $myUrl  , $ID , $Year , $Sectionid  ");
 
       response = await http.post(Uri.parse(myUrl),
           headers: {'Accept': 'application/json'},
@@ -3350,6 +3351,39 @@ Future<dynamic> addBySelect(
     "staffid": id,
     "title": title,
     "message": message,
+    "section": section,
+    "stage": stage,
+    "grade": grade,
+    "class": classselected
+  });
+  if (response != null) {
+    print('Response status : ${response.statusCode}');
+    print('Response bodyssss : ${response.body}');
+    return true;
+  } else {
+    print("addSendToClass: noResponse");
+    return false;
+  }
+}
+
+Future<dynamic> uploadTimeTable(
+  List filesList,
+  String year,
+  String section,
+  String stage,
+  String grade,
+  String classselected,
+  String semester,
+) async {
+  String myUrl = ApiConstants.ADD_UPLOADED_TIME_TABLE_API;
+  dynamic files = jsonEncode(filesList);
+
+  var response = await http.post(Uri.parse(myUrl), headers: {
+    'Accept': 'application/json'
+  }, body: {
+    "file": files,
+    "year": year,
+    "semester": semester,
     "section": section,
     "stage": stage,
     "grade": grade,

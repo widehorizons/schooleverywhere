@@ -33,361 +33,6 @@ class UploadedTimeTable extends StatefulWidget {
 }
 
 class _UploadedTimeTableState extends State<UploadedTimeTable> {
-  Staff? loggedStaff;
-  Management? loggedManagement;
-  Student? loggedStudent;
-  String? userSection,
-      userAcademicYear,
-      userStage,
-      userGrade,
-      userId,
-      userType,
-      userClass,
-      userSemester,
-      childern;
-  List<dynamic> dataShowContent = [];
-  String? subjectValue;
-  String? TeacherValue;
-  Map datesOptions = {"option1": "one"};
-  Map teacherOption = {"option1": "one"};
-  Map subjectOption = {"option1": "one"};
-  bool subjectSelected = false;
-  bool TeacherSelected = false;
-  final CustomDialog _dialog = CustomDialog();
-
-  initState() {
-    super.initState();
-    getLoggedInUser();
-  }
-
-  Future<void> getLoggedInUser() async {
-    if (widget.type == MANAGEMENT_TYPE) {
-      loggedManagement = await getUserData() as Management;
-      userAcademicYear = loggedManagement!.academicYear;
-      userSection = loggedManagement!.section;
-      userId = loggedManagement!.id!;
-      userType = loggedManagement!.type!;
-      userAcademicYear = loggedManagement!.academicYear!;
-
-      getManagementUploadedTable(userSection!, userAcademicYear!, userStage!,
-          userSection!, userClass!, userSemester);
-    }
-    if (widget.type == STUDENT_TYPE) {
-      loggedStudent = await getUserData() as Student;
-      userSection = loggedStudent!.section;
-      userAcademicYear = loggedStudent!.academicYear;
-      userStage = loggedStudent!.stage;
-      userGrade = loggedStudent!.grade;
-      userClass = loggedStudent!.studentClass;
-      userSemester = loggedStudent!.semester;
-      userId = loggedStudent!.id;
-      userType = loggedStudent!.type;
-      childern = loggedStudent!.id;
-      setState(() {});
-    }
-  }
-
-  Future<EventObject> getStudentUploadedTable(
-      String section, year, stage, grade, classId, semester) async {
-    EventObject eventObject = new EventObject();
-    eventObject.success = false;
-    eventObject.object = "Some error happened.. try again later";
-    String myUrl = ApiConstants.GET_STUDENT_UPLOADED_TIME_TABLE_API;
-    try {
-      var response = await http.post(Uri.parse(myUrl), headers: {
-        'Accept': 'application/json'
-      }, body: {
-        "section": section,
-        "year": year,
-        "stage": stage,
-        "grade": grade,
-        "class": classId,
-        "semester": semester
-      });
-      if (response != null) {
-        Map mapValue = json.decode(response.body);
-        if (mapValue['success']) {
-          eventObject.success = true;
-          eventObject.object = mapValue;
-          print("Response is ${mapValue['file']}");
-          return eventObject;
-        } else {
-          eventObject.success = false;
-          eventObject.object = mapValue['message'];
-          return eventObject;
-        }
-      } else {
-        return eventObject;
-      }
-    } catch (e) {
-      return eventObject;
-    }
-  }
-
-  Future<EventObject> getManagementUploadedTable(
-      String section, year, stage, grade, classId, semester) async {
-    EventObject eventObject = new EventObject();
-    eventObject.success = false;
-    eventObject.object = "Some error happened.. try again later";
-    String myUrl = ApiConstants.GET_MANAGEMENT_UPLOADED_TIME_TABLE_API;
-    print(myUrl);
-    try {
-      var response = await http.post(Uri.parse(myUrl), headers: {
-        'Accept': 'application/json'
-      }, body: {
-        "section": section,
-        "year": year,
-        "stage": stage,
-        "grade": grade,
-        "class": classId,
-        "semester": semester
-      });
-      print("Response is ${json.decode(response.body)}");
-      if (response != null) {
-        Map mapValue = json.decode(response.body);
-        if (mapValue['success']) {
-          eventObject.success = true;
-          eventObject.object = mapValue;
-          List<dynamic> listOfColumns = mapValue['data'];
-
-          setState(() {
-            dataShowContent = listOfColumns;
-          });
-          return eventObject;
-        } else {
-          eventObject.success = false;
-          eventObject.object = mapValue['message'];
-          return eventObject;
-        }
-      } else {
-        return eventObject;
-      }
-    } catch (e) {
-      return eventObject;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final platform = Theme.of(context).platform;
-
-    final SubjectSelect = Padding(
-      padding: EdgeInsets.symmetric(vertical: 10.0),
-      child: DropdownButton<String>(
-          isExpanded: true,
-          value: subjectValue,
-          hint: Text("Select Subject"),
-          style: TextStyle(color: AppTheme.appColor),
-          underline: Container(
-            height: 2,
-            color: AppTheme.appColor,
-          ),
-          onChanged: (String? newValue) {
-            setState(() {
-              subjectSelected = true;
-
-              subjectValue = newValue;
-            });
-          },
-          items: subjectOption
-              .map((key, value) {
-                return MapEntry(
-                    value,
-                    DropdownMenuItem<String>(
-                      value: key,
-                      child: Text(value),
-                    ));
-              })
-              .values
-              .toList()),
-    );
-    final Teacher = Padding(
-      padding: EdgeInsets.symmetric(vertical: 10.0),
-      child: DropdownButton<String>(
-          isExpanded: true,
-          value: TeacherValue,
-          hint: Text("Select Teacher"),
-          style: TextStyle(color: AppTheme.appColor),
-          underline: Container(
-            height: 2,
-            color: AppTheme.appColor,
-          ),
-          onChanged: (String? newValue) {
-            setState(() {
-              TeacherSelected = true;
-
-              TeacherValue = newValue;
-            });
-          },
-          items: teacherOption
-              .map((key, value) {
-                return MapEntry(
-                    value,
-                    DropdownMenuItem<String>(
-                      value: key,
-                      child: Text(value),
-                    ));
-              })
-              .values
-              .toList()),
-    );
-
-    final showData = Center(
-        child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: DataTable(
-                  columns: [
-                    DataColumn(label: Text("Stage")),
-                    DataColumn(label: Text("Grade")),
-                    DataColumn(label: Text("Class")),
-                    DataColumn(label: Text("Semester")),
-                    DataColumn(label: Text("Attachments")),
-                  ],
-                  rows:
-                      dataShowContent // Loops through dataColumnText, each iteration assigning the value to element
-                          .map(
-                            ((element) => DataRow(
-                                  cells: <DataCell>[
-                                    DataCell(Text(element["stage"])),
-                                    DataCell(Text(element["grade"])),
-                                    DataCell(Text(element["class"])),
-                                    DataCell(Text(element["semester"])),
-                                    //Extracting from Map element the value
-                                    DataCell(
-                                        Text(
-                                          'show Table',
-                                          style: TextStyle(
-                                              color: Colors.lightBlue,
-                                              fontSize: 14),
-                                        ), onTap: () async {
-                                      await launch(element['file']['link']);
-                                    }),
-                                  ],
-                                )),
-                          )
-                          .toList(),
-                ))));
-    final body = Center(
-      child: (widget.type == STUDENT_TYPE && loggedStudent != null)
-          ? Center(
-              child: FutureBuilder(
-                future: getStudentUploadedTable(
-                    loggedStudent!.section ?? "",
-                    loggedStudent!.academicYear,
-                    loggedStudent!.stage,
-                    loggedStudent!.grade,
-                    loggedStudent!.studentClass,
-                    loggedStudent!.semester),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16.0),
-                        child: SpinKitPouringHourGlass(
-                          color: AppTheme.appColor,
-                        ),
-                      ),
-                    );
-                  } else {
-                    EventObject eventObject = snapshot.data;
-                    if (!eventObject.success!) {
-                      return Center(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 16.0),
-                          child: Text(eventObject.object.toString()),
-                        ),
-                      );
-                    } else {
-                      EventObject eventObject = snapshot.data;
-                      Map? mapValue = eventObject.object as Map?;
-                      return Container(
-                        height: MediaQuery.of(context).size.height,
-                        padding: new EdgeInsets.all(
-                            MediaQuery.of(context).size.width * 0.01),
-                        child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              (mapValue!['file'] != 'not found')
-                                  ? DownloadList(
-                                      [mapValue['file']],
-                                      platform: platform,
-                                      title: '',
-                                    )
-                                  : Container(),
-                            ]),
-                      );
-                    }
-                  }
-                },
-              ),
-            )
-          : (dataShowContent.isNotEmpty)
-              ? Column(
-                  children: <Widget>[
-                    if (widget.type == MANAGEMENT_TYPE)
-                      Expanded(
-                          child: ListView(
-                        children: <Widget>[showData],
-                      )),
-                  ],
-                )
-              : SpinKitPouringHourGlass(
-                  color: AppTheme.appColor,
-                ),
-    );
-    return Scaffold(
-      appBar: new AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Text(SCHOOL_NAME),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).pop(new MaterialPageRoute(
-                    builder: (context) => HomePage(
-                        type: userType!,
-                        sectionid: userSection!,
-                        Id: childern!,
-                        Academicyear: userAcademicYear!)));
-              },
-              child: CircleAvatar(
-                radius: 20,
-                backgroundColor: Colors.transparent,
-                backgroundImage: AssetImage('img/logo.png'),
-              ),
-            )
-          ],
-        ),
-        backgroundColor: AppTheme.appColor,
-      ),
-      body: body,
-      floatingActionButton: (widget.type == MANAGEMENT_TYPE)
-          ? FloatingActionButton(
-              onPressed: () => _dialog.buildFullScreenDialog(
-                  context, AddUploadedTimeTable()),
-              child: Icon(
-                Icons.add,
-                size: 20,
-              ),
-              backgroundColor: AppTheme.appColor,
-            )
-          : SizedBox(),
-    );
-  }
-}
-
-class AddUploadedTimeTable extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return new AddUploadedTimeTableState();
-  }
-}
-
-class AddUploadedTimeTableState extends State<AddUploadedTimeTable> {
   Management? loggedManagement;
 
   bool stageSelected = false, gradeSelected = false, classSelected = false;
@@ -429,13 +74,49 @@ class AddUploadedTimeTableState extends State<AddUploadedTimeTable> {
       classValue,
       className,
       semesterName,
-      semesterValue;
+      semesterValue,
+      userSemester,
+      childern;
 
   final uploader = FlutterUploader();
+
+  Staff? loggedStaff;
+  Student? loggedStudent;
+  List<dynamic> dataShowContent = [];
+  String? TeacherValue;
+
+  bool subjectSelected = false;
+  bool TeacherSelected = false;
+  final CustomDialog _dialog = CustomDialog();
+
   initState() {
     super.initState();
-
     getLoggedInUser();
+  }
+
+  Future<void> getLoggedInUser() async {
+    if (widget.type == MANAGEMENT_TYPE) {
+      loggedManagement = await getUserData() as Management;
+      userAcademicYear = loggedManagement!.academicYear;
+      userSection = loggedManagement!.section;
+      userId = loggedManagement!.id!;
+      userType = loggedManagement!.type!;
+      userAcademicYear = loggedManagement!.academicYear!;
+      syncStageOptions();
+    }
+    if (widget.type == STUDENT_TYPE) {
+      loggedStudent = await getUserData() as Student;
+      userSection = loggedStudent!.section;
+      userAcademicYear = loggedStudent!.academicYear;
+      userStage = loggedStudent!.stage;
+      userGrade = loggedStudent!.grade;
+      userClass = loggedStudent!.studentClass;
+      userSemester = loggedStudent!.semester;
+      userId = loggedStudent!.id;
+      userType = loggedStudent!.type;
+      childern = loggedStudent!.id;
+      setState(() {});
+    }
   }
 
   void _openFileExplorer() async {
@@ -494,16 +175,6 @@ class AddUploadedTimeTableState extends State<AddUploadedTimeTable> {
           textColor: Colors.white,
           fontSize: 16.0);
     }
-  }
-
-  Future<void> getLoggedInUser() async {
-    loggedManagement = await getUserData() as Management;
-    userAcademicYear = loggedManagement!.academicYear;
-    userSection = loggedManagement!.section;
-    userId = loggedManagement!.id!;
-    userType = loggedManagement!.type!;
-
-    syncStageOptions();
   }
 
   Future<void> syncStageOptions() async {
@@ -613,8 +284,89 @@ class AddUploadedTimeTableState extends State<AddUploadedTimeTable> {
     }
   }
 
+  Future<EventObject> getStudentUploadedTable(
+      String section, year, stage, grade, classId, semester) async {
+    EventObject eventObject = new EventObject();
+    eventObject.success = false;
+    eventObject.object = "Some error happened.. try again later";
+    String myUrl = ApiConstants.GET_STUDENT_UPLOADED_TIME_TABLE_API;
+    try {
+      var response = await http.post(Uri.parse(myUrl), headers: {
+        'Accept': 'application/json'
+      }, body: {
+        "section": section,
+        "year": year,
+        "stage": stage,
+        "grade": grade,
+        "class": classId,
+        "semester": semester
+      });
+      if (response != null) {
+        Map mapValue = json.decode(response.body);
+        if (mapValue['success']) {
+          eventObject.success = true;
+          eventObject.object = mapValue;
+          print("Response is ${mapValue['file']}");
+          return eventObject;
+        } else {
+          eventObject.success = false;
+          eventObject.object = mapValue['message'];
+          return eventObject;
+        }
+      } else {
+        return eventObject;
+      }
+    } catch (e) {
+      return eventObject;
+    }
+  }
+
+  Future<EventObject> getManagementUploadedTable(
+      String section, year, stage, grade, classId, semester) async {
+    EventObject eventObject = new EventObject();
+    eventObject.success = false;
+    eventObject.object = "Some error happened.. try again later";
+    String myUrl = ApiConstants.GET_MANAGEMENT_UPLOADED_TIME_TABLE_API;
+    print(myUrl);
+    try {
+      var response = await http.post(Uri.parse(myUrl), headers: {
+        'Accept': 'application/json'
+      }, body: {
+        "section": section,
+        "year": year,
+        "stage": stage,
+        "grade": grade,
+        "class": classId,
+        "semester": semester
+      });
+      print("Response is ${json.decode(response.body)}");
+      if (response != null) {
+        Map mapValue = json.decode(response.body);
+        if (mapValue['success']) {
+          eventObject.success = true;
+          eventObject.object = mapValue;
+          List<dynamic> listOfColumns = mapValue['data'];
+
+          setState(() {
+            dataShowContent = listOfColumns;
+          });
+          return eventObject;
+        } else {
+          eventObject.success = false;
+          eventObject.object = mapValue['message'];
+          return eventObject;
+        }
+      } else {
+        return eventObject;
+      }
+    } catch (e) {
+      return eventObject;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final platform = Theme.of(context).platform;
     final stage = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: DropdownButton<String>(
@@ -630,6 +382,8 @@ class AddUploadedTimeTableState extends State<AddUploadedTimeTable> {
             setState(() {
               stageSelected = true;
               stageValue = newValue!;
+              userStage = newValue;
+
               stageName = stageOptions[newValue];
               gradeOptions.clear();
               gradeValue;
@@ -670,6 +424,7 @@ class AddUploadedTimeTableState extends State<AddUploadedTimeTable> {
             setState(() {
               gradeSelected = true;
               gradeValue = newValue!;
+              userGrade = newValue;
               gradeName = gradeOptions[newValue];
               classOptions.clear();
               classValue;
@@ -763,7 +518,7 @@ class AddUploadedTimeTableState extends State<AddUploadedTimeTable> {
       ),
     );
 
-    final body = SingleChildScrollView(
+    final filterBody = SingleChildScrollView(
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -857,8 +612,6 @@ class AddUploadedTimeTableState extends State<AddUploadedTimeTable> {
                             isLoading = false;
                           });
                           if (dataSend) {
-                            Navigator.pop(context);
-
                             Fluttertoast.showToast(
                                 msg: "Message Sent",
                                 toastLength: Toast.LENGTH_LONG,
@@ -866,6 +619,13 @@ class AddUploadedTimeTableState extends State<AddUploadedTimeTable> {
                                 backgroundColor: AppTheme.appColor,
                                 textColor: Colors.white,
                                 fontSize: 16.0);
+                            getManagementUploadedTable(
+                                userSection!,
+                                userAcademicYear!,
+                                userStage!,
+                                gradeValue!,
+                                classValue!,
+                                semesterValue!);
                             //  }
                           } else {
                             Fluttertoast.showToast(
@@ -881,15 +641,7 @@ class AddUploadedTimeTableState extends State<AddUploadedTimeTable> {
                           setState(() {
                             isLoading = false;
                           });
-                          /*Flushbar(
-                      title: "Failed",
-                      message:
-                      "Please Enter Title",
-                      icon: Icon(Icons.close),
-                      backgroundColor: AppTheme.appColor,
-                      duration: Duration(seconds: 3),
-                    )
-                      ..show(context);*/
+
                           Fluttertoast.showToast(
                               msg: "Please Enter Title",
                               toastLength: Toast.LENGTH_LONG,
@@ -910,22 +662,162 @@ class AddUploadedTimeTableState extends State<AddUploadedTimeTable> {
       ),
     );
 
-    Widget _buildBody() {
-      return body;
-    }
-
+    final showData = Center(
+        child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: DataTable(
+                  columns: [
+                    DataColumn(label: Text("Stage")),
+                    DataColumn(label: Text("Grade")),
+                    DataColumn(label: Text("Class")),
+                    DataColumn(label: Text("Semester")),
+                    DataColumn(label: Text("Attachments")),
+                  ],
+                  rows:
+                      dataShowContent // Loops through dataColumnText, each iteration assigning the value to element
+                          .map(
+                            ((element) => DataRow(
+                                  cells: <DataCell>[
+                                    DataCell(Text(element["stage"])),
+                                    DataCell(Text(element["grade"])),
+                                    DataCell(Text(element["class"])),
+                                    DataCell(Text(element["semester"])),
+                                    //Extracting from Map element the value
+                                    DataCell(
+                                        Text(
+                                          'show Table',
+                                          style: TextStyle(
+                                              color: Colors.lightBlue,
+                                              fontSize: 14),
+                                        ), onTap: () async {
+                                      await launch(element['file']['link']);
+                                    }),
+                                  ],
+                                )),
+                          )
+                          .toList(),
+                ))));
+    final body = Center(
+        child: (widget.type == STUDENT_TYPE && loggedStudent != null)
+            ? Center(
+                child: FutureBuilder(
+                  future: getStudentUploadedTable(
+                      loggedStudent!.section ?? "",
+                      loggedStudent!.academicYear,
+                      loggedStudent!.stage,
+                      loggedStudent!.grade,
+                      loggedStudent!.studentClass,
+                      loggedStudent!.semester),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16.0),
+                          child: SpinKitPouringHourGlass(
+                            color: AppTheme.appColor,
+                          ),
+                        ),
+                      );
+                    } else {
+                      EventObject eventObject = snapshot.data;
+                      if (!eventObject.success!) {
+                        return Center(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 16.0),
+                            child: Text(eventObject.object.toString()),
+                          ),
+                        );
+                      } else {
+                        EventObject eventObject = snapshot.data;
+                        Map? mapValue = eventObject.object as Map?;
+                        return Container(
+                          height: MediaQuery.of(context).size.height,
+                          padding: new EdgeInsets.all(
+                              MediaQuery.of(context).size.width * 0.01),
+                          child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                (mapValue!['file'] != 'not found')
+                                    ? DownloadList(
+                                        [mapValue['file']],
+                                        platform: platform,
+                                        title: '',
+                                      )
+                                    : Container(),
+                              ]),
+                        );
+                      }
+                    }
+                  },
+                ),
+              )
+            : Column(
+                children: <Widget>[
+                  if (widget.type == MANAGEMENT_TYPE)
+                    Expanded(
+                        child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('img/bg.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      child: filterBody,
+                    )),
+                  if (dataShowContent.isNotEmpty)
+                    Expanded(
+                        child: ListView(
+                      children: <Widget>[showData],
+                    )),
+                ],
+              )
+        // : SpinKitPouringHourGlass(
+        //     color: AppTheme.appColor,
+        //   ),
+        );
     return Scaffold(
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('img/bg.png'),
-            fit: BoxFit.cover,
-          ),
+      appBar: new AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Text(SCHOOL_NAME),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop(new MaterialPageRoute(
+                    builder: (context) => HomePage(
+                        type: userType!,
+                        sectionid: userSection!,
+                        Id: childern!,
+                        Academicyear: userAcademicYear!)));
+              },
+              child: CircleAvatar(
+                radius: 20,
+                backgroundColor: Colors.transparent,
+                backgroundImage: AssetImage('img/logo.png'),
+              ),
+            )
+          ],
         ),
-        child: _buildBody(),
+        backgroundColor: AppTheme.appColor,
       ),
+      body: body,
+      // floatingActionButton: (widget.type == MANAGEMENT_TYPE)
+      //     ? FloatingActionButton(
+      //         onPressed: () => _dialog.buildFullScreenDialog(
+      //             context, AddUploadedTimeTable()),
+      //         child: Icon(
+      //           Icons.add,
+      //           size: 20,
+      //         ),
+      //         backgroundColor: AppTheme.appColor,
+      //       )
+      //     : SizedBox(),
     );
   }
 }

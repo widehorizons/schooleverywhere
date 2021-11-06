@@ -102,14 +102,7 @@ class _SendToClassState extends State<SendToClass> {
       });
     } else {
       String? msg = objectEventClass.object as String?;
-      /*    Flushbar(
-        title: "Failed",
-        message: msg.toString(),
-        icon: Icon(Icons.close),
-        backgroundColor: AppTheme.appColor,
-        duration: Duration(seconds: 3),
-      )
-        ..show(context);*/
+
       Fluttertoast.showToast(
           msg: msg.toString(),
           toastLength: Toast.LENGTH_LONG,

@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:flutter/material.dart';
@@ -9,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:schooleverywhere/Modules/EventObject.dart';
-import 'package:schooleverywhere/Modules/Parent.dart';
+import 'package:schooleverywhere/Modules/Staff.dart';
 import 'package:schooleverywhere/Modules/Student.dart';
 import 'package:schooleverywhere/Networking/Futures.dart';
 import 'package:schooleverywhere/Pages/DownloadList.dart';
@@ -24,11 +26,14 @@ import 'components/chat_player_widget.dart';
 
 class Chat extends StatefulWidget {
   Chat(
+    this.regno,
     this.id,
     this.type,
   );
 
   final String id;
+  final String regno;
+
   final String type;
 
   @override
@@ -52,14 +57,16 @@ class _ChatState extends State<Chat> {
         ),
         centerTitle: true,
       ),
-      body: ChatScreen(widget.type, widget.id),
+      body: ChatScreen(widget.type, widget.id, widget.regno),
     );
   }
 }
 
 class ChatScreen extends StatefulWidget {
-  ChatScreen(this.type, this.id);
+  ChatScreen(this.type, this.id, this.regno);
   final String type;
+  final String regno;
+
   final String id;
 
   @override
@@ -74,16 +81,23 @@ class ChatScreenState extends State<ChatScreen> {
   List<ReplyMessage>? listMessage;
   late String groupChatId;
   late SharedPreferences prefs;
-  Parent? loggedParent;
+  Staff? loggedStaff;
 
   Student? loggedStudent;
   late File imageFile;
   late bool isLoading;
   late bool isShowSticker;
   late String imageUrl;
-
+  FileType? _pickingType;
+  File? filepath;
+  bool loadingPath = false;
+  bool _hasValidMime = false;
+  List<File> selectedFilesList = [];
+  List<File> tempSelectedFilesList = [];
+  bool dataSend = false;
   final TextEditingController textEditingController = TextEditingController();
-  final ScrollController listScrollController = ScrollController();
+  final ScrollController listScrollController =
+      ScrollController(initialScrollOffset: 800.0);
   final FocusNode focusNode = FocusNode();
 
   @override
@@ -106,8 +120,8 @@ class ChatScreenState extends State<ChatScreen> {
       print("studentData " + loggedStudent!.id! + " " + widget.id);
       getData();
     } else {
-      loggedParent = await getUserData() as Parent;
-      print("ParentData " + loggedParent!.regno.toString() + widget.id);
+      loggedStaff = await getUserData() as Staff;
+      print("staffData " + loggedStaff!.id.toString() + widget.id);
       getData();
     }
     // InsertSeenRec();
@@ -118,6 +132,30 @@ class ChatScreenState extends State<ChatScreen> {
     if (widget.type == 'Student') {
       EventObject eventObject =
           await getStudentMessages(widget.id.toString(), loggedStudent!.id!);
+      if (eventObject.success!) {
+        Map<String, dynamic> data = eventObject.object as Map<String, dynamic>;
+        chatMessages = ChatMessages.fromJson(data);
+        setState(() {
+          print(chatMessages);
+          chatMessages;
+          listMessage = chatMessages!.replyMessages ?? [];
+          print("Messages here ===> ${chatMessages!.comment}");
+        });
+      } else {
+        String? msg = eventObject.object as String?;
+
+        Fluttertoast.showToast(
+            msg: msg.toString(),
+            toastLength: Toast.LENGTH_LONG,
+            timeInSecForIosWeb: 3,
+            backgroundColor: AppTheme.appColor,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    }
+    if (widget.type == 'Staff') {
+      EventObject eventObject = await readReplySentToClass(
+          widget.id.toString(), widget.regno, loggedStaff!.id!);
       if (eventObject.success!) {
         Map<String, dynamic> data = eventObject.object as Map<String, dynamic>;
         chatMessages = ChatMessages.fromJson(data);
@@ -185,6 +223,31 @@ class ChatScreenState extends State<ChatScreen> {
     setState(() {
       isShowSticker = !isShowSticker;
     });
+  }
+
+  void _openFileExplorer() async {
+    if (_pickingType != FileType.custom || _hasValidMime) {
+      setState(() => loadingPath = true);
+      try {
+        FilePickerResult? result = await FilePicker.platform
+            .pickFiles(allowMultiple: true, type: FileType.any);
+
+        if (result != null) {
+          tempSelectedFilesList =
+              result.paths.map((path) => File(path!)).toList();
+        }
+        ;
+      } on PlatformException catch (e) {
+        print("Unsupported operation" + e.toString());
+      }
+      if (!mounted) return;
+
+      setState(() {
+        loadingPath = false;
+        if (tempSelectedFilesList.length > 0)
+          selectedFilesList = tempSelectedFilesList;
+      });
+    }
   }
 
   // Future uploadFile() async {
@@ -264,12 +327,10 @@ class ChatScreenState extends State<ChatScreen> {
                       // width: 200.0,
                       decoration: BoxDecoration(
                           color: isCurrentUserMessage(message)
-                              ? Colors.grey.shade300
+                              ? Colors.grey.shade800
                               : AppTheme.appColor,
                           borderRadius: BorderRadius.circular(8.0)),
-                      // margin: EdgeInsets.only(
-                      //     bottom: isLastMessageRight(index) ? 20.0 : 5.0,
-                      //     right: 10.0),
+
                       child: FlatButton(
                         child: Material(
                           child: CachedNetworkImage(
@@ -318,7 +379,6 @@ class ChatScreenState extends State<ChatScreen> {
                           bottom: isLastMessageRight(index) ? 20.0 : 10.0,
                           right: 10.0),
                     )
-                  // Sticker
                   : Container(
                       height: 100,
                       width: 200,
@@ -334,8 +394,8 @@ class ChatScreenState extends State<ChatScreen> {
                 padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 10.0),
                 decoration: BoxDecoration(
                     color: isCurrentUserMessage(message)
-                        ? Colors.grey.shade300
-                        : AppTheme.appColor,
+                        ? AppTheme.appColor
+                        : Colors.grey.shade800,
                     borderRadius: BorderRadius.circular(8.0)),
                 margin: EdgeInsets.only(
                     bottom: isLastMessageRight(index) ? 20.0 : 5.0,
@@ -346,24 +406,19 @@ class ChatScreenState extends State<ChatScreen> {
                 Container(
                   child: Text(
                     message.replymessage!,
-                    style: TextStyle(
-                        color: isCurrentUserMessage(message)
-                            ? AppTheme.appColor
-                            : Colors.white),
+                    style: TextStyle(color: Colors.white),
                   ),
                   padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
                   width: 200.0,
                   decoration: BoxDecoration(
                       color: isCurrentUserMessage(message)
-                          ? Colors.grey.shade300
-                          : AppTheme.appColor,
+                          ? AppTheme.appColor
+                          : Colors.grey.shade800,
                       borderRadius: BorderRadius.circular(8.0)),
-                  margin: EdgeInsets.only(
-                      bottom: isLastMessageRight(index) ? 20.0 : 5.0,
-                      right: 10.0),
+                  margin: EdgeInsets.only(bottom: 5.0, right: 10.0),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.46,
+                  width: MediaQuery.of(context).size.width * 0.5,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -374,13 +429,16 @@ class ChatScreenState extends State<ChatScreen> {
                                     .millisecondsSinceEpoch
                                     .toString()))),
                         style: TextStyle(
-                            color: Colors.grey.shade500,
+                            color: Colors.grey.shade800,
                             fontSize: 12.0,
                             fontStyle: FontStyle.italic),
                       ),
-                      Text((message.sendertype == "student")
-                          ? message.studentname!.split(' ').first
-                          : message.staffname!)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: Text((message.sendertype == "student")
+                            ? message.studentname!.split(' ').first
+                            : message.staffname!),
+                      )
                     ],
                   ),
                   // margin: EdgeInsets.only(top: .0, bottom: 2.0),
@@ -488,8 +546,8 @@ class ChatScreenState extends State<ChatScreen> {
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 1.0),
               child: IconButton(
-                icon: Icon(Icons.face),
-                onPressed: getSticker,
+                icon: Icon(Icons.attach_file),
+                onPressed: _openFileExplorer,
                 color: AppTheme.appColor,
               ),
             ),

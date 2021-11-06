@@ -72,6 +72,8 @@ class ApiConstants extends MainConstant {
       BASE_URL + "student/getSubjectRecevieFromTeacherDataOne.php";
   static const String STUDENT_CHAT_MESSAGES =
       BASE_URL + "student/getreplayfromsendtoclass.php";
+  static const String READ_REPLY_SENT_TO_CLASS =
+      BASE_URL + "staff/readReplaysenttoclass.php";
   static const String GET_STUDENT_OF_RECEIVE_FROM_TEACHER_DATA_SEEN_API =
       BASE_URL + "student/getSubjectRecevieFromTeacherDataOneSeen.php";
   static const String Teacher_Data_Mail_Inbox_API =
@@ -317,6 +319,8 @@ class ApiConstants extends MainConstant {
       BASE_URL + "student/ReplySendtoclass.php";
   static const String GET_STUDENT_REPLY_FROM_STAFF_OF_SENDTOCLASS_API =
       BASE_URL + "staff/getStudentRelySendtoclass.php";
+  static const String GET_REPLY_FROM_SEND_TO_CLASS_FROM_STUDENTS =
+      BASE_URL + "staff/getreplayfromsendtoclassfromstudents.php";
   static const String GET_STUDENT_REPLY_FROM_STAFF_OF_SENDTOCLASS_DATA_API =
       BASE_URL + "staff/getStudentReplySendtoclassData.php";
   static const String GET_SEESION_CAMBRIDGE_CONFERENCE_API =

@@ -130,6 +130,10 @@ class _MyAppState extends State<MyApp> {
         navigatorKey.currentState!
             .push(MaterialPageRoute(builder: (_) => MailInboxPage(typeUser!)));
         break;
+      case "New Mailbox":
+        navigatorKey.currentState!
+            .push(MaterialPageRoute(builder: (_) => MailInboxPage(typeUser!)));
+        break;
       case "Student Attendance":
         navigatorKey.currentState!
             .push(MaterialPageRoute(builder: (_) => Attendance(typeUser!)));

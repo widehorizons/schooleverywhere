@@ -1264,6 +1264,37 @@ Future<EventObject> getStudentMessages(String messageId, String regno) async {
   }
 }
 
+Future<EventObject> readReplySentToClass(
+    String messageId, String regno, String staffid) async {
+  EventObject eventObject = new EventObject();
+  eventObject.success = false;
+  eventObject.object = "Some error happened.. try again later";
+  String myUrl = ApiConstants.READ_REPLY_SENT_TO_CLASS;
+  print(
+      "Fetching Studnt Replies API ==== > [$myUrl] [$messageId]  [$regno] [$staffid]");
+  try {
+    var response = await http.post(Uri.parse(myUrl),
+        headers: {'Accept': 'application/json'},
+        body: {"mainid": messageId, "regno": regno, "staffid": staffid});
+    if (response != null) {
+      Map mapValue = json.decode(response.body);
+      if (mapValue['success']) {
+        eventObject.success = true;
+        eventObject.object = mapValue;
+        return eventObject;
+      } else {
+        eventObject.success = false;
+        eventObject.object = mapValue['message'];
+        return eventObject;
+      }
+    } else {
+      return eventObject;
+    }
+  } catch (e) {
+    return eventObject;
+  }
+}
+
 SeenMessage_ReceiveFromTeacher(
     String id,
     String regno,
@@ -5914,6 +5945,53 @@ Future<EventObject> getStudentReplySendtoclassFromStaff(
       "gradeid": gradeId,
       "subjectid": subjectId,
       "classid": classId,
+    });
+    if (response != null) {
+      mapValue = json.decode(response.body);
+      if (mapValue['success']) {
+        eventObject.success = true;
+        eventObject.object = mapValue;
+        return eventObject;
+      } else {
+        eventObject.success = false;
+        eventObject.object = mapValue['message'];
+        return eventObject;
+      }
+    }
+    return eventObject;
+  } catch (e) {
+    eventObject.success = false;
+    eventObject.object = "Some error happened.. try again later";
+    return eventObject;
+  }
+}
+
+Future<EventObject> getreplayfromsendtoclassfromstudents(
+    String year,
+    String staffId,
+    String sectionId,
+    String stageId,
+    String gradeId,
+    String subjectId,
+    String classId,
+    String semesterId) async {
+  String myUrl = ApiConstants.GET_REPLY_FROM_SEND_TO_CLASS_FROM_STUDENTS;
+  print(
+      "send to class Reply from student ==> {$myUrl} Data :  $year, $staffId , $sectionId , $stageId , $gradeId , $subjectId , $classId , $semesterId");
+  Map mapValue;
+  EventObject eventObject = new EventObject();
+  try {
+    var response = await http.post(Uri.parse(myUrl), headers: {
+      'Accept': 'application/json'
+    }, body: {
+      "year": year,
+      "staffid": staffId,
+      "section": sectionId,
+      "stage": stageId,
+      "grade": gradeId,
+      "subject": subjectId,
+      "class": classId,
+      "semester": semesterId
     });
     if (response != null) {
       mapValue = json.decode(response.body);

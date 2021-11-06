@@ -497,6 +497,8 @@ class _UploadedTimeTableState extends State<UploadedTimeTable> {
                 semesterName = semestersOptions[newValue];
 
                 syncSemesterOptions();
+                getManagementUploadedTable(userSection!, userAcademicYear!,
+                    userStage!, gradeValue!, classValue!, semesterValue!);
               });
             },
             items: semestersOptions

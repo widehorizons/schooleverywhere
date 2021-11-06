@@ -293,7 +293,7 @@ class _ReceiveFromTeacherState extends State<ReceiveFromTeacher> {
                   columns: [
                     DataColumn(label: Text("Subject")),
                     DataColumn(label: Text("Date")),
-                    DataColumn(label: Text("Comment")),
+                    DataColumn(label: Text("")),
                   ],
                   rows:
                       dataShowContent // Loops through dataColumnText, each iteration assigning the value to element
@@ -305,7 +305,7 @@ class _ReceiveFromTeacherState extends State<ReceiveFromTeacher> {
                                     //Extracting from Map element the value
                                     DataCell(
                                       Text(
-                                        'Read Comment',
+                                        'Reply',
                                         style: TextStyle(
                                             color: Colors.lightBlue,
                                             fontSize: 14),
@@ -317,6 +317,7 @@ class _ReceiveFromTeacherState extends State<ReceiveFromTeacher> {
                                             context,
                                             new MaterialPageRoute(
                                                 builder: (context) => Chat(
+                                                    "",
                                                     element["id"].toString(),
                                                     widget.type)));
                                       },

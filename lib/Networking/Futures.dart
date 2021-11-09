@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:async/async.dart';
 import 'package:http/http.dart' as http;
@@ -5911,6 +5912,73 @@ Future<EventObject> ReplySendToClassStudent(
         eventObject.success = true;
         eventObject.object = mapValue;
       } else {
+        eventObject.object = mapValue["message"];
+      }
+      return eventObject;
+    }
+  } catch (e) {
+    return eventObject;
+  }
+  return eventObject;
+}
+
+Future<EventObject> replyReplySendtoclassStudent(
+    List fileslist,
+    String message,
+    String regno,
+    String id,
+    String staffid,
+    String staffName,
+    String subjectId,
+    String year) async {
+  EventObject eventObject = new EventObject();
+  eventObject.success = false;
+  eventObject.object = "Some error happened.. try again later";
+
+  String myUrl = ApiConstants.Reply_Reply_Send_To_Class_Student;
+  print("Reply from student : $myUrl");
+  try {
+    Map body = {
+      "FileName": fileslist,
+      "message": message,
+      "regno": regno,
+      "id": id,
+      "staffid": staffid,
+      "staffname": staffName,
+      "subjectid": subjectId,
+      "year": year
+    };
+    var request = http.MultipartRequest('POST', Uri.parse(myUrl));
+    request.fields.addAll({
+      'regno': '1612201953050',
+      'id': '8616',
+      'staffname': 'manar',
+      'staffid': '12201847066',
+      'subjectid': '1562',
+      'message': 'test from Mobile app',
+      'year': '2019/2020'
+    });
+    fileslist.forEach((element) async {
+      request.files.add(await http.MultipartFile.fromPath(
+          'FileName[]', File(element.path).absolute.path));
+    });
+
+    final http.StreamedResponse streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+    if (response.statusCode == 200) {
+      print(await response);
+    } else {
+      print(response.reasonPhrase);
+    }
+
+    if (response != null) {
+      print("Reply from student Response : ====> ${response.body}");
+      Map mapValue = json.decode(response.body);
+      if (mapValue["success"]) {
+        eventObject.success = true;
+        eventObject.object = mapValue;
+      } else {
+        print("Reply from student Response : ====> ${response.body}");
         eventObject.object = mapValue["message"];
       }
       return eventObject;

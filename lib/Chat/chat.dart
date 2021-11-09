@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:io';
-
+import 'package:path/path.dart' as p;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:schooleverywhere/Modules/EventObject.dart';
 import 'package:schooleverywhere/Modules/Staff.dart';
 import 'package:schooleverywhere/Modules/Student.dart';
+import 'package:schooleverywhere/Networking/ApiConstants.dart';
 import 'package:schooleverywhere/Networking/Futures.dart';
 import 'package:schooleverywhere/Pages/DownloadList.dart';
 import 'package:schooleverywhere/SharedPreferences/Prefs.dart';
@@ -68,13 +70,13 @@ class ChatScreen extends StatefulWidget {
   final String regno;
 
   final String id;
-
   @override
   State createState() => ChatScreenState();
 }
 
 class ChatScreenState extends State<ChatScreen> {
   ChatScreenState();
+  String Url = ApiConstants.REPLY_SENDTOCLASS_STUDENT_API;
 
   late String id;
   ChatMessages? chatMessages;
@@ -93,7 +95,9 @@ class ChatScreenState extends State<ChatScreen> {
   bool loadingPath = false;
   bool _hasValidMime = false;
   List<File> selectedFilesList = [];
+  List<String> selectedFilesNameList = [];
   List<File> tempSelectedFilesList = [];
+  List NewFileName = [];
   bool dataSend = false;
   final TextEditingController textEditingController = TextEditingController();
   final ScrollController listScrollController =
@@ -205,25 +209,29 @@ class ChatScreenState extends State<ChatScreen> {
   //   setState(() {});
   // }
 
-  Future getImage() async {
-    XFile? pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    imageFile = File(pickedFile!.path);
-    if (imageFile != null) {
-      setState(() {
-        isLoading = true;
-      });
-      // uploadFile();
-    }
-  }
-
-  void getSticker() {
-    // Hide keyboard when sticker appear
-    focusNode.unfocus();
-    setState(() {
-      isShowSticker = !isShowSticker;
-    });
-  }
+  // Future getImage() async {
+  //   XFile? pickedFile =
+  //       await ImagePicker().pickImage(source: ImageSource.gallery);
+  //   imageFile = File(pickedFile!.path);
+  //   if (imageFile != null) {
+  //     if (!selectedFilesNameList.contains(p.basename(imageFile.path))) {
+  //       setState(() {
+  //         selectedFilesList.add(imageFile);
+  //         selectedFilesNameList.add(p.basename(imageFile.path));
+  //         tempSelectedFilesList = [];
+  //       });
+  //     } else {
+  //       Fluttertoast.showToast(
+  //           msg: "File ${p.basename(imageFile.path)} already selected",
+  //           toastLength: Toast.LENGTH_LONG,
+  //           timeInSecForIosWeb: 3,
+  //           backgroundColor: AppTheme.appColor,
+  //           textColor: Colors.white,
+  //           fontSize: 16.0);
+  //     }
+  //     // uploadFile();
+  //   }
+  // }
 
   void _openFileExplorer() async {
     if (_pickingType != FileType.custom || _hasValidMime) {
@@ -233,8 +241,8 @@ class ChatScreenState extends State<ChatScreen> {
             .pickFiles(allowMultiple: true, type: FileType.any);
 
         if (result != null) {
-          tempSelectedFilesList =
-              result.paths.map((path) => File(path!)).toList();
+          tempSelectedFilesList
+              .addAll(result.paths.map((path) => File(path!)).toList());
         }
         ;
       } on PlatformException catch (e) {
@@ -244,8 +252,25 @@ class ChatScreenState extends State<ChatScreen> {
 
       setState(() {
         loadingPath = false;
-        if (tempSelectedFilesList.length > 0)
-          selectedFilesList = tempSelectedFilesList;
+        if (tempSelectedFilesList.length > 0) {
+          tempSelectedFilesList.forEach((element) {
+            if (!selectedFilesNameList.contains(p.basename(element.path))) {
+              selectedFilesList.add(element);
+              selectedFilesNameList.add(p.basename(element.path));
+            } else {
+              Fluttertoast.showToast(
+                  msg:
+                      "File ${p.basenameWithoutExtension(element.path)} already selected",
+                  toastLength: Toast.LENGTH_SHORT,
+                  timeInSecForIosWeb: 3,
+                  backgroundColor: AppTheme.appColor,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
+            }
+            ;
+          });
+          tempSelectedFilesList = [];
+        }
       });
     }
   }
@@ -269,31 +294,51 @@ class ChatScreenState extends State<ChatScreen> {
   //   });
   // }
 
-  void onSendMessage(String content, int type) {
+  Future<void> onSendMessage(String content, int type) async {
     // type: 0 = text, 1 = image, 2 = sticker
-    if (content.trim() != '') {
+    if (content.trim() != '' || selectedFilesList.isNotEmpty) {
       textEditingController.clear();
-
-      // var documentReference = Firestore.instance
-      //     .collection('messages')
-      //     .document(groupChatId)
-      //     .collection(groupChatId)
-      //     .document(DateTime.now().millisecondsSinceEpoch.toString());
-
-      // Firestore.instance.runTransaction((transaction) async {
-      //   await transaction.set(
-      //     documentReference,
-      //     {
-      //       'idFrom': id,
-      //       'idTo': peerId,
-      //       'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
-      //       'content': content,
-      //       'type': type
-      //     },
-      //   );
-      // });
-      listScrollController.animateTo(MediaQuery.of(context).size.height * 0.8,
-          duration: Duration(milliseconds: 700), curve: Curves.easeOut);
+      // NewFileName = await uploadFile(selectedFilesList, Url);
+      EventObject eventObject = await replyReplySendtoclassStudent(
+          selectedFilesList,
+          content,
+          "12201847066",
+          "8616",
+          "1612201953050",
+          "manar",
+          "1562",
+          "2019/2020");
+      if (eventObject.success!) {
+        Fluttertoast.showToast(
+            msg: "Message Sent",
+            toastLength: Toast.LENGTH_LONG,
+            timeInSecForIosWeb: 3,
+            backgroundColor: AppTheme.appColor,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        setState(() {
+          selectedFilesList.clear();
+          selectedFilesNameList.clear();
+        });
+        listScrollController.animateTo(MediaQuery.of(context).size.height * 0.8,
+            duration: Duration(milliseconds: 700), curve: Curves.easeOut);
+      } else {
+        String msg = eventObject.object.toString();
+        /*   Flushbar(
+                          title: "Failed",
+                          message: msg,
+                          icon: Icon(Icons.close),
+                          backgroundColor: AppTheme.appColor,
+                          duration: Duration(seconds: 3),
+                        )..show(context);*/
+        Fluttertoast.showToast(
+            msg: msg,
+            toastLength: Toast.LENGTH_LONG,
+            timeInSecForIosWeb: 3,
+            backgroundColor: AppTheme.appColor,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
     } else {
       Fluttertoast.showToast(msg: 'Nothing to send');
     }
@@ -505,7 +550,9 @@ class ChatScreenState extends State<ChatScreen> {
                   : Flexible(child: Center(child: Loading())),
 
               // Sticker
-              // (isShowSticker ? buildSticker() : Container()),
+              (selectedFilesList.isNotEmpty
+                  ? buildFilesContainer(selectedFilesList)
+                  : Container()),
 
               // Input content
               buildInput(),
@@ -520,6 +567,77 @@ class ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  Widget buildFilesContainer(List<File> filesList) {
+    return Container(
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: filesList
+            .map((e) => Stack(
+                  children: [
+                    Positioned(
+                      right: 0,
+                      left: 0,
+                      child: CloseButton(
+                        color: Colors.red,
+                        onPressed: () => {},
+                      ),
+                    ),
+                    FlatButton(
+                      onPressed: () => {
+                        setState(() {
+                          filesList.removeWhere((element) => element == e);
+                          selectedFilesList
+                              .removeWhere((element) => element == e);
+                          selectedFilesNameList.removeWhere(
+                              (element) => element == p.basename(e.path));
+                        })
+                      },
+                      child: Column(
+                        children: [
+                          SvgPicture.asset(
+                            fileIconPath(e),
+                            height: 50.0,
+                            fit: BoxFit.cover,
+                          ),
+                          Container(
+                              width: 50,
+                              child: Text(
+                                "${p.basenameWithoutExtension(e.path)}",
+                                overflow: TextOverflow.ellipsis,
+                              )),
+                          Text("${p.extension(e.path)}")
+                        ],
+                      ),
+                    ),
+                  ],
+                ))
+            .toList(),
+        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      ),
+      decoration: BoxDecoration(
+          border: Border(top: BorderSide(color: Colors.grey, width: 0.5)),
+          color: Colors.white),
+      padding: EdgeInsets.all(5.0),
+      height: 100.0,
+    );
+  }
+
+  String fileIconPath(File file) {
+    print(p.extension(file.path));
+    if ([".png", ".jpg", ".svg", ".jpeg"]
+        .contains(p.extension(file.path).toString())) {
+      print("is Image");
+      return "assets/icons/file-image.svg";
+    }
+    if ((p.extension(file.path).toString()) == ".pdf") {
+      print("is Image");
+      return "assets/icons/file-pdf.svg";
+    } else {
+      print("is File");
+      return "assets/icons/file.svg";
+    }
+  }
+
   Widget buildLoading() {
     return Positioned(
       child: isLoading ? const Loading() : Container(),
@@ -531,17 +649,17 @@ class ChatScreenState extends State<ChatScreen> {
       child: Row(
         children: <Widget>[
           // Button send image
-          Material(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 1.0),
-              child: IconButton(
-                icon: Icon(Icons.image),
-                onPressed: getImage,
-                color: AppTheme.appColor,
-              ),
-            ),
-            color: Colors.white,
-          ),
+          // Material(
+          //   child: Container(
+          //     margin: EdgeInsets.symmetric(horizontal: 1.0),
+          //     child: IconButton(
+          //       icon: Icon(Icons.image),
+          //       onPressed: getImage,
+          //       color: AppTheme.appColor,
+          //     ),
+          //   ),
+          //   color: Colors.white,
+          // ),
           Material(
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 1.0),

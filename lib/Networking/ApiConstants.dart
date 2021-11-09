@@ -317,6 +317,8 @@ class ApiConstants extends MainConstant {
       BASE_URL + "staff/joinStaffAdvancedConferenceStaff.php";
   static const String REPLY_SENDTOCLASS_STUDENT_API =
       BASE_URL + "student/ReplySendtoclass.php";
+  static const String Reply_Reply_Send_To_Class_Student =
+      BASE_URL + "student/replyReplySendtoclassStudent.php";
   static const String GET_STUDENT_REPLY_FROM_STAFF_OF_SENDTOCLASS_API =
       BASE_URL + "staff/getStudentRelySendtoclass.php";
   static const String GET_REPLY_FROM_SEND_TO_CLASS_FROM_STUDENTS =

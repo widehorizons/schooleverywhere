@@ -5938,8 +5938,7 @@ Future<EventObject> replyReplySendtoclassStudent(
   String myUrl = ApiConstants.Reply_Reply_Send_To_Class_Student;
   print("Reply from student : $myUrl");
   try {
-    Map body = {
-      "FileName": fileslist,
+    Map<String, String> body = {
       "message": message,
       "regno": regno,
       "id": id,
@@ -5949,15 +5948,7 @@ Future<EventObject> replyReplySendtoclassStudent(
       "year": year
     };
     var request = http.MultipartRequest('POST', Uri.parse(myUrl));
-    request.fields.addAll({
-      'regno': '1612201953050',
-      'id': '8616',
-      'staffname': 'manar',
-      'staffid': '12201847066',
-      'subjectid': '1562',
-      'message': 'test from Mobile app',
-      'year': '2019/2020'
-    });
+    request.fields.addAll(body);
     fileslist.forEach((element) async {
       request.files.add(await http.MultipartFile.fromPath(
           'FileName[]', File(element.path).absolute.path));

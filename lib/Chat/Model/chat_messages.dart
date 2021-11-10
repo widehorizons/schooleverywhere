@@ -1,59 +1,66 @@
 class ChatMessages {
   String? mainid;
   String? mainDate;
+  String? staffid;
+  String? staffname;
   String? comment;
   String? subject;
-  List<MessageFile>? mainFile;
+  List<MessageFile>? mainFiles;
   String? voice;
+  String? url;
   List<ReplyMessage>? replyMessages;
-  bool? success;
 
   ChatMessages(
       {this.mainid,
       this.mainDate,
+      this.staffid,
+      this.staffname,
       this.comment,
       this.subject,
-      this.mainFile,
+      this.mainFiles,
       this.voice,
-      this.replyMessages,
-      this.success});
+      this.url,
+      this.replyMessages});
 
   ChatMessages.fromJson(Map<String, dynamic> json) {
     mainid = json['mainid'];
     mainDate = json['mainDate'];
+    staffid = json['staffid'];
+    staffname = json['staffname'];
     comment = json['Comment'];
     subject = json['Subject'];
     if (json['mainFile'] != null) {
-      mainFile = <MessageFile>[];
+      mainFiles = <MessageFile>[];
       json['mainFile'].forEach((v) {
-        mainFile!.add(new MessageFile.fromJson(v));
+        mainFiles!.add(new MessageFile.fromJson(v));
       });
     }
     voice = json['voice'];
+    url = json['url'];
     if (json['data'] != null) {
       replyMessages = <ReplyMessage>[];
       json['data'].forEach((v) {
         replyMessages!.add(new ReplyMessage.fromJson(v));
       });
     }
-    success = json['success'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['mainid'] = this.mainid;
     data['mainDate'] = this.mainDate;
+    data['staffid'] = this.staffid;
+    data['staffname'] = this.staffname;
     data['Comment'] = this.comment;
     data['Subject'] = this.subject;
-    if (this.mainFile != null) {
-      data['mainFile'] = this.mainFile!.map((v) => v.toJson()).toList();
+    if (this.mainFiles != null) {
+      data['mainFile'] = this.mainFiles!.map((v) => v.toJson()).toList();
     }
     data['voice'] = this.voice;
+    data['url'] = this.url;
     if (this.replyMessages != null) {
-      data['replyMessages'] =
-          this.replyMessages!.map((v) => v.toJson()).toList();
+      data['data'] = this.replyMessages!.map((v) => v.toJson()).toList();
     }
-    data['success'] = this.success;
     return data;
   }
 }
@@ -83,47 +90,54 @@ class MessageFile {
 class ReplyMessage {
   String? id;
   String? date;
+  int? timestamp;
   String? replymessage;
   String? sendertype;
   String? staffname;
   String? studentname;
-  MessageFile? file;
   String? voice;
+  String? url;
+  List<MessageFile>? files;
 
   ReplyMessage(
       {this.id,
       this.date,
+      this.timestamp,
       this.replymessage,
       this.sendertype,
       this.staffname,
       this.studentname,
-      this.file,
-      this.voice});
+      this.voice,
+      this.url,
+      this.files});
 
   ReplyMessage.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     date = json['Date'];
+    timestamp = json['timestamp'];
     replymessage = json['replymessage'];
     sendertype = json['sendertype'];
     staffname = json['staffname'];
     studentname = json['studentname'];
-    file = json['File'] != null ? new MessageFile.fromJson(json['File']) : null;
-    voice = json['voice'];
+    if (json['File'] != null) {
+      files = <MessageFile>[];
+      json['File'].forEach((v) {
+        files!.add(new MessageFile.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['Date'] = this.date;
+    data['timestamp'] = this.timestamp;
     data['replymessage'] = this.replymessage;
     data['sendertype'] = this.sendertype;
     data['staffname'] = this.staffname;
     data['studentname'] = this.studentname;
-    if (this.file != null) {
-      data['File'] = this.file!.toJson();
-    }
-    if (this.voice != null) {
-      data['voice'] = this.voice!.toString();
+    if (this.files != null) {
+      data['File'] = this.files!.map((v) => v.toJson()).toList();
     }
     return data;
   }

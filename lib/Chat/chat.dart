@@ -1,16 +1,17 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:path/path.dart' as p;
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path/path.dart' as p;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:schooleverywhere/Chat/cubit/chatcubit_cubit.dart';
 import 'package:schooleverywhere/Modules/EventObject.dart';
 import 'package:schooleverywhere/Modules/Staff.dart';
 import 'package:schooleverywhere/Modules/Student.dart';
@@ -25,6 +26,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Model/chat_messages.dart';
 import 'components/chat_player_widget.dart';
+import 'keyboard_unit.dart';
 
 class Chat extends StatefulWidget {
   Chat(
@@ -100,8 +102,7 @@ class ChatScreenState extends State<ChatScreen> {
   List NewFileName = [];
   bool dataSend = false;
   final TextEditingController textEditingController = TextEditingController();
-  final ScrollController listScrollController =
-      ScrollController(initialScrollOffset: 800.0);
+  final ScrollController listScrollController = ScrollController();
   final FocusNode focusNode = FocusNode();
 
   @override
@@ -134,28 +135,33 @@ class ChatScreenState extends State<ChatScreen> {
   Future<void> getData() async {
     print("ID:" + widget.id.toString());
     if (widget.type == 'Student') {
-      EventObject eventObject =
-          await getStudentMessages(widget.id.toString(), loggedStudent!.id!);
-      if (eventObject.success!) {
-        Map<String, dynamic> data = eventObject.object as Map<String, dynamic>;
-        chatMessages = ChatMessages.fromJson(data);
-        setState(() {
-          print(chatMessages);
-          chatMessages;
-          listMessage = chatMessages!.replyMessages ?? [];
-          print("Messages here ===> ${chatMessages!.comment}");
-        });
-      } else {
-        String? msg = eventObject.object as String?;
+      BlocProvider.of<ChatCubit>(context).getAllMessages(
+        widget.type,
+        widget.id,
+        loggedStudent!.id!,
+      );
+      // EventObject eventObject =
+      //     await getStudentMessages(widget.id.toString(), loggedStudent!.id!);
+      // if (eventObject.success!) {
+      //   Map<String, dynamic> data = eventObject.object as Map<String, dynamic>;
+      //   chatMessages = ChatMessages.fromJson(data);
+      //   setState(() {
+      //     print(chatMessages);
+      //     chatMessages;
+      //     listMessage = chatMessages!.replyMessages ?? [];
+      //     print("Messages here ===> ${chatMessages!.comment}");
+      //   });
+      // } else {
+      //   String? msg = eventObject.object as String?;
 
-        Fluttertoast.showToast(
-            msg: msg.toString(),
-            toastLength: Toast.LENGTH_LONG,
-            timeInSecForIosWeb: 3,
-            backgroundColor: AppTheme.appColor,
-            textColor: Colors.white,
-            fontSize: 16.0);
-      }
+      //   Fluttertoast.showToast(
+      //       msg: msg.toString(),
+      //       toastLength: Toast.LENGTH_LONG,
+      //       timeInSecForIosWeb: 3,
+      //       backgroundColor: AppTheme.appColor,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+      // }
     }
     if (widget.type == 'Staff') {
       EventObject eventObject = await readReplySentToClass(
@@ -355,84 +361,81 @@ class ChatScreenState extends State<ChatScreen> {
     return Row(
       children: <Widget>[
         // Text
-
         Column(
           children: [
-            // Align(
-            //   alignment: Alignment.topLeft,
-            //   child: Text((message.sendertype == "student")
-            //       ? message.studentname!
-            //       : message.staffname!),
-            // ),
-            if (message.file != null)
-              message.file!.filetype == "image"
-                  // Image
-                  ? Container(
-                      padding: EdgeInsets.all(3),
-                      // width: 200.0,
-                      decoration: BoxDecoration(
-                          color: isCurrentUserMessage(message)
-                              ? Colors.grey.shade800
-                              : AppTheme.appColor,
-                          borderRadius: BorderRadius.circular(8.0)),
+            if (message.files != null)
+              Column(
+                children: List.generate(
+                  message.files!.length,
+                  (index) => (message.files![index].filetype == "image")
+                      ? Container(
+                          padding: EdgeInsets.all(3),
+                          // width: 200.0,
+                          decoration: BoxDecoration(
+                              color: isCurrentUserMessage(message)
+                                  ? Colors.grey.shade800
+                                  : AppTheme.appColor,
+                              borderRadius: BorderRadius.circular(8.0)),
 
-                      child: FlatButton(
-                        child: Material(
-                          child: CachedNetworkImage(
-                            placeholder: (context, url) => Container(
-                              child: Loading(),
-                              width: 200.0,
-                              height: 200.0,
-                              padding: EdgeInsets.all(70.0),
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade300,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8.0),
+                          child: FlatButton(
+                            child: Material(
+                              child: CachedNetworkImage(
+                                placeholder: (context, url) => Container(
+                                  child: Loading(),
+                                  width: 200.0,
+                                  height: 200.0,
+                                  padding: EdgeInsets.all(70.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade300,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            errorWidget: (context, url, error) => Material(
-                              child: Image.asset(
-                                'img/img_not_available.jpeg',
+                                errorWidget: (context, url, error) => Material(
+                                  child: Image.asset(
+                                    'img/img_not_available.jpeg',
+                                    width: 200.0,
+                                    height: 200.0,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(8.0),
+                                  ),
+                                  clipBehavior: Clip.hardEdge,
+                                ),
+                                imageUrl: message.files![index].link!,
                                 width: 200.0,
                                 height: 200.0,
-                                fit: BoxFit.cover,
+                                fit: BoxFit.fitWidth,
                               ),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8.0),
-                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.0)),
                               clipBehavior: Clip.hardEdge,
                             ),
-                            imageUrl: message.file!.link!,
-                            width: 200.0,
-                            height: 200.0,
-                            fit: BoxFit.fitWidth,
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => FullPhoto(
+                                          url: message.files![index].link)));
+                            },
+                            padding: EdgeInsets.all(0),
                           ),
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                          clipBehavior: Clip.hardEdge,
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      FullPhoto(url: message.file!.link)));
-                        },
-                        padding: EdgeInsets.all(0),
-                      ),
-                      margin: EdgeInsets.only(
-                          bottom: isLastMessageRight(index) ? 20.0 : 10.0,
-                          right: 10.0),
-                    )
-                  : Container(
-                      height: 100,
-                      width: 200,
-                      child: DownloadList(
-                        [message.file!.toJson()],
-                        platform: Theme.of(context).platform,
-                        title: '',
-                      ),
-                    ),
+                          margin: EdgeInsets.only(
+                              bottom: isLastMessageRight(index) ? 20.0 : 10.0,
+                              right: 10.0),
+                        )
+                      : Container(
+                          height: 60,
+                          width: 200,
+                          child: DownloadList(
+                            message.files!.map((e) => e.toJson()).toList(),
+                            platform: Theme.of(context).platform,
+                            title: '',
+                          )),
+                ),
+              ),
             if (message.voice != null)
               Container(
                 child: ChatPlayerWidget(url: message.voice!),
@@ -448,20 +451,22 @@ class ChatScreenState extends State<ChatScreen> {
               ),
             Column(
               children: [
-                Container(
-                  child: Text(
-                    message.replymessage!,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-                  width: 200.0,
-                  decoration: BoxDecoration(
-                      color: isCurrentUserMessage(message)
-                          ? AppTheme.appColor
-                          : Colors.grey.shade800,
-                      borderRadius: BorderRadius.circular(8.0)),
-                  margin: EdgeInsets.only(bottom: 5.0, right: 10.0),
-                ),
+                (message.replymessage!.trim() != '')
+                    ? Container(
+                        child: Text(
+                          message.replymessage!,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+                        width: 200.0,
+                        decoration: BoxDecoration(
+                            color: isCurrentUserMessage(message)
+                                ? AppTheme.appColor
+                                : Colors.grey.shade800,
+                            borderRadius: BorderRadius.circular(8.0)),
+                        margin: EdgeInsets.only(bottom: 5.0, right: 10.0),
+                      )
+                    : Container(),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: Row(
@@ -539,31 +544,56 @@ class ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      child: Stack(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              // List of messages
-              (chatMessages != null)
-                  ? buildListMessage(listMessage!)
-                  : Flexible(child: Center(child: Loading())),
+    return BlocListener<ChatCubit, ChatState>(
+      listener: (context, state) {
+        if (state is ChatcubitRepliesSuccess) {
+          Map<String, dynamic> data = state.data.object as Map<String, dynamic>;
+          chatMessages = ChatMessages.fromJson(data);
 
-              // Sticker
-              (selectedFilesList.isNotEmpty
-                  ? buildFilesContainer(selectedFilesList)
-                  : Container()),
+          setState(() {
+            print(chatMessages);
+            chatMessages;
+            listMessage = chatMessages!.replyMessages ?? [];
+            print("Messages here ===> ${chatMessages!.comment}");
+          });
+        }
+        if (state is ChatcubitError) {
+          String msg = state.error;
+          Fluttertoast.showToast(
+              msg: msg.toString(),
+              toastLength: Toast.LENGTH_LONG,
+              timeInSecForIosWeb: 3,
+              backgroundColor: AppTheme.appColor,
+              textColor: Colors.white,
+              fontSize: 16.0);
+        }
+      },
+      child: WillPopScope(
+        child: Stack(
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                // List of messages
+                (chatMessages != null)
+                    ? buildListMessage(listMessage!)
+                    : Flexible(child: Center(child: Loading())),
 
-              // Input content
-              buildInput(),
-            ],
-          ),
+                // Sticker
+                (selectedFilesList.isNotEmpty
+                    ? buildFilesContainer(selectedFilesList)
+                    : Container()),
 
-          // Loading
-          buildLoading()
-        ],
+                // Input content
+                buildInput(),
+              ],
+            ),
+
+            // Loading
+            buildLoading()
+          ],
+        ),
+        onWillPop: onBackPress,
       ),
-      onWillPop: onBackPress,
     );
   }
 
@@ -688,16 +718,66 @@ class ChatScreenState extends State<ChatScreen> {
           ),
 
           // Button send message
-          Material(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 8.0),
-              child: IconButton(
-                icon: Icon(Icons.send),
-                onPressed: () => onSendMessage(textEditingController.text, 0),
-                color: AppTheme.appColor,
+          BlocListener<ChatCubit, ChatState>(
+            listener: (context, state) {
+              if (state is ChatcubitSendSuccess) {
+                Fluttertoast.showToast(
+                    msg: "Message Sent",
+                    toastLength: Toast.LENGTH_LONG,
+                    timeInSecForIosWeb: 3,
+                    backgroundColor: AppTheme.appColor,
+                    textColor: Colors.white,
+                    fontSize: 16.0);
+                textEditingController.clear();
+                setState(() {
+                  selectedFilesList.clear();
+                  selectedFilesNameList.clear();
+                  listScrollController.animateTo(
+                      listScrollController.position.maxScrollExtent,
+                      duration: Duration(seconds: 2),
+                      curve: Curves.easeOut);
+                });
+              }
+              if (state is ChatcubitError) {
+                String msg = state.error;
+
+                Fluttertoast.showToast(
+                    msg: msg,
+                    toastLength: Toast.LENGTH_LONG,
+                    timeInSecForIosWeb: 3,
+                    backgroundColor: AppTheme.appColor,
+                    textColor: Colors.white,
+                    fontSize: 16.0);
+              }
+            },
+            child: Material(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 8.0),
+                child: IconButton(
+                  icon: Icon(Icons.send),
+                  onPressed: () {
+                    if (textEditingController.text.trim() != '' ||
+                        selectedFilesList.isNotEmpty) {
+                      KeyboardUtil().hideKeyboard(context);
+                      BlocProvider.of<ChatCubit>(context).sendReply(
+                          widget.type,
+                          selectedFilesList,
+                          textEditingController.text,
+                          "1612201953050",
+                          "8636",
+                          "12201847066",
+                          "manar",
+                          "1562",
+                          "2019/2020");
+                    } else {
+                      Fluttertoast.showToast(msg: 'Nothing to send');
+                    }
+                  },
+                  color: AppTheme.appColor,
+                ),
               ),
+              color: Colors.white,
             ),
-            color: Colors.white,
           ),
         ],
       ),
@@ -710,14 +790,21 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   Widget buildListMessage(List<ReplyMessage>? messages) {
+    Timer(
+      Duration(milliseconds: 300),
+      () => listScrollController.animateTo(
+          listScrollController.position.maxScrollExtent,
+          duration: Duration(seconds: 2),
+          curve: Curves.easeInOut),
+    );
     return Flexible(
       child: Builder(
         builder: (context) {
           messages = [
             ReplyMessage(
                 date: chatMessages!.mainDate,
-                file: (chatMessages!.mainFile != null)
-                    ? chatMessages!.mainFile![0]
+                files: (chatMessages!.mainFiles != null)
+                    ? chatMessages!.mainFiles!
                     : null,
                 replymessage: chatMessages!.comment,
                 sendertype: "staff",
@@ -737,6 +824,7 @@ class ChatScreenState extends State<ChatScreen> {
             itemBuilder: (context, index) => buildItem(index, messages![index]),
             itemCount: messages!.length,
             reverse: false,
+            shrinkWrap: true,
             controller: listScrollController,
           );
         },

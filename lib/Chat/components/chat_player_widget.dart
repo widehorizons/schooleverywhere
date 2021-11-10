@@ -61,7 +61,7 @@ class _ChatPlayerWidgetState extends State<ChatPlayerWidget> {
     _positionSubscription.cancel();
     _playerCompleteSubscription.cancel();
     _playerErrorSubscription.cancel();
-    _playerStateSubscription.cancel();
+    // _playerStateSubscription.cancel();
     // _playerControlCommandSubscription.cancel();
     super.dispose();
   }

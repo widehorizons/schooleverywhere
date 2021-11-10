@@ -135,7 +135,8 @@ class DownloadListState extends State<DownloadList> {
                                       children: <Widget>[
                                         new Container(
                                           width: double.infinity,
-                                          height: 64.0,
+                                          height:
+                                              (_items.length <= 1) ? 20 : 64.0,
                                           child: new Row(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.center,

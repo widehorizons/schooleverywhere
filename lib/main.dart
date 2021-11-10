@@ -1,8 +1,11 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:schooleverywhere/Chat/cubit/chatcubit_cubit.dart';
+import 'package:schooleverywhere/Constants/StringConstants.dart';
 import 'Pages/SplashScreen.dart';
 import 'Student/ReceiveFromTeacher.dart';
 import 'Student/MailInboxPage.dart';
@@ -49,7 +52,7 @@ Future<void> main() async {
     sound: true,
   );
   await FlutterDownloader.initialize();
-  runApp(new MyApp());
+  runApp(new BlocProvider(create: (context) => ChatCubit(), child: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -63,6 +66,7 @@ class _MyAppState extends State<MyApp> {
   String textValue = 'Hello World !';
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       new FlutterLocalNotificationsPlugin();
+  late ChatCubit chatCubit;
 
   String? typeUser;
   bool isLoading = false;
@@ -71,7 +75,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     getLoggedInUser();
-
+    chatCubit = BlocProvider.of<ChatCubit>(context);
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage? message) {
@@ -143,8 +147,11 @@ class _MyAppState extends State<MyApp> {
             MaterialPageRoute(builder: (_) => StudentAssignments(typeUser!)));
         break;
       case "Reply Send to class":
-        navigatorKey.currentState!
-            .push(MaterialPageRoute(builder: (_) => SendToClass()));
+        chatCubit.getAllMessages(
+            STAFF_TYPE, messageData['id'], messageData['regno'],
+            staffid: messageData['staffid']);
+        // navigatorKey.currentState!
+        //     .push(MaterialPageRoute(builder: (_) => SendToClass()));
         break;
       case "Reply Assignment":
         navigatorKey.currentState!

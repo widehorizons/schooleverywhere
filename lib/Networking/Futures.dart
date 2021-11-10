@@ -1272,7 +1272,7 @@ Future<EventObject> readReplySentToClass(
   eventObject.object = "Some error happened.. try again later";
   String myUrl = ApiConstants.READ_REPLY_SENT_TO_CLASS;
   print(
-      "Fetching Studnt Replies API ==== > [$myUrl] [$messageId]  [$regno] [$staffid]");
+      "Fetching Studnt Replies API for Staff ==== > [$myUrl] [$messageId]  [$regno] [$staffid]");
   try {
     var response = await http.post(Uri.parse(myUrl),
         headers: {'Accept': 'application/json'},
@@ -5942,6 +5942,64 @@ Future<EventObject> replyReplySendtoclassStudent(
       "message": message,
       "regno": regno,
       "id": id,
+      "staffid": staffid,
+      "staffname": staffName,
+      "subjectid": subjectId,
+      "year": year
+    };
+    var request = http.MultipartRequest('POST', Uri.parse(myUrl));
+    request.fields.addAll(body);
+    fileslist.forEach((element) async {
+      request.files.add(await http.MultipartFile.fromPath(
+          'FileName[]', File(element.path).absolute.path));
+    });
+
+    final http.StreamedResponse streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+    if (response.statusCode == 200) {
+      print(await response);
+    } else {
+      print(response.reasonPhrase);
+    }
+
+    if (response != null) {
+      print("Reply from student Response : ====> ${response.body}");
+      Map mapValue = json.decode(response.body);
+      if (mapValue["success"]) {
+        eventObject.success = true;
+        eventObject.object = mapValue;
+      } else {
+        print("Reply from student Response : ====> ${response.body}");
+        eventObject.object = mapValue["message"];
+      }
+      return eventObject;
+    }
+  } catch (e) {
+    return eventObject;
+  }
+  return eventObject;
+}
+
+Future<EventObject> replyReplySendtoclassReadStaffStudent(
+    List fileslist,
+    String message,
+    String regno,
+    String id,
+    String staffid,
+    String staffName,
+    String subjectId,
+    String year) async {
+  EventObject eventObject = new EventObject();
+  eventObject.success = false;
+  eventObject.object = "Some error happened.. try again later";
+
+  String myUrl = ApiConstants.Reply_Reply_Send_To_Class_READ_STAFF_STUDENT;
+  print("Reply from student : $myUrl");
+  try {
+    Map<String, String> body = {
+      "message": message,
+      "regno": regno,
+      "mainid": id,
       "staffid": staffid,
       "staffname": staffName,
       "subjectid": subjectId,

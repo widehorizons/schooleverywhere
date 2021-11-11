@@ -138,30 +138,8 @@ class ChatScreenState extends State<ChatScreen> {
       BlocProvider.of<ChatCubit>(context).getAllMessages(
         widget.type,
         widget.id,
-        loggedStudent!.id!,
+        widget.regno,
       );
-      // EventObject eventObject =
-      //     await getStudentMessages(widget.id.toString(), loggedStudent!.id!);
-      // if (eventObject.success!) {
-      //   Map<String, dynamic> data = eventObject.object as Map<String, dynamic>;
-      //   chatMessages = ChatMessages.fromJson(data);
-      //   setState(() {
-      //     print(chatMessages);
-      //     chatMessages;
-      //     listMessage = chatMessages!.replyMessages ?? [];
-      //     print("Messages here ===> ${chatMessages!.comment}");
-      //   });
-      // } else {
-      //   String? msg = eventObject.object as String?;
-
-      //   Fluttertoast.showToast(
-      //       msg: msg.toString(),
-      //       toastLength: Toast.LENGTH_LONG,
-      //       timeInSecForIosWeb: 3,
-      //       backgroundColor: AppTheme.appColor,
-      //       textColor: Colors.white,
-      //       fontSize: 16.0);
-      // }
     }
     if (widget.type == 'Staff') {
       EventObject eventObject = await readReplySentToClass(

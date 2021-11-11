@@ -317,7 +317,7 @@ class _ReceiveFromTeacherState extends State<ReceiveFromTeacher> {
                                             context,
                                             new MaterialPageRoute(
                                                 builder: (context) => Chat(
-                                                    "",
+                                                    ChildrenId!,
                                                     element["id"].toString(),
                                                     widget.type)));
                                       },

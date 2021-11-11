@@ -18,7 +18,7 @@ class ChatCubit extends Cubit<ChatState> {
       String staffName,
       String subjectId,
       String year) async {
-    print("send Reply messages from cubit is working well");
+    print("send Reply messages from cubit is working well [$regno]");
 
     if (role == STUDENT_TYPE) {
       EventObject eventObject = await replyReplySendtoclassStudent(

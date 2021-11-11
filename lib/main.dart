@@ -124,6 +124,7 @@ class _MyAppState extends State<MyApp> {
 
   void _notificationNavigator(RemoteMessage? message) {
     Map<String, dynamic> messageData = message!.data;
+    print("Notification Data ==================>> $messageData");
 
     switch (messageData['screen']) {
       case "ReceiveFromTeacher":
@@ -148,7 +149,7 @@ class _MyAppState extends State<MyApp> {
         break;
       case "Reply Send to class":
         chatCubit.getAllMessages(
-            STAFF_TYPE, messageData['id'], messageData['regno'],
+            STUDENT_TYPE, messageData['id'], messageData['regno'],
             staffid: messageData['staffid']);
         // navigatorKey.currentState!
         //     .push(MaterialPageRoute(builder: (_) => SendToClass()));

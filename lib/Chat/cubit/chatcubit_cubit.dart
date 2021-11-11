@@ -44,9 +44,9 @@ class ChatCubit extends Cubit<ChatState> {
 
   getAllMessages(String role, String messageId, String regno,
       {String? staffid}) async {
-    print(
-        "get messages from cubit is working well [$role] [$messageId] [$regno]");
     if (role == STUDENT_TYPE) {
+      print(
+          "get messages from cubit is working well [$role] [$messageId] [$regno]");
       EventObject eventObject = await getStudentMessages(messageId, regno);
       if (eventObject.success!) {
         emit(ChatcubitRepliesSuccess(eventObject));
@@ -55,6 +55,8 @@ class ChatCubit extends Cubit<ChatState> {
       }
     }
     if (role == STAFF_TYPE) {
+      print(
+          "get messages from cubit is working well [$role] [$messageId] [$regno] [$staffid]");
       EventObject eventObject =
           await readReplySentToClass(messageId, regno, staffid!);
       if (eventObject.success!) {

@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:schooleverywhere/Chat/cubit/chatcubit_cubit.dart';
+import 'package:schooleverywhere/Constants/StringConstants.dart';
 import 'package:schooleverywhere/Modules/EventObject.dart';
 import 'package:schooleverywhere/Modules/Staff.dart';
 import 'package:schooleverywhere/Modules/Student.dart';
@@ -142,28 +143,12 @@ class ChatScreenState extends State<ChatScreen> {
       );
     }
     if (widget.type == 'Staff') {
-      EventObject eventObject = await readReplySentToClass(
-          widget.id.toString(), widget.regno, loggedStaff!.id!);
-      if (eventObject.success!) {
-        Map<String, dynamic> data = eventObject.object as Map<String, dynamic>;
-        chatMessages = ChatMessages.fromJson(data);
-        setState(() {
-          print(chatMessages);
-          chatMessages;
-          listMessage = chatMessages!.replyMessages ?? [];
-          print("Messages here ===> ${chatMessages!.comment}");
-        });
-      } else {
-        String? msg = eventObject.object as String?;
-
-        Fluttertoast.showToast(
-            msg: msg.toString(),
-            toastLength: Toast.LENGTH_LONG,
-            timeInSecForIosWeb: 3,
-            backgroundColor: AppTheme.appColor,
-            textColor: Colors.white,
-            fontSize: 16.0);
-      }
+      BlocProvider.of<ChatCubit>(context).getAllMessages(
+        widget.type,
+        widget.id,
+        widget.regno,
+        staffid: loggedStaff!.id!,
+      );
     }
   }
 
@@ -532,7 +517,7 @@ class ChatScreenState extends State<ChatScreen> {
             print(chatMessages);
             chatMessages;
             listMessage = chatMessages!.replyMessages ?? [];
-            print("Messages here ===> ${chatMessages!.comment}");
+            print("Messages here ===> ${state.data.object.toString()}");
           });
         }
         if (state is ChatcubitError) {
@@ -785,8 +770,8 @@ class ChatScreenState extends State<ChatScreen> {
                     ? chatMessages!.mainFiles!
                     : null,
                 replymessage: chatMessages!.comment,
-                sendertype: "staff",
-                staffname: (widget.type == "Staff") ? "" : "",
+                sendertype: STAFF_TYPE,
+                staffname: chatMessages!.staffname!,
                 studentname: "",
                 voice: chatMessages!.voice),
             ...messages!

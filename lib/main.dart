@@ -149,7 +149,7 @@ class _MyAppState extends State<MyApp> {
         break;
       case "Reply Send to class":
         chatCubit.getAllMessages(
-            STUDENT_TYPE, messageData['id'], messageData['regno'],
+            messageData['role'], messageData['id'], messageData['regno'],
             staffid: messageData['staffid']);
         // navigatorKey.currentState!
         //     .push(MaterialPageRoute(builder: (_) => SendToClass()));

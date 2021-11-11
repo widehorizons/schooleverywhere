@@ -535,6 +535,8 @@ class ChatScreenState extends State<ChatScreen> {
         child: Stack(
           children: <Widget>[
             Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 // List of messages
                 (chatMessages != null)
@@ -729,7 +731,7 @@ class ChatScreenState extends State<ChatScreen> {
                           widget.regno,
                           widget.id,
                           chatMessages!.staffid!,
-                          "manar",
+                          chatMessages!.staffname!,
                           "1627",
                           "2019/2020");
                     } else {
@@ -753,13 +755,13 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   Widget buildListMessage(List<ReplyMessage>? messages) {
-    Timer(
-      Duration(milliseconds: 300),
-      () => listScrollController.animateTo(
-          listScrollController.position.maxScrollExtent,
-          duration: Duration(seconds: 2),
-          curve: Curves.easeInOut),
-    );
+    // Timer(
+    //   Duration(milliseconds: 300),
+    //   () => listScrollController.animateTo(
+    //       listScrollController.position.maxScrollExtent,
+    //       duration: Duration(seconds: 2),
+    //       curve: Curves.easeInOut),
+    // );
     return Flexible(
       child: Builder(
         builder: (context) {

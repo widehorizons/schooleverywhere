@@ -6094,7 +6094,7 @@ Future<EventObject> getreplayfromsendtoclassfromstudents(
     String semesterId) async {
   String myUrl = ApiConstants.GET_REPLY_FROM_SEND_TO_CLASS_FROM_STUDENTS;
   print(
-      "send to class Reply from student ==> {$myUrl} Data :  $year, $staffId , $sectionId , $stageId , $gradeId , $subjectId , $classId , $semesterId");
+      "send to class Replies from student  ==> {$myUrl} Data :  $year, $staffId , $sectionId , $stageId , $gradeId , $subjectId , $classId , $semesterId");
   Map mapValue;
   EventObject eventObject = new EventObject();
   try {

@@ -308,11 +308,11 @@ class ChatScreenState extends State<ChatScreen> {
       EventObject eventObject = await replyReplySendtoclassStudent(
           selectedFilesList,
           content,
-          "12201847066",
-          "8616",
-          "1612201953050",
-          "manar",
-          "1562",
+          widget.regno,
+          widget.id,
+          chatMessages!.staffid!,
+          chatMessages!.staffname!,
+          "1627",
           "2019/2020");
       if (eventObject.success!) {
         Fluttertoast.showToast(
@@ -763,11 +763,11 @@ class ChatScreenState extends State<ChatScreen> {
                           widget.type,
                           selectedFilesList,
                           textEditingController.text,
-                          "1612201953050",
-                          "8636",
-                          "12201847066",
+                          widget.regno,
+                          widget.id,
+                          chatMessages!.staffid!,
                           "manar",
-                          "1562",
+                          "1627",
                           "2019/2020");
                     } else {
                       Fluttertoast.showToast(msg: 'Nothing to send');
@@ -813,11 +813,11 @@ class ChatScreenState extends State<ChatScreen> {
                 voice: chatMessages!.voice),
             ...messages!
           ];
-          messages!.sort((a, b) => DateTime.parse(a.date!)
-              .millisecondsSinceEpoch
-              .toString()
-              .compareTo(
-                  DateTime.parse(a.date!).millisecondsSinceEpoch.toString()));
+          // messages!.sort((a, b) => DateTime.parse(a.date!)
+          //     .millisecondsSinceEpoch
+          //     .toString()
+          //     .compareTo(
+          //         DateTime.parse(a.date!).millisecondsSinceEpoch.toString()));
           return ListView.builder(
             padding: EdgeInsets.all(10.0),
             physics: BouncingScrollPhysics(),

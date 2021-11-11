@@ -766,6 +766,7 @@ class ChatScreenState extends State<ChatScreen> {
       child: Builder(
         builder: (context) {
           messages = [
+            ...messages!,
             ReplyMessage(
                 date: chatMessages!.mainDate,
                 files: (chatMessages!.mainFiles != null)
@@ -776,7 +777,6 @@ class ChatScreenState extends State<ChatScreen> {
                 staffname: chatMessages!.staffname!,
                 studentname: "",
                 voice: chatMessages!.voice),
-            ...messages!
           ];
           // messages!.sort((a, b) => DateTime.parse(a.date!)
           //     .millisecondsSinceEpoch
@@ -788,7 +788,7 @@ class ChatScreenState extends State<ChatScreen> {
             physics: BouncingScrollPhysics(),
             itemBuilder: (context, index) => buildItem(index, messages![index]),
             itemCount: messages!.length,
-            reverse: false,
+            reverse: true,
             shrinkWrap: true,
             controller: listScrollController,
           );

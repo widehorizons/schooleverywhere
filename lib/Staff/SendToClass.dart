@@ -62,6 +62,7 @@ class _SendToClassState extends State<SendToClass> {
   bool filesize = true;
   Map staffclassOptions = new Map();
   TextEditingController CommentValue = new TextEditingController();
+  TextEditingController urlValue = new TextEditingController();
 
   late List classSelected;
   List<dynamic> classstaff = [];
@@ -299,6 +300,23 @@ class _SendToClassState extends State<SendToClass> {
             ),
           ),
         ),
+        Text(" URL ",
+            style: TextStyle(
+                color: AppTheme.appColor,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.bold,
+                fontSize: 18)),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          child: TextField(
+            controller: urlValue,
+            keyboardType: TextInputType.url,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppTheme.appColor)),
+            ),
+          ),
+        ),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
           child: RaisedButton(
@@ -414,6 +432,7 @@ class _SendToClassState extends State<SendToClass> {
                         datasend = await addSendToClass(
                             NewFileName,
                             CommentValue.text,
+                            urlValue.text,
                             loggedStaff!.id!,
                             loggedStaff!.name!,
                             loggedStaff!.academicYear!,

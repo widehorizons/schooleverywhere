@@ -1153,6 +1153,7 @@ Future<dynamic> uploadFile(List selectedFile, url) async {
 addSendToClass(
     List fileslist,
     String comment,
+    String url,
     String staffId,
     String staffName,
     String year,
@@ -1176,6 +1177,7 @@ addSendToClass(
     }, body: {
       "FileName": files,
       "Comment": comment,
+      "url": url,
       "StaffId": staffId,
       "StaffName": staffName,
       "SectionId": section,

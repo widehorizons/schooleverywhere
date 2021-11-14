@@ -5936,7 +5936,8 @@ Future<EventObject> replyReplySendtoclassStudent(
   eventObject.object = "Some error happened.. try again later";
 
   String myUrl = ApiConstants.Reply_Reply_Send_To_Class_Student;
-  print("Reply from student : $myUrl");
+  print(
+      "Reply from student : $myUrl  [$id] [$message] [$regno] [$staffName] [$staffid] [$subjectId] [$year]  ");
   try {
     Map<String, String> body = {
       "message": message,
@@ -5994,7 +5995,8 @@ Future<EventObject> replyReplySendtoclassReadStaffStudent(
   eventObject.object = "Some error happened.. try again later";
 
   String myUrl = ApiConstants.Reply_Reply_Send_To_Class_READ_STAFF_STUDENT;
-  print("Reply from student : $myUrl");
+  print(
+      "Reply from student : $myUrl [$id] [$message] [$regno] [$staffName] [$staffid] [$subjectId] [$year]");
   try {
     Map<String, String> body = {
       "message": message,

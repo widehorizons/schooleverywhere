@@ -5,8 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:schooleverywhere/Chat/cubit/chatcubit_cubit.dart';
-import 'package:schooleverywhere/Constants/StringConstants.dart';
+import 'Chat/app_bloc_observer.dart';
 import 'Pages/SplashScreen.dart';
+import 'Staff/SendToClass.dart';
 import 'Student/ReceiveFromTeacher.dart';
 import 'Student/MailInboxPage.dart';
 import 'Student/Attendance.dart';
@@ -14,7 +15,6 @@ import 'Student/StudentAssignments.dart';
 import 'Pages/StudentPage.dart';
 import 'Pages/StaffPage.dart';
 import 'Pages/ParentPage.dart';
-import 'Staff/SendToClass.dart';
 import 'Staff/Assignments.dart';
 import 'Pages/ManagementPage.dart';
 import 'SharedPreferences/Prefs.dart';
@@ -38,6 +38,7 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  Bloc.observer = AppBlocObserver();
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -88,7 +89,9 @@ class _MyAppState extends State<MyApp> {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
 
-      if (notification != null && android != null) {
+      if (notification != null &&
+          android != null &&
+          message.data['screen'] != "Reply Send to class") {
         flutterLocalNotificationsPlugin.show(
             notification.hashCode,
             notification.title,
@@ -125,7 +128,6 @@ class _MyAppState extends State<MyApp> {
   void _notificationNavigator(RemoteMessage? message) {
     Map<String, dynamic> messageData = message!.data;
     print("Notification Data ==================>> $messageData");
-
     switch (messageData['screen']) {
       case "ReceiveFromTeacher":
         navigatorKey.currentState!.push(
@@ -148,11 +150,11 @@ class _MyAppState extends State<MyApp> {
             MaterialPageRoute(builder: (_) => StudentAssignments(typeUser!)));
         break;
       case "Reply Send to class":
+        print("Notification Data For Chat ==================>> $messageData");
         chatCubit.getAllMessages(
             messageData['role'], messageData['id'], messageData['regno'],
             staffid: messageData['staffid']);
-        // navigatorKey.currentState!
-        //     .push(MaterialPageRoute(builder: (_) => SendToClass()));
+
         break;
       case "Reply Assignment":
         navigatorKey.currentState!

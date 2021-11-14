@@ -289,8 +289,8 @@ class ChatScreenState extends State<ChatScreen> {
           selectedFilesList.clear();
           selectedFilesNameList.clear();
         });
-        listScrollController.animateTo(MediaQuery.of(context).size.height * 0.8,
-            duration: Duration(milliseconds: 700), curve: Curves.easeOut);
+        listScrollController.animateTo(0,
+            duration: Duration(milliseconds: 300), curve: Curves.easeOut);
       } else {
         String msg = eventObject.object.toString();
         /*   Flushbar(
@@ -319,14 +319,12 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   Widget buildItem(int index, ReplyMessage message) {
-    print("message Role ===> ${message.sendertype} ${widget.type} ");
-
     return Row(
       children: <Widget>[
         // Text
         Column(
           children: [
-            if (message.files != null)
+            if (message.files != null && message.files!.isNotEmpty)
               Column(
                 children: List.generate(
                   message.files!.length,
@@ -697,9 +695,8 @@ class ChatScreenState extends State<ChatScreen> {
                 setState(() {
                   selectedFilesList.clear();
                   selectedFilesNameList.clear();
-                  listScrollController.animateTo(
-                      listScrollController.position.maxScrollExtent,
-                      duration: Duration(seconds: 2),
+                  listScrollController.animateTo(0,
+                      duration: Duration(milliseconds: 300),
                       curve: Curves.easeOut);
                 });
               }
@@ -776,13 +773,9 @@ class ChatScreenState extends State<ChatScreen> {
                 sendertype: STAFF_TYPE,
                 staffname: chatMessages!.staffname!,
                 studentname: "",
-                voice: chatMessages!.voice),
+                voice: chatMessages!.voice)
           ];
-          // messages!.sort((a, b) => DateTime.parse(a.date!)
-          //     .millisecondsSinceEpoch
-          //     .toString()
-          //     .compareTo(
-          //         DateTime.parse(a.date!).millisecondsSinceEpoch.toString()));
+
           return ListView.builder(
             padding: EdgeInsets.all(10.0),
             physics: BouncingScrollPhysics(),

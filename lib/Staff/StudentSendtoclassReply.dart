@@ -154,7 +154,8 @@ class _StudentSendtoclassReplyFromStaffState
                                                     element["regno"].toString(),
                                                     element["mainid"]
                                                         .toString(),
-                                                    "Staff")));
+                                                    "Staff",
+                                                    element["Subjectid"])));
                                       },
                                     ),
                                   ],

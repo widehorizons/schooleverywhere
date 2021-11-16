@@ -303,7 +303,7 @@ class DownloadListState extends State<DownloadList> {
         ],
       );
     } else {
-      return null!;
+      return Icon(Icons.error_outline);
     }
   }
 

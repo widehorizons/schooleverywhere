@@ -63,7 +63,7 @@ class _SendToClassState extends State<SendToClass> {
   Map staffclassOptions = new Map();
   TextEditingController CommentValue = new TextEditingController();
   TextEditingController urlValue = new TextEditingController();
-
+  final _formKey = GlobalKey<FormState>();
   late List classSelected;
   List<dynamic> classstaff = [];
 
@@ -290,7 +290,7 @@ class _SendToClassState extends State<SendToClass> {
                 fontSize: 18)),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          child: TextField(
+          child: TextFormField(
             controller: CommentValue,
             keyboardType: TextInputType.multiline,
             maxLines: 7,
@@ -308,10 +308,19 @@ class _SendToClassState extends State<SendToClass> {
                 fontSize: 18)),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          child: TextField(
+          child: TextFormField(
             controller: urlValue,
             keyboardType: TextInputType.url,
+            validator: (value) {
+              if ((urlValue.text.trim() != "") &&
+                  !RegExp(r"^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$")
+                      .hasMatch(value!)) {
+                return 'Please enter some valid URL';
+              }
+              return null;
+            },
             decoration: InputDecoration(
+              hintText: "it should start with http/https",
               border: OutlineInputBorder(
                   borderSide: BorderSide(color: AppTheme.appColor)),
             ),
@@ -363,37 +372,55 @@ class _SendToClassState extends State<SendToClass> {
                     borderRadius: BorderRadius.circular(24),
                   ),
                   onPressed: () async {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    if (selectedFilesList.isNotEmpty) {
-                      var lengthoffile = 0, toto;
-                      for (int y = 0; y < selectedFilesList.length; y++) {
-                        File f = selectedFilesList[y];
-                        try {
-                          toto = await f.length();
-                          lengthoffile = toto;
-                          print(lengthoffile.toString());
-                          if (lengthoffile > 5000000) {
-                            filesize = false;
-                            break;
-                          }
-                        } on PlatformException catch (e) {
-                          print("Unsupported File" + e.toString());
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SendToClass()),
-                          );
-                          /*   Flushbar(
+                    if (_formKey.currentState!.validate()) {
+                      if (selectedFilesList.isNotEmpty) {
+                        var lengthoffile = 0, toto;
+                        for (int y = 0; y < selectedFilesList.length; y++) {
+                          File f = selectedFilesList[y];
+                          try {
+                            toto = await f.length();
+                            lengthoffile = toto;
+                            print(lengthoffile.toString());
+                            if (lengthoffile > 5000000) {
+                              filesize = false;
+                              break;
+                            }
+                          } on PlatformException catch (e) {
+                            print("Unsupported File" + e.toString());
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SendToClass()),
+                            );
+                            /*   Flushbar(
                             title: "Failed",
                             message: "Unsupported File",
                             icon: Icon(Icons.close),
                             backgroundColor: AppTheme.appColor,
                             duration: Duration(seconds: 3),
                           )..show(context);*/
+                            Fluttertoast.showToast(
+                                msg: "Unsupported File",
+                                toastLength: Toast.LENGTH_LONG,
+                                timeInSecForIosWeb: 3,
+                                backgroundColor: AppTheme.appColor,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          }
+                        }
+                        if (filesize) {
+                          NewFileName =
+                              await uploadFile(selectedFilesList, Url);
+                        } else {
+                          /* Flushbar(
+                          title: "Failed",
+                          message: "max size of one file allowed 5 MB",
+                          icon: Icon(Icons.close),
+                          backgroundColor: AppTheme.appColor,
+                          duration: Duration(seconds: 3),
+                        )..show(context);*/
                           Fluttertoast.showToast(
-                              msg: "Unsupported File",
+                              msg: "max size of one file allowed 5 MB",
                               toastLength: Toast.LENGTH_LONG,
                               timeInSecForIosWeb: 3,
                               backgroundColor: AppTheme.appColor,
@@ -402,118 +429,87 @@ class _SendToClassState extends State<SendToClass> {
                         }
                       }
                       if (filesize) {
-                        NewFileName = await uploadFile(selectedFilesList, Url);
-                      } else {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SendToClass()),
-                        );
-                        /* Flushbar(
-                          title: "Failed",
-                          message: "max size of one file allowed 5 MB",
-                          icon: Icon(Icons.close),
-                          backgroundColor: AppTheme.appColor,
-                          duration: Duration(seconds: 3),
-                        )..show(context);*/
-                        Fluttertoast.showToast(
-                            msg: "max size of one file allowed 5 MB",
-                            toastLength: Toast.LENGTH_LONG,
-                            timeInSecForIosWeb: 3,
-                            backgroundColor: AppTheme.appColor,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
-                      }
-                    }
-                    if (filesize) {
-                      if (classSelected.isNotEmpty &&
-                          (selectedFilesList.isNotEmpty ||
-                              CommentValue.text.isNotEmpty)) {
-                        datasend = await addSendToClass(
-                            NewFileName,
-                            CommentValue.text,
-                            urlValue.text,
-                            loggedStaff!.id!,
-                            loggedStaff!.name!,
-                            loggedStaff!.academicYear!,
-                            loggedStaff!.section!,
-                            loggedStaff!.stage!,
-                            loggedStaff!.grade!,
-                            classSelected,
-                            loggedStaff!.semester!,
-                            loggedStaff!.subject!);
-                        setState(() {
-                          isLoading = false;
-                        });
-                        if (datasend!.success!) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SendToClass()),
-                          );
-                          /*   Flushbar(
+                        if (classSelected.isNotEmpty &&
+                            (selectedFilesList.isNotEmpty ||
+                                CommentValue.text.isNotEmpty)) {
+                          datasend = await addSendToClass(
+                              NewFileName,
+                              CommentValue.text,
+                              urlValue.text,
+                              loggedStaff!.id!,
+                              loggedStaff!.name!,
+                              loggedStaff!.academicYear!,
+                              loggedStaff!.section!,
+                              loggedStaff!.stage!,
+                              loggedStaff!.grade!,
+                              classSelected,
+                              loggedStaff!.semester!,
+                              loggedStaff!.subject!);
+                          setState(() {
+                            isLoading = false;
+                          });
+                          if (datasend!.success!) {
+                            /*   Flushbar(
                             title: "Success",
                             message: "Comment and File Uploaded",
                             icon: Icon(Icons.done_outline),
                             backgroundColor: AppTheme.appColor,
                             duration: Duration(seconds: 3),
                           )..show(context);*/
-                          Fluttertoast.showToast(
-                              msg: "Comment and File Uploaded",
-                              toastLength: Toast.LENGTH_LONG,
-                              timeInSecForIosWeb: 3,
-                              backgroundColor: AppTheme.appColor,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                          //  }
-                        } else {
-                          String? msg = datasend!.object as String?;
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SendToClass()),
-                          );
-                          /*  Flushbar(
+                            Fluttertoast.showToast(
+                                msg: "Comment and File Uploaded",
+                                toastLength: Toast.LENGTH_LONG,
+                                timeInSecForIosWeb: 3,
+                                backgroundColor: AppTheme.appColor,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                            //  }
+                          } else {
+                            String? msg = datasend!.object as String?;
+
+                            /*  Flushbar(
                             title: "Failed",
                             message: msg.toString(),
                             icon: Icon(Icons.close),
                             backgroundColor: AppTheme.appColor,
                             duration: Duration(seconds: 3),
                           )..show(context);*/
-                          Fluttertoast.showToast(
-                              msg: msg.toString(),
-                              toastLength: Toast.LENGTH_LONG,
-                              timeInSecForIosWeb: 3,
-                              backgroundColor: AppTheme.appColor,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                        }
-                      } else {
-                        if (classSelected.isEmpty) {
-                          msgclass = "Please Select Class";
+                            Fluttertoast.showToast(
+                                msg: msg.toString(),
+                                toastLength: Toast.LENGTH_LONG,
+                                timeInSecForIosWeb: 3,
+                                backgroundColor: AppTheme.appColor,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          }
                         } else {
-                          msgclass = "Please Enter Comment or Choose File";
-                        }
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SendToClass()),
-                        );
-                        /* Flushbar(
+                          if (classSelected.isEmpty) {
+                            msgclass = "Please Select Class";
+                          } else {
+                            msgclass = "Please Enter Comment or Choose File";
+                          }
+
+                          /* Flushbar(
                           title: "Failed",
                           message: msgclass,
                           icon: Icon(Icons.close),
                           backgroundColor: AppTheme.appColor,
                           duration: Duration(seconds: 3),
                         )..show(context);*/
-                        Fluttertoast.showToast(
-                            msg: msgclass!,
-                            toastLength: Toast.LENGTH_LONG,
-                            timeInSecForIosWeb: 3,
-                            backgroundColor: AppTheme.appColor,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
+                          Fluttertoast.showToast(
+                              msg: msgclass!,
+                              toastLength: Toast.LENGTH_LONG,
+                              timeInSecForIosWeb: 3,
+                              backgroundColor: AppTheme.appColor,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        }
                       }
+                    } else {
+                      // If the form is valid, display a snackbar. In the real world,
+                      // you'd often call a server or save the information in a database.
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Not Valid URL')));
                     }
                   },
                   padding: EdgeInsets.all(12),
@@ -549,17 +545,15 @@ class _SendToClassState extends State<SendToClass> {
         ),
         backgroundColor: AppTheme.appColor,
       ),
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints.tightFor(
-              height: MediaQuery.of(context).size.height,
-            ),
-            child: Container(
-              height: double.infinity,
+      body: Form(
+        key: _formKey,
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: ListView(children: <Widget>[
+            Container(
+              height: MediaQuery.of(context).size.height * 1.2,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 image: DecorationImage(
@@ -569,7 +563,7 @@ class _SendToClassState extends State<SendToClass> {
               ),
               child: data,
             ),
-          ),
+          ]),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

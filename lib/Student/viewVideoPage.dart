@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
-import '../Constants/StringConstants.dart';
-import '../Style/theme.dart';
-import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 import 'package:chewie/src/chewie_player.dart';
+import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
+
+import '../Constants/StringConstants.dart';
+import '../Style/theme.dart';
 
 class viewVideoPage extends StatefulWidget {
   final String lessonId;

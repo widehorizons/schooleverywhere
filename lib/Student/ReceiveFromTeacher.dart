@@ -319,7 +319,8 @@ class _ReceiveFromTeacherState extends State<ReceiveFromTeacher> {
                                                 builder: (context) => Chat(
                                                     ChildrenId!,
                                                     element["id"].toString(),
-                                                    widget.type)));
+                                                    widget.type,
+                                                    element['Subjectid'])));
                                       },
                                     ),
                                   ],

@@ -11,18 +11,17 @@ import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:schooleverywhere/Chat/cubit/chatcubit_cubit.dart';
-import 'package:schooleverywhere/Constants/StringConstants.dart';
-import 'package:schooleverywhere/Modules/EventObject.dart';
-import 'package:schooleverywhere/Modules/Staff.dart';
-import 'package:schooleverywhere/Modules/Student.dart';
-import 'package:schooleverywhere/Networking/ApiConstants.dart';
-import 'package:schooleverywhere/Networking/Futures.dart';
-import 'package:schooleverywhere/Pages/DownloadList.dart';
-import 'package:schooleverywhere/SharedPreferences/Prefs.dart';
-import 'package:schooleverywhere/Style/theme.dart';
-import 'package:schooleverywhere/widget/full_photo.dart';
-import 'package:schooleverywhere/widget/loading.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'cubit/chatcubit_cubit.dart';
+import '../Constants/StringConstants.dart';
+import '../Modules/Staff.dart';
+import '../Modules/Student.dart';
+import '../Networking/ApiConstants.dart';
+import '../Pages/DownloadList.dart';
+import '../SharedPreferences/Prefs.dart';
+import '../Style/theme.dart';
+import '../widget/full_photo.dart';
+import '../widget/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Model/chat_messages.dart';
@@ -34,10 +33,12 @@ class Chat extends StatefulWidget {
     this.regno,
     this.id,
     this.type,
+    this.subjectId,
   );
 
   final String id;
   final String regno;
+  final String subjectId;
 
   final String type;
 
@@ -62,16 +63,16 @@ class _ChatState extends State<Chat> {
         ),
         centerTitle: true,
       ),
-      body: ChatScreen(widget.type, widget.id, widget.regno),
+      body: ChatScreen(widget.type, widget.id, widget.regno, widget.subjectId),
     );
   }
 }
 
 class ChatScreen extends StatefulWidget {
-  ChatScreen(this.type, this.id, this.regno);
+  ChatScreen(this.type, this.id, this.regno, this.subjectId);
   final String type;
   final String regno;
-
+  final String subjectId;
   final String id;
   @override
   State createState() => ChatScreenState();
@@ -87,7 +88,7 @@ class ChatScreenState extends State<ChatScreen> {
   late String groupChatId;
   late SharedPreferences prefs;
   Staff? loggedStaff;
-
+  String? year;
   Student? loggedStudent;
   late File imageFile;
   late bool isLoading;
@@ -123,10 +124,13 @@ class ChatScreenState extends State<ChatScreen> {
     print("User Type in Chat module ${widget.type}");
     if (widget.type == "Student") {
       loggedStudent = await getUserData() as Student;
+      year = loggedStudent!.academicYear!;
       print("studentData " + loggedStudent!.id! + " " + widget.id);
       getData();
     } else {
       loggedStaff = await getUserData() as Staff;
+      year = loggedStaff!.academicYear!;
+
       print("staffData " + loggedStaff!.id.toString() + widget.id);
       getData();
     }
@@ -263,55 +267,55 @@ class ChatScreenState extends State<ChatScreen> {
   //   });
   // }
 
-  Future<void> onSendMessage(String content, int type) async {
-    // type: 0 = text, 1 = image, 2 = sticker
-    if (content.trim() != '' || selectedFilesList.isNotEmpty) {
-      textEditingController.clear();
-      // NewFileName = await uploadFile(selectedFilesList, Url);
-      EventObject eventObject = await replyReplySendtoclassStudent(
-          selectedFilesList,
-          content,
-          widget.regno,
-          widget.id,
-          chatMessages!.staffid!,
-          chatMessages!.staffname!,
-          "1627",
-          "2019/2020");
-      if (eventObject.success!) {
-        Fluttertoast.showToast(
-            msg: "Message Sent",
-            toastLength: Toast.LENGTH_LONG,
-            timeInSecForIosWeb: 3,
-            backgroundColor: AppTheme.appColor,
-            textColor: Colors.white,
-            fontSize: 16.0);
-        setState(() {
-          selectedFilesList.clear();
-          selectedFilesNameList.clear();
-        });
-        listScrollController.animateTo(0,
-            duration: Duration(milliseconds: 300), curve: Curves.easeOut);
-      } else {
-        String msg = eventObject.object.toString();
-        /*   Flushbar(
-                          title: "Failed",
-                          message: msg,
-                          icon: Icon(Icons.close),
-                          backgroundColor: AppTheme.appColor,
-                          duration: Duration(seconds: 3),
-                        )..show(context);*/
-        Fluttertoast.showToast(
-            msg: msg,
-            toastLength: Toast.LENGTH_LONG,
-            timeInSecForIosWeb: 3,
-            backgroundColor: AppTheme.appColor,
-            textColor: Colors.white,
-            fontSize: 16.0);
-      }
-    } else {
-      Fluttertoast.showToast(msg: 'Nothing to send');
-    }
-  }
+  // Future<void> onSendMessage(String content, int type) async {
+  //   // type: 0 = text, 1 = image, 2 = sticker
+  //   if (content.trim() != '' || selectedFilesList.isNotEmpty) {
+  //     textEditingController.clear();
+  //     // NewFileName = await uploadFile(selectedFilesList, Url);
+  //     EventObject eventObject = await replyReplySendtoclassStudent(
+  //         selectedFilesList,
+  //         content,
+  //         widget.regno,
+  //         widget.id,
+  //         chatMessages!.staffid!,
+  //         chatMessages!.staffname!,
+  //         chatMessages!.subject!,
+  //         year!);
+  //     if (eventObject.success!) {
+  //       Fluttertoast.showToast(
+  //           msg: "Message Sent",
+  //           toastLength: Toast.LENGTH_LONG,
+  //           timeInSecForIosWeb: 3,
+  //           backgroundColor: AppTheme.appColor,
+  //           textColor: Colors.white,
+  //           fontSize: 16.0);
+  //       setState(() {
+  //         selectedFilesList.clear();
+  //         selectedFilesNameList.clear();
+  //       });
+  //       listScrollController.animateTo(0,
+  //           duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+  //     } else {
+  //       String msg = eventObject.object.toString();
+  //       /*   Flushbar(
+  //                         title: "Failed",
+  //                         message: msg,
+  //                         icon: Icon(Icons.close),
+  //                         backgroundColor: AppTheme.appColor,
+  //                         duration: Duration(seconds: 3),
+  //                       )..show(context);*/
+  //       Fluttertoast.showToast(
+  //           msg: msg,
+  //           toastLength: Toast.LENGTH_LONG,
+  //           timeInSecForIosWeb: 3,
+  //           backgroundColor: AppTheme.appColor,
+  //           textColor: Colors.white,
+  //           fontSize: 16.0);
+  //     }
+  //   } else {
+  //     Fluttertoast.showToast(msg: 'Nothing to send');
+  //   }
+  // }
 
   bool isCurrentUserMessage(ReplyMessage message) {
     return message.sendertype.toString().toLowerCase() ==
@@ -410,6 +414,26 @@ class ChatScreenState extends State<ChatScreen> {
                     bottom: isLastMessageRight(index) ? 20.0 : 5.0,
                     right: 10.0),
               ),
+            if (message.url != null)
+              InkWell(
+                onTap: () async => await launch(message.url!),
+                child: Container(
+                  child: Text(
+                    message.url!,
+                    style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline),
+                  ),
+                  padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+                  width: 200.0,
+                  decoration: BoxDecoration(
+                      color: isCurrentUserMessage(message)
+                          ? AppTheme.appColor
+                          : Colors.grey.shade800,
+                      borderRadius: BorderRadius.circular(8.0)),
+                  margin: EdgeInsets.only(bottom: 5.0, right: 10.0),
+                ),
+              ),
             Column(
               children: [
                 (message.replymessage!.trim() != '')
@@ -444,11 +468,16 @@ class ChatScreenState extends State<ChatScreen> {
                             fontSize: 12.0,
                             fontStyle: FontStyle.italic),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: Text((message.sendertype == "student")
-                            ? message.studentname!.split(' ').first
-                            : message.staffname!),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 20),
+                        width: 100,
+                        child: Text(
+                          (message.sendertype == "student")
+                              ? message.studentname!.split(' ').first
+                              : message.staffname!,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       )
                     ],
                   ),
@@ -729,8 +758,8 @@ class ChatScreenState extends State<ChatScreen> {
                           widget.id,
                           chatMessages!.staffid!,
                           chatMessages!.staffname!,
-                          "1627",
-                          "2019/2020");
+                          widget.subjectId,
+                          year!);
                     } else {
                       Fluttertoast.showToast(msg: 'Nothing to send');
                     }
@@ -773,6 +802,7 @@ class ChatScreenState extends State<ChatScreen> {
                 sendertype: STAFF_TYPE,
                 staffname: chatMessages!.staffname!,
                 studentname: "",
+                url: chatMessages!.url,
                 voice: chatMessages!.voice)
           ];
 

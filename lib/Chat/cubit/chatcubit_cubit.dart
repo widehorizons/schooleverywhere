@@ -1,6 +1,6 @@
+import 'package:schooleverywhere/Constants/StringConstants.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:schooleverywhere/Constants/StringConstants.dart';
 import 'package:schooleverywhere/Modules/EventObject.dart';
 import 'package:schooleverywhere/Networking/Futures.dart';
 

@@ -1151,6 +1151,7 @@ Future<dynamic> uploadFile(List selectedFile, url) async {
 }
 
 addSendToClass(
+    File voice,
     List fileslist,
     String comment,
     String url,
@@ -1172,9 +1173,7 @@ addSendToClass(
     dynamic files = jsonEncode(fileslist);
     dynamic classes = jsonEncode(staffClass);
     print(files.toString());
-    var response = await http.post(Uri.parse(myUrl), headers: {
-      'Accept': 'application/json'
-    }, body: {
+    Map<String, String> body = {
       "FileName": files,
       "Comment": comment,
       "url": url,
@@ -1187,7 +1186,13 @@ addSendToClass(
       "ClassId": classes,
       "SubjectId": subject,
       "Year": year,
-    });
+    };
+
+    var request = http.MultipartRequest('POST', Uri.parse(myUrl));
+    request.fields.addAll(body);
+    request.files.add(await http.MultipartFile.fromPath('voice', voice.path));
+    final http.StreamedResponse streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
     if (response != null) {
       print('Response status : ${response.statusCode}');
       print('Response body : ${response.body}');

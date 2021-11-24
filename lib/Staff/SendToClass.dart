@@ -9,6 +9,10 @@ import 'package:flutter_uploader/flutter_uploader.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
 import 'package:path/path.dart' as path;
+import 'package:just_audio/just_audio.dart' as ap;
+
+import 'package:schooleverywhere/widget/Audio/audio_player.dart';
+import 'package:schooleverywhere/widget/Audio/audio_record.dart';
 import '../Constants/StringConstants.dart';
 import '../Modules/EventObject.dart';
 import '../Modules/Staff.dart';
@@ -49,6 +53,7 @@ class _SendToClassState extends State<SendToClass> {
   List<File> selectedFilesList = [];
   List<File> TempselectedFilesList = [];
   List NewFileName = [];
+  File? voice;
   String? _extension;
   bool _loadingPath = false;
   bool _hasValidMime = false;
@@ -66,6 +71,8 @@ class _SendToClassState extends State<SendToClass> {
   final _formKey = GlobalKey<FormState>();
   late List classSelected;
   List<dynamic> classstaff = [];
+  bool showPlayer = false;
+  ap.AudioSource? audioSource;
 
   initState() {
     super.initState();
@@ -326,6 +333,29 @@ class _SendToClassState extends State<SendToClass> {
             ),
           ),
         ),
+        Expanded(
+          flex: 3,
+          child: showPlayer
+              ? Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 25),
+                  child: AudioPlayer(
+                    source: audioSource!,
+                    onDelete: () {
+                      setState(() => showPlayer = false);
+                    },
+                  ),
+                )
+              : AudioRecorder(
+                  onStop: (path) {
+                    setState(() {
+                      audioSource = ap.AudioSource.uri(Uri.parse(path));
+                      print(path);
+                      voice = File(path);
+                      showPlayer = true;
+                    });
+                  },
+                ),
+        ),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
           child: RaisedButton(
@@ -336,6 +366,7 @@ class _SendToClassState extends State<SendToClass> {
           ),
         ),
         Expanded(
+          flex: 1,
           child: Container(
             width: MediaQuery.of(context).size.width * .7,
             padding: const EdgeInsets.only(bottom: 10.0),
@@ -433,6 +464,7 @@ class _SendToClassState extends State<SendToClass> {
                             (selectedFilesList.isNotEmpty ||
                                 CommentValue.text.isNotEmpty)) {
                           datasend = await addSendToClass(
+                              voice!,
                               NewFileName,
                               CommentValue.text,
                               urlValue.text,

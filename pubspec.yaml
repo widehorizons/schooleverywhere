@@ -68,6 +68,8 @@ dependencies:
   photo_view: ^0.13.0
   flutter_svg: ^0.23.0+1
   flutter_bloc: ^7.1.0
+  just_audio: ^0.9.18
+  record: ^3.0.2
 
 dev_dependencies:
   flutter_test:

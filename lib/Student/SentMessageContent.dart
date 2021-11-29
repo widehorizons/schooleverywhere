@@ -66,7 +66,8 @@ class _SentMessageContentState extends State<SentMessageContent> {
           data['attachment'],
           data['messageReplayStatus'].toString(),
           recieverName,
-          data['path'].toString());
+          data['path'].toString(),
+          data['url'].toString());
       setState(() {
         data;
         if (msg.messageReplayStatus.toString() == "true") {

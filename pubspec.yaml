@@ -70,6 +70,7 @@ dependencies:
   flutter_bloc: ^7.1.0
   just_audio: ^0.9.18
   record: ^3.0.2
+  html2md: ^1.2.5
 
 dev_dependencies:
   flutter_test:

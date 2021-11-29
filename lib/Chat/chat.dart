@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart' as p;
+import 'package:html2md/html2md.dart' as html2md;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -439,7 +440,7 @@ class ChatScreenState extends State<ChatScreen> {
                 (message.replymessage!.trim() != '')
                     ? Container(
                         child: Text(
-                          message.replymessage!,
+                          html2md.convert(message.replymessage!),
                           style: TextStyle(color: Colors.white),
                         ),
                         padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),

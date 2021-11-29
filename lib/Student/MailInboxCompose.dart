@@ -50,6 +50,9 @@ class _MailInboxComposeState extends State<MailInboxCompose> {
   TextEditingController messageValue = new TextEditingController();
   TextEditingController userValue = new TextEditingController();
   TextEditingController subjectValue = new TextEditingController();
+  TextEditingController urlValue = new TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
   FileType? _pickingType;
   File? filepath;
   String url = ApiConstants.FILE_UPLOAD_Mail_Inbox_Student_API;
@@ -438,6 +441,27 @@ class _MailInboxComposeState extends State<MailInboxCompose> {
         ),
       ),
     );
+    final urlInput = Padding(
+      padding: EdgeInsets.symmetric(vertical: 10.0),
+      child: TextFormField(
+        controller: urlValue,
+        keyboardType: TextInputType.text,
+        validator: (value) {
+          if ((urlValue.text.trim() != "") &&
+              !RegExp(r"^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$")
+                  .hasMatch(value!)) {
+            return 'Please enter some valid URL';
+          }
+          return null;
+        },
+        autofocus: false,
+        decoration: InputDecoration(
+          hintText: 'url',
+          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
+        ),
+      ),
+    );
 
     final messageInput = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
@@ -462,394 +486,405 @@ class _MailInboxComposeState extends State<MailInboxCompose> {
     );
 
     final body = SingleChildScrollView(
-      child: Center(
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              width: MediaQuery.of(context).size.width * .75,
-              child: selectedManagement,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * .75,
-              child: selectedTeacher,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * .75,
-              child: regnoInput,
-            ),
-//          SizedBox(
-//            width:  MediaQuery.of(context).size.width * .75,
-//            child: usernameInput,
-//          ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * .75,
-              child: subjectInput,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * .75,
-              child: messageInput,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-              child: RaisedButton(
-                color: AppTheme.appColor,
-                textColor: Colors.white,
-                onPressed: () => _openFileExplorer(),
-                child: new Text("Choose File"),
+      child: Form(
+        key: _formKey,
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                width: MediaQuery.of(context).size.width * .75,
+                child: selectedManagement,
               ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width * .7,
-              padding: const EdgeInsets.only(bottom: 10.0),
-              child: new Scrollbar(
-                  child: new ListView.separated(
-                shrinkWrap: true,
-                itemCount:
-                    selectedFilesList.length > 0 && selectedFilesList.isNotEmpty
-                        ? selectedFilesList.length
-                        : 1,
-                itemBuilder: (BuildContext context, int index) {
-                  if (selectedFilesList.length > 0) {
-                    return new ListTile(
-                      title: new Text(
-                        path.basename(selectedFilesList[index].path),
-                      ),
-                    );
-                  } else {
-                    return Center(child: new Text("No file chosen"));
-                  }
-                },
-                separatorBuilder: (BuildContext context, int index) =>
-                    new Divider(),
-              )),
-            ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * .75,
+                child: selectedTeacher,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * .75,
+                child: regnoInput,
+              ),
+              //          SizedBox(
+              //            width:  MediaQuery.of(context).size.width * .75,
+              //            child: usernameInput,
+              //          ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * .75,
+                child: subjectInput,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * .75,
+                child: urlInput,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * .75,
+                child: messageInput,
+              ),
 
-            isLoading
-                ? loadingSign
-                : Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      onPressed: () async {
-                        setState(() {
-                          isLoading = true;
-                        });
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                child: RaisedButton(
+                  color: AppTheme.appColor,
+                  textColor: Colors.white,
+                  onPressed: () => _openFileExplorer(),
+                  child: new Text("Choose File"),
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * .7,
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: new Scrollbar(
+                    child: new ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: selectedFilesList.length > 0 &&
+                          selectedFilesList.isNotEmpty
+                      ? selectedFilesList.length
+                      : 1,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (selectedFilesList.length > 0) {
+                      return new ListTile(
+                        title: new Text(
+                          path.basename(selectedFilesList[index].path),
+                        ),
+                      );
+                    } else {
+                      return Center(child: new Text("No file chosen"));
+                    }
+                  },
+                  separatorBuilder: (BuildContext context, int index) =>
+                      new Divider(),
+                )),
+              ),
 
-                        if (selectedFilesList.isNotEmpty) {
-                          var lengthoffile = 0, toto;
-                          for (int y = 0; y < selectedFilesList.length; y++) {
-                            File f = selectedFilesList[y];
-                            try {
-                              toto = await f.length();
-                              lengthoffile = toto;
-                              print(lengthoffile.toString());
-                              if (lengthoffile > 5000000) {
-                                filesize = false;
-                                break;
+              isLoading
+                  ? loadingSign
+                  : Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        onPressed: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          if (_formKey.currentState!.validate()) {
+                            if (selectedFilesList.isNotEmpty) {
+                              var lengthoffile = 0, toto;
+                              for (int y = 0;
+                                  y < selectedFilesList.length;
+                                  y++) {
+                                File f = selectedFilesList[y];
+                                try {
+                                  toto = await f.length();
+                                  lengthoffile = toto;
+                                  print(lengthoffile.toString());
+                                  if (lengthoffile > 5000000) {
+                                    filesize = false;
+                                    break;
+                                  }
+                                } on PlatformException catch (e) {
+                                  print("Unsupported File" + e.toString());
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MailInboxCompose(
+                                            widget.type, widget.id)),
+                                  );
+                                  /* Flushbar(
+                          title: "Failed",
+                          message: "Unsupported File",
+                          icon: Icon(Icons.close),
+                          backgroundColor: AppTheme.appColor,
+                          duration: Duration(seconds: 3),
+                        )..show(context);*/
+                                  Fluttertoast.showToast(
+                                      msg: "Unsupported File",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      timeInSecForIosWeb: 3,
+                                      backgroundColor: AppTheme.appColor,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                }
                               }
-                            } on PlatformException catch (e) {
-                              print("Unsupported File" + e.toString());
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MailInboxCompose(
-                                        widget.type, widget.id)),
-                              );
-                              /* Flushbar(
+                              if (filesize) {
+                                newFileName =
+                                    await uploadFile(selectedFilesList, url);
+                              } else {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MailInboxCompose(
+                                          widget.type, widget.id)),
+                                );
+                                /*  Flushbar(
                         title: "Failed",
-                        message: "Unsupported File",
+                        message: "max size of one file allowed 5 MB",
                         icon: Icon(Icons.close),
                         backgroundColor: AppTheme.appColor,
                         duration: Duration(seconds: 3),
                       )..show(context);*/
-                              Fluttertoast.showToast(
-                                  msg: "Unsupported File",
-                                  toastLength: Toast.LENGTH_LONG,
-                                  timeInSecForIosWeb: 3,
-                                  backgroundColor: AppTheme.appColor,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
+                                Fluttertoast.showToast(
+                                    msg: "max size of one file allowed 5 MB",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    timeInSecForIosWeb: 3,
+                                    backgroundColor: AppTheme.appColor,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              }
+                              print(newFileName);
                             }
-                          }
-                          if (filesize) {
-                            newFileName =
-                                await uploadFile(selectedFilesList, url);
-                          } else {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      MailInboxCompose(widget.type, widget.id)),
-                            );
-                            /*  Flushbar(
-                      title: "Failed",
-                      message: "max size of one file allowed 5 MB",
-                      icon: Icon(Icons.close),
-                      backgroundColor: AppTheme.appColor,
-                      duration: Duration(seconds: 3),
-                    )..show(context);*/
-                            Fluttertoast.showToast(
-                                msg: "max size of one file allowed 5 MB",
-                                toastLength: Toast.LENGTH_LONG,
-                                timeInSecForIosWeb: 3,
-                                backgroundColor: AppTheme.appColor,
-                                textColor: Colors.white,
-                                fontSize: 16.0);
-                          }
-                          print(newFileName);
-                        }
-                        if (filesize) {
-                          if (subjectValue.text.isNotEmpty) {
-                            EventObject eventObject = await addMailIboxStudent(
-                                newFileName,
-                                mangersSelected!,
-                                teacherSelected!,
-                                regnoValue.text,
-                                userValue.text,
-                                subjectValue.text,
-                                messageValue.text,
-                                userAcademicYear!,
-                                userSection!,
-                                userStage!,
-                                userGrade!,
-                                userClass!,
-                                userId!,
-                                widget.type);
-                            if (eventObject.success!) {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MailInboxCompose(
-                                        widget.type, widget.id)),
-                              );
-                              /* Flushbar(
-                        title: "Success",
-                        message: "Message Sent",
-                        icon: Icon(Icons.done_outline),
-                        backgroundColor: AppTheme.appColor,
-                        duration: Duration(seconds: 3),
-                      )..show(context);*/
-                              Fluttertoast.showToast(
-                                  msg: "Message Sent",
-                                  toastLength: Toast.LENGTH_LONG,
-                                  timeInSecForIosWeb: 3,
-                                  backgroundColor: AppTheme.appColor,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                            } else {
-                              String msg = eventObject.object.toString();
-                              /*  Flushbar(
+                            if (filesize) {
+                              if (subjectValue.text.isNotEmpty) {
+                                EventObject eventObject =
+                                    await addMailIboxStudent(
+                                        newFileName,
+                                        mangersSelected!,
+                                        teacherSelected!,
+                                        regnoValue.text,
+                                        userValue.text,
+                                        subjectValue.text,
+                                        messageValue.text,
+                                        userAcademicYear!,
+                                        userSection!,
+                                        userStage!,
+                                        userGrade!,
+                                        userClass!,
+                                        userId!,
+                                        widget.type);
+                                if (eventObject.success!) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MailInboxCompose(
+                                            widget.type, widget.id)),
+                                  );
+                                  /* Flushbar(
+                          title: "Success",
+                          message: "Message Sent",
+                          icon: Icon(Icons.done_outline),
+                          backgroundColor: AppTheme.appColor,
+                          duration: Duration(seconds: 3),
+                        )..show(context);*/
+                                  Fluttertoast.showToast(
+                                      msg: "Message Sent",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      timeInSecForIosWeb: 3,
+                                      backgroundColor: AppTheme.appColor,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                } else {
+                                  String msg = eventObject.object.toString();
+                                  /*  Flushbar(
+                          title: "Failed",
+                          message: msg,
+                          icon: Icon(Icons.close),
+                          backgroundColor: AppTheme.appColor,
+                          duration: Duration(seconds: 3),
+                        )..show(context);*/
+                                  Fluttertoast.showToast(
+                                      msg: msg,
+                                      toastLength: Toast.LENGTH_LONG,
+                                      timeInSecForIosWeb: 3,
+                                      backgroundColor: AppTheme.appColor,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                }
+                              } else {
+                                /*   Flushbar(
                         title: "Failed",
-                        message: msg,
+                        message:
+                        "Please Enter Comment or Choose File (max size of file 15 MB)",
                         icon: Icon(Icons.close),
                         backgroundColor: AppTheme.appColor,
                         duration: Duration(seconds: 3),
                       )..show(context);*/
-                              Fluttertoast.showToast(
-                                  msg: msg,
-                                  toastLength: Toast.LENGTH_LONG,
-                                  timeInSecForIosWeb: 3,
-                                  backgroundColor: AppTheme.appColor,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
+                                Fluttertoast.showToast(
+                                    msg:
+                                        "Please Enter Comment or Choose File (max size of file 15 MB)",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    timeInSecForIosWeb: 3,
+                                    backgroundColor: AppTheme.appColor,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              }
                             }
+                            setState(() {
+                              isLoading = false;
+                            });
                           } else {
-                            /*   Flushbar(
-                      title: "Failed",
-                      message:
-                      "Please Enter Comment or Choose File (max size of file 15 MB)",
-                      icon: Icon(Icons.close),
-                      backgroundColor: AppTheme.appColor,
-                      duration: Duration(seconds: 3),
-                    )..show(context);*/
-                            Fluttertoast.showToast(
-                                msg:
-                                    "Please Enter Comment or Choose File (max size of file 15 MB)",
-                                toastLength: Toast.LENGTH_LONG,
-                                timeInSecForIosWeb: 3,
-                                backgroundColor: AppTheme.appColor,
-                                textColor: Colors.white,
-                                fontSize: 16.0);
+                            // If the form is valid, display a snackbar. In the real world,
+                            // you'd often call a server or save the information in a database.
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Not Valid URL')));
                           }
-                        }
-                        setState(() {
-                          isLoading = false;
-                        });
-                      },
-                      padding: EdgeInsets.all(12),
-                      color: AppTheme.appColor,
-                      child:
-                          Text('Send', style: TextStyle(color: Colors.white)),
-                    ),
-                  )
-          ],
+                        },
+                        padding: EdgeInsets.all(12),
+                        color: AppTheme.appColor,
+                        child:
+                            Text('Send', style: TextStyle(color: Colors.white)),
+                      ),
+                    )
+            ],
+          ),
         ),
       ),
     );
 
     final bodyStaff = SingleChildScrollView(
-      child: Center(
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              width: MediaQuery.of(context).size.width * .75,
-              child: selectedManagement,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * .75,
-              child: selectedStudent,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * .75,
-              child: selectedParent,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * .75,
-              child: subjectInput,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * .75,
-              child: messageInput,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-              child: RaisedButton(
-                color: AppTheme.appColor,
-                textColor: Colors.white,
-                onPressed: () => _openFileExplorer(),
-                child: new Text("Choose File"),
-              ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width * .7,
-              padding: const EdgeInsets.only(bottom: 10.0),
-              child: new Scrollbar(
-                  child: new ListView.separated(
-                shrinkWrap: true,
-                itemCount:
-                    selectedFilesList.length > 0 && selectedFilesList.isNotEmpty
+      child: Form(
+          key: _formKey,
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * .75,
+                  child: selectedManagement,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * .75,
+                  child: selectedStudent,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * .75,
+                  child: selectedParent,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * .75,
+                  child: subjectInput,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * .75,
+                  child: urlInput,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * .75,
+                  child: messageInput,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                  child: RaisedButton(
+                    color: AppTheme.appColor,
+                    textColor: Colors.white,
+                    onPressed: () => _openFileExplorer(),
+                    child: new Text("Choose File"),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * .7,
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: new Scrollbar(
+                      child: new ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: selectedFilesList.length > 0 &&
+                            selectedFilesList.isNotEmpty
                         ? selectedFilesList.length
                         : 1,
-                itemBuilder: (BuildContext context, int index) {
-                  if (selectedFilesList.length > 0) {
-                    return new ListTile(
-                      title: new Text(
-                        path.basename(selectedFilesList[index].path),
-                      ),
-                    );
-                  } else {
-                    return Center(child: new Text("No file chosen"));
-                  }
-                },
-                separatorBuilder: (BuildContext context, int index) =>
-                    new Divider(),
-              )),
-            ),
-            isLoading
-                ? loadingSign
-                : Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      onPressed: () async {
-                        setState(() {
-                          isLoading = true;
-                        });
+                    itemBuilder: (BuildContext context, int index) {
+                      if (selectedFilesList.length > 0) {
+                        return new ListTile(
+                          title: new Text(
+                            path.basename(selectedFilesList[index].path),
+                          ),
+                        );
+                      } else {
+                        return Center(child: new Text("No file chosen"));
+                      }
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        new Divider(),
+                  )),
+                ),
+                isLoading
+                    ? loadingSign
+                    : Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              if (selectedFilesList.isNotEmpty) {
+                                newFileName =
+                                    await uploadFile(selectedFilesList, url);
+                              }
+                              if (subjectValue.text.isNotEmpty) {
+                                print(newFileName);
+                                dataSend = await addMailInboxStaff(
+                                    newFileName,
+                                    userAcademicYear!,
+                                    userId!,
+                                    studentSelected!,
+                                    mangersSelected!,
+                                    parentSelected!,
+                                    subjectValue.text,
+                                    messageValue.text,
+                                    regnoValue.text,
+                                    urlValue.text);
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                if (dataSend) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MailInboxCompose(
+                                            widget.type, widget.id)),
+                                  );
 
-                        if (selectedFilesList.isNotEmpty) {
-                          newFileName =
-                              await uploadFile(selectedFilesList, url);
-                        }
-                        if (subjectValue.text.isNotEmpty) {
-                          print(newFileName);
-                          dataSend = await addMailInboxStaff(
-                              newFileName,
-                              userAcademicYear!,
-                              userId!,
-                              studentSelected!,
-                              mangersSelected!,
-                              parentSelected!,
-                              subjectValue.text,
-                              messageValue.text,
-                              regnoValue.text);
-                          setState(() {
-                            isLoading = false;
-                          });
-                          if (dataSend) {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      MailInboxCompose(widget.type, widget.id)),
-                            );
-                            /*  Flushbar(
-                      title: "Success",
-                      message: "Message Sent",
-                      icon: Icon(Icons.done_outline),
-                      backgroundColor: AppTheme.appColor,
-                      duration: Duration(seconds: 3),
-                    )..show(context);*/
-                            Fluttertoast.showToast(
-                                msg: "Message Sent",
-                                toastLength: Toast.LENGTH_LONG,
-                                timeInSecForIosWeb: 3,
-                                backgroundColor: AppTheme.appColor,
-                                textColor: Colors.white,
-                                fontSize: 16.0);
-                            //  }
-                          } else {
-                            /* Flushbar(
-                      title: "Failed",
-                      message:
-                      "Please Enter Comment or Choose File (max size of file 5 MB)",
-                      icon: Icon(Icons.close),
-                      backgroundColor: AppTheme.appColor,
-                      duration: Duration(seconds: 3),
-                    )..show(context);*/
-                            Fluttertoast.showToast(
-                                msg:
-                                    "Please Enter Comment or Choose File (max size of file 5 MB)",
-                                toastLength: Toast.LENGTH_LONG,
-                                timeInSecForIosWeb: 3,
-                                backgroundColor: AppTheme.appColor,
-                                textColor: Colors.white,
-                                fontSize: 16.0);
-                          }
-                        } else {
-                          setState(() {
-                            isLoading = false;
-                          });
-                          /* Flushbar(
-    title: "Failed",
-    message:
-    "Please Enter Title",
-    icon: Icon(Icons.close),
-    backgroundColor: AppTheme.appColor,
-    duration: Duration(seconds: 3),
-    )
-    ..show(context);*/
-                          Fluttertoast.showToast(
-                              msg: "Please Enter Title",
-                              toastLength: Toast.LENGTH_LONG,
-                              timeInSecForIosWeb: 3,
-                              backgroundColor: AppTheme.appColor,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                        }
-                      },
-                      padding: EdgeInsets.all(12),
-                      color: AppTheme.appColor,
-                      child:
-                          Text('Send', style: TextStyle(color: Colors.white)),
-                    ),
-                  )
-          ],
-        ),
-      ),
+                                  Fluttertoast.showToast(
+                                      msg: "Message Sent",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      timeInSecForIosWeb: 3,
+                                      backgroundColor: AppTheme.appColor,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                  //  }
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg:
+                                          "Please Enter Comment or Choose File (max size of file 5 MB)",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      timeInSecForIosWeb: 3,
+                                      backgroundColor: AppTheme.appColor,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                }
+                              } else {
+                                setState(() {
+                                  isLoading = false;
+                                });
+
+                                Fluttertoast.showToast(
+                                    msg: "Please Enter Title",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    timeInSecForIosWeb: 3,
+                                    backgroundColor: AppTheme.appColor,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              }
+                            } else {
+                              // If the form is valid, display a snackbar. In the real world,
+                              // you'd often call a server or save the information in a database.
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Complete missing data')));
+                            }
+                          },
+                          padding: EdgeInsets.all(12),
+                          color: AppTheme.appColor,
+                          child: Text('Send',
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      )
+              ],
+            ),
+          )),
     );
 
     final bodyManagement = SingleChildScrollView(
@@ -933,7 +968,8 @@ class _MailInboxComposeState extends State<MailInboxCompose> {
                               parentSelected!,
                               subjectValue.text,
                               messageValue.text,
-                              regnoValue.text);
+                              regnoValue.text,
+                              urlValue.text);
                           setState(() {
                             isLoading = false;
                           });

@@ -1556,7 +1556,7 @@ Future<EventObject> ReplyMailIboxStudent(
 Future<EventObject> getMessageDetails(
     String msgId, String section, String flag) async {
   String myUrl = ApiConstants.GET_MESSAGE_DETAILS_API;
-  print("urlm" + myUrl);
+  print("url" + myUrl + "id" "$msgId" "section" "$section" "flag" "$flag");
   EventObject eventObject = new EventObject();
   eventObject.success = false;
   eventObject.object = "Some error happened.. try again later";
@@ -1566,6 +1566,7 @@ Future<EventObject> getMessageDetails(
         body: {"id": msgId, "section": section, "flag": flag});
     if (response != null) {
       Map mapValue = json.decode(response.body);
+      print(mapValue);
       if (mapValue["success"]) {
         eventObject.success = true;
         eventObject.object = mapValue;
@@ -1747,12 +1748,16 @@ addMailInboxStaff(
     List parentList,
     String title,
     String message,
-    String regno) async {
+    String regno,
+    String url) async {
   String myUrl = ApiConstants.ADD_MAIL_INBOX_STAFF_API;
+
   dynamic files = jsonEncode(filesList);
   dynamic studentListEncode = jsonEncode(studentList);
   dynamic parentListEncode = jsonEncode(parentList);
   dynamic mangerEncode = jsonEncode(manger);
+  print(
+      "data Sent ===> $files $year $id $studentList $title $message $regno $url");
   var response = await http.post(Uri.parse(myUrl), headers: {
     'Accept': 'application/json'
   }, body: {
@@ -1764,8 +1769,11 @@ addMailInboxStaff(
     "message": message,
     "managers": mangerEncode,
     "regno": regno,
-    "parentid": parentListEncode
+    "parentid": parentListEncode,
+    "url": url
   });
+  print(
+      " year $year,staffid: $id,regnum $studentListEncode title: $title message $message managers: $mangerEncode, regno $regno parentid $parentListEncode,url $url");
   if (response != null) {
     print('Response status : ${response.statusCode}');
     print('Response bodyssss : ${response.body}');

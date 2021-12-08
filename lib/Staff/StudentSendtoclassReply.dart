@@ -14,6 +14,7 @@ import '../Style/theme.dart';
 import '../Pages/HomePage.dart';
 import '../Pages/LoginPage.dart';
 import 'StudentReplySendtoclassFromStaffContent.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class StudentSendtoclassReplyFromStaff extends StatefulWidget {
   @override
@@ -180,7 +181,7 @@ class _StudentSendtoclassReplyFromStaffState
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -193,7 +194,8 @@ class _StudentSendtoclassReplyFromStaffState
               child: CircleAvatar(
                 radius: 20,
                 backgroundColor: Colors.transparent,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('FlavorConfig.instance.values.imagePath!'),
               ),
             )
           ],

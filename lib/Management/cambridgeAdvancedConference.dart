@@ -11,24 +11,28 @@ import '../Pages/LoginPage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import 'CambridgeAdvancedStaffConference.dart';
+import '../config/flavor_config.dart';
 
 class cambridgeAdvancedConference extends StatefulWidget {
-
-
   @override
   State<StatefulWidget> createState() {
     return new cambridgeAdvancedConferenceState();
   }
 }
 
-
-class cambridgeAdvancedConferenceState extends State<cambridgeAdvancedConference> {
-
-   Management? loggedManagement;
-   String? userSection,userAcademicYear,userStage,userGrade,userId,userType,userClass;
+class cambridgeAdvancedConferenceState
+    extends State<cambridgeAdvancedConference> {
+  Management? loggedManagement;
+  String? userSection,
+      userAcademicYear,
+      userStage,
+      userGrade,
+      userId,
+      userType,
+      userClass;
   Map sessionOptions = new Map();
-  String? sessionValue ;
-  bool sessionSelected=false;
+  String? sessionValue;
+  bool sessionSelected = false;
 
   initState() {
     super.initState();
@@ -36,23 +40,19 @@ class cambridgeAdvancedConferenceState extends State<cambridgeAdvancedConference
     getLoggedInUser();
   }
 
-
   Future<void> getLoggedInUser() async {
-
-    loggedManagement =  await getUserData() as Management;
+    loggedManagement = await getUserData() as Management;
     userAcademicYear = loggedManagement!.academicYear;
     userSection = loggedManagement!.section;
     userId = loggedManagement!.id!;
     userType = loggedManagement!.type!;
 
     syncSessionOptions();
-
   }
 
-
   Future<void> syncSessionOptions() async {
-    EventObject objectEventStage = await sessionCambridgeOptions(
-        userSection!, userAcademicYear!);
+    EventObject objectEventStage =
+        await sessionCambridgeOptions(userSection!, userAcademicYear!);
     if (objectEventStage.success!) {
       Map? data = objectEventStage.object as Map?;
       List<dynamic> x = data!['sessionId'];
@@ -64,9 +64,7 @@ class cambridgeAdvancedConferenceState extends State<cambridgeAdvancedConference
         sessionOptions = Sessionarr;
         print("session map:" + Sessionarr.toString());
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEventStage.object as String?;
       /*Flushbar(
         title: "Failed",
@@ -82,14 +80,12 @@ class cambridgeAdvancedConferenceState extends State<cambridgeAdvancedConference
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     final session = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: DropdownButton<String>(
@@ -109,23 +105,24 @@ class cambridgeAdvancedConferenceState extends State<cambridgeAdvancedConference
           },
           items: sessionOptions
               .map((key, value) {
-            return MapEntry(
-                value,
-                DropdownMenuItem<String>(
-                  value: key,
-                  child: Text(value),
-                ));
-          })
+                return MapEntry(
+                    value,
+                    DropdownMenuItem<String>(
+                      value: key,
+                      child: Text(value),
+                    ));
+              })
               .values
               .toList()),
     );
 
-    final body= SingleChildScrollView(
+    final body = SingleChildScrollView(
       child: Center(
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * .02),
+              padding:
+                  EdgeInsets.only(top: MediaQuery.of(context).size.width * .02),
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
@@ -140,11 +137,12 @@ class cambridgeAdvancedConferenceState extends State<cambridgeAdvancedConference
                     width: 150,
                     child: RaisedButton(
                       onPressed: () async {
-                          Navigator.push(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  CambridgeAdvancedStaffConference(sessionValue!)),
+                                  CambridgeAdvancedStaffConference(
+                                      sessionValue!)),
                         );
                       },
                       child: Text(
@@ -162,10 +160,7 @@ class cambridgeAdvancedConferenceState extends State<cambridgeAdvancedConference
       ),
     );
 
-
-
     Widget _buildBody() {
-
       return body;
     }
 
@@ -175,10 +170,11 @@ class cambridgeAdvancedConferenceState extends State<cambridgeAdvancedConference
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('FlavorConfig.instance.values.imagePath!'),
             )
           ],
         ),
@@ -195,7 +191,6 @@ class cambridgeAdvancedConferenceState extends State<cambridgeAdvancedConference
         ),
         child: _buildBody(),
       ),
-
       floatingActionButton: FloatingActionButton(
           elevation: 55,
           onPressed: () {

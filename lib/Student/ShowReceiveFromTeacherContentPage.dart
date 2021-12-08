@@ -15,6 +15,7 @@ import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import 'SendToClassReplyPage.dart';
 import '../Student/viewAudioPage.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class ShowReceiveFromTeacherContentPage extends StatefulWidget {
   final dynamic id;
@@ -213,10 +214,11 @@ class _ShowReceiveFromTeacherContentPageState
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('FlavorConfig.instance.values.imagePath!'),
             )
           ],
         ),

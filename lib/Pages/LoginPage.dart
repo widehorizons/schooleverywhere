@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 import '../Constants/StringConstants.dart';
 import '../Modules/EventObject.dart';
 import '../Networking/Futures.dart';
@@ -89,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
     final logo = CircleAvatar(
       radius: MediaQuery.of(context).size.width * .20,
       backgroundColor: Colors.transparent,
-      backgroundImage: AssetImage('img/logo.png'),
+      backgroundImage: AssetImage('${FlavorConfig.instance.values.imagePath!}'),
     );
     final userSelect = DropdownButton<String>(
       isExpanded: true,
@@ -179,14 +180,14 @@ class _LoginPageState extends State<LoginPage> {
         style: TextStyle(color: AppTheme.appColor),
       ),
       onPressed: () async {
-        await launch(SCHOOL_WEBSITE);
+        await launch(FlavorConfig.instance.values.baseUrl!);
       },
     );
 
     return Scaffold(
 //      resizeToAvoidBottomPadding: false,
       appBar: new AppBar(
-        title: new Text(SCHOOL_NAME),
+        title: new Text(FlavorConfig.instance.values.schoolName!),
         backgroundColor: AppTheme.appColor,
       ),
       backgroundColor: Colors.white,

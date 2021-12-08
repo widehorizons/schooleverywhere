@@ -11,6 +11,7 @@ import '../Pages/HomePage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import '../Pages/LoginPage.dart';
+import '../config/flavor_config.dart';
 
 class AdvancedConferenceStaffJoinStaff extends StatefulWidget {
   @override
@@ -19,7 +20,8 @@ class AdvancedConferenceStaffJoinStaff extends StatefulWidget {
   }
 }
 
-class _AdvancedConferenceStaffJoinStaffState extends State<AdvancedConferenceStaffJoinStaff> {
+class _AdvancedConferenceStaffJoinStaffState
+    extends State<AdvancedConferenceStaffJoinStaff> {
   Staff? loggedStaff;
 
   String StaffSection = "Loading...";
@@ -34,36 +36,32 @@ class _AdvancedConferenceStaffJoinStaffState extends State<AdvancedConferenceSta
   String StaffClassId = "";
   String StaffSubject = "Loading...";
   String StaffSubjectId = "";
-  String academicYearValue ="Loading...";
+  String academicYearValue = "Loading...";
   String? staffid;
-  bool isLoading = false, checkSync =true;
+  bool isLoading = false, checkSync = true;
   String? urlConference;
-
-
 
   Map staffclassOptions = new Map();
   List? classSelected;
-  List<dynamic> classstaff=[];
+  List<dynamic> classstaff = [];
   String? channel;
 
   initState() {
     super.initState();
     classSelected = [];
     getLoggedStaff();
-
   }
 
-  Future<void> getUrlConference()async{
+  Future<void> getUrlConference() async {
     EventObject objectEvent = new EventObject();
     objectEvent = await getUrlConferenceData(StaffSectionId);
     // print("kkkkkkk" + objectEvent.object);
     Map? data = objectEvent.object as Map?;
     if (objectEvent.success!) {
       urlConference = data!['advancedConference'];
-
     }
-
   }
+
   Future<void> getLoggedStaff() async {
     loggedStaff = await getUserData() as Staff;
     StaffSection = loggedStaff!.sectionName!;
@@ -78,34 +76,30 @@ class _AdvancedConferenceStaffJoinStaffState extends State<AdvancedConferenceSta
     StaffClassId = loggedStaff!.staffClass!;
     StaffSubject = loggedStaff!.subjectName!;
     StaffSubjectId = loggedStaff!.subject!;
-    staffid=loggedStaff!.id;
+    staffid = loggedStaff!.id;
     academicYearValue = loggedStaff!.academicYear!;
 
     getUrlConference();
-
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
-
-
-    final data=SingleChildScrollView(
+    final data = SingleChildScrollView(
       child: Column(
         children: <Widget>[
           SizedBox(
             height: 24.0,
           ),
-
           SizedBox(
             height: 64.0,
             width: double.maxFinite,
             child: RaisedButton(
               onPressed: () async {
-                await launch(
-                    ApiConstants.BASE_URL+"conference/advancedConferenceStaffStaff.php?staff="+staffid!+"&section="+StaffSectionId);
+                await launch(ApiConstants.BASE_URL +
+                    "conference/advancedConferenceStaffStaff.php?staff=" +
+                    staffid! +
+                    "&section=" +
+                    StaffSectionId);
               },
               child: Text(
                 "Conference",
@@ -127,7 +121,7 @@ class _AdvancedConferenceStaffJoinStaffState extends State<AdvancedConferenceSta
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -139,7 +133,8 @@ class _AdvancedConferenceStaffJoinStaffState extends State<AdvancedConferenceSta
               },
               child: CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('FlavorConfig.instance.values.imagePath!'),
               ),
             )
           ],
@@ -191,6 +186,4 @@ class _AdvancedConferenceStaffJoinStaffState extends State<AdvancedConferenceSta
           )),
     );
   }
-
-
 }

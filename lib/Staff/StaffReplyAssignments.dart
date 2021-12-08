@@ -15,6 +15,7 @@ import 'Assignments.dart';
 import 'PreviousAssignment.dart';
 import 'StaffReplyAssignmentsContent.dart';
 import 'StudentAssignmentsReply.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class StaffReplyAssignments extends StatefulWidget {
   @override
@@ -187,7 +188,7 @@ class _StaffReplyAssignmentsState extends State<StaffReplyAssignments> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -200,7 +201,8 @@ class _StaffReplyAssignmentsState extends State<StaffReplyAssignments> {
               child: CircleAvatar(
                 radius: 20,
                 backgroundColor: Colors.transparent,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('FlavorConfig.instance.values.imagePath!'),
               ),
             )
           ],

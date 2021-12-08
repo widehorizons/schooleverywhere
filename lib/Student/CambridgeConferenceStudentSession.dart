@@ -12,11 +12,12 @@ import '../Pages/LoginPage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import 'CambridgeAdvancedConferenceStudent.dart';
+import '../config/flavor_config.dart';
 
 class CambridgeConferenceStudentSession extends StatefulWidget {
   final String type;
   final int typepage;
-  const CambridgeConferenceStudentSession(this.type,this.typepage);
+  const CambridgeConferenceStudentSession(this.type, this.typepage);
 
   @override
   State<StatefulWidget> createState() {
@@ -24,15 +25,24 @@ class CambridgeConferenceStudentSession extends StatefulWidget {
   }
 }
 
-
-class CambridgeConferenceStudentSessionState extends State<CambridgeConferenceStudentSession> {
-
-   Parent? loggedParent;
-   Student? loggedStudent;
-   String? username,typeUser,userSection,userAcademicYear,userstage,usergrade,userId,userType,userclass,usersemester,childId;
+class CambridgeConferenceStudentSessionState
+    extends State<CambridgeConferenceStudentSession> {
+  Parent? loggedParent;
+  Student? loggedStudent;
+  String? username,
+      typeUser,
+      userSection,
+      userAcademicYear,
+      userstage,
+      usergrade,
+      userId,
+      userType,
+      userclass,
+      usersemester,
+      childId;
   Map sessionOptions = new Map();
-   String? sessionValue;
-  bool sessionSelected=false;
+  String? sessionValue;
+  bool sessionSelected = false;
 
   initState() {
     super.initState();
@@ -40,42 +50,39 @@ class CambridgeConferenceStudentSessionState extends State<CambridgeConferenceSt
     getLoggedInUser();
   }
 
-
   Future<void> getLoggedInUser() async {
-    if(widget.type == PARENT_TYPE){
+    if (widget.type == PARENT_TYPE) {
       loggedParent = await getUserData() as Parent;
       userAcademicYear = loggedParent!.academicYear;
       userSection = loggedParent!.childeSectionSelected;
-      userstage=loggedParent!.stage;
-      usergrade=loggedParent!.grade;
+      userstage = loggedParent!.stage;
+      usergrade = loggedParent!.grade;
       childId = loggedParent!.regno;
       userclass = loggedParent!.classChild;
-      usersemester=loggedParent!.semester;
-      userId=loggedParent!.id;
-      username=loggedParent!.name;
-      typeUser="parent";
-    }
-    else if(widget.type == STUDENT_TYPE){
+      usersemester = loggedParent!.semester;
+      userId = loggedParent!.id;
+      username = loggedParent!.name;
+      typeUser = "parent";
+    } else if (widget.type == STUDENT_TYPE) {
       loggedStudent = await getUserData() as Student;
       userAcademicYear = loggedStudent!.academicYear;
       userSection = loggedStudent!.section;
       userId = loggedStudent!.id;
       userType = loggedStudent!.type;
-      childId=loggedStudent!.id;
-      userstage=loggedStudent!.stage;
-      usergrade=loggedStudent!.grade;
-      userclass=loggedStudent!.studentClass;
-      usersemester=loggedStudent!.semester;
-      username=loggedStudent!.name;
-      typeUser="student";
+      childId = loggedStudent!.id;
+      userstage = loggedStudent!.stage;
+      usergrade = loggedStudent!.grade;
+      userclass = loggedStudent!.studentClass;
+      usersemester = loggedStudent!.semester;
+      username = loggedStudent!.name;
+      typeUser = "student";
     }
     syncSessionOptions();
   }
 
-
   Future<void> syncSessionOptions() async {
-    EventObject objectEventStage = await sessionCambridgeOptions(
-        userSection!, userAcademicYear!);
+    EventObject objectEventStage =
+        await sessionCambridgeOptions(userSection!, userAcademicYear!);
     if (objectEventStage.success!) {
       Map? data = objectEventStage.object as Map?;
       List<dynamic> x = data!['sessionId'];
@@ -87,9 +94,7 @@ class CambridgeConferenceStudentSessionState extends State<CambridgeConferenceSt
         sessionOptions = Sessionarr;
         print("session map:" + Sessionarr.toString());
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEventStage.object as String?;
       /*Flushbar(
         title: "Failed",
@@ -105,14 +110,12 @@ class CambridgeConferenceStudentSessionState extends State<CambridgeConferenceSt
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     final session = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: DropdownButton<String>(
@@ -132,23 +135,24 @@ class CambridgeConferenceStudentSessionState extends State<CambridgeConferenceSt
           },
           items: sessionOptions
               .map((key, value) {
-            return MapEntry(
-                value,
-                DropdownMenuItem<String>(
-                  value: key,
-                  child: Text(value),
-                ));
-          })
+                return MapEntry(
+                    value,
+                    DropdownMenuItem<String>(
+                      value: key,
+                      child: Text(value),
+                    ));
+              })
               .values
               .toList()),
     );
 
-    final body= SingleChildScrollView(
+    final body = SingleChildScrollView(
       child: Center(
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * .02),
+              padding:
+                  EdgeInsets.only(top: MediaQuery.of(context).size.width * .02),
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
@@ -161,23 +165,22 @@ class CambridgeConferenceStudentSessionState extends State<CambridgeConferenceSt
                   SizedBox(
                     height: 40.0,
                     width: 150,
-                    child:
-                    RaisedButton(
-                      onPressed: ()
-                      async {
+                    child: RaisedButton(
+                      onPressed: () async {
                         if (widget.typepage == 1) {
-                           Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CambridgeConferenceStudent(sessionValue!,userType!)));
-                        }
-                        else if (widget.typepage == 2) {
-                           Navigator.push(
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      CambridgeConferenceStudent(
+                                          sessionValue!, userType!)));
+                        } else if (widget.typepage == 2) {
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    CambridgeAdvancedConferenceStudent(sessionValue!,userType!)
-                            ),
+                                    CambridgeAdvancedConferenceStudent(
+                                        sessionValue!, userType!)),
                           );
                         }
                       },
@@ -196,10 +199,7 @@ class CambridgeConferenceStudentSessionState extends State<CambridgeConferenceSt
       ),
     );
 
-
-
     Widget _buildBody() {
-
       return body;
     }
 
@@ -209,10 +209,11 @@ class CambridgeConferenceStudentSessionState extends State<CambridgeConferenceSt
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('FlavorConfig.instance.values.imagePath!'),
             )
           ],
         ),
@@ -229,7 +230,6 @@ class CambridgeConferenceStudentSessionState extends State<CambridgeConferenceSt
         ),
         child: _buildBody(),
       ),
-
       floatingActionButton: FloatingActionButton(
           elevation: 55,
           onPressed: () {

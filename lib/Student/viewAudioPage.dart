@@ -1,4 +1,4 @@
-import 'package:schooleverywhere/Student/player_widget.dart';
+import 'player_widget.dart';
 
 import '../Style/theme.dart';
 import '../Constants/StringConstants.dart';
@@ -6,6 +6,7 @@ import '../Constants/StringConstants.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 typedef void OnError(Exception exception);
 
@@ -71,10 +72,11 @@ class _viewAudioPageState extends State<viewAudioPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  Text(SCHOOL_NAME),
+                  Text(FlavorConfig.instance.values.schoolName!),
                   CircleAvatar(
                     radius: 20,
-                    backgroundImage: AssetImage('img/logo.png'),
+                    backgroundImage: AssetImage(
+                        '${FlavorConfig.instance.values.imagePath!}'),
                   )
                 ],
               ),

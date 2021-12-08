@@ -52,7 +52,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.schooleverywhere.schooleverywhere"
+        applicationId "com.schooleverywhere"
          buildToolsVersion = "29.0.3"
         minSdkVersion 23
         compileSdkVersion = 31
@@ -76,16 +76,18 @@ signingConfigs {
       flavorDimensions "app"
 
     productFlavors {
-        dev {
+           dev {
             dimension "app"
-            resValue "string", "app_name", "Dev FlavorTest"
-            versionNameSuffix "-dev"
+            resValue "string", "app_name", "schooleverywhere"
+               applicationIdSuffix ".schooleverywhere"
         }
-        prod {
+        alrowad {
             dimension "app"
-            resValue "string", "app_name", "FlavorTest"
-            applicationId "com.example.flavor_test.prod"
+            resValue "string", "app_name", "alrowad"
+                           applicationIdSuffix ".alrowad"
+
         }
+     
     }
 }
 

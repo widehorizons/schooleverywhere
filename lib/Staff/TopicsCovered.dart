@@ -13,10 +13,9 @@ import '../Staff/AddTopicsCovered.dart';
 import '../Style/theme.dart';
 
 import '../Pages/LoginPage.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class TopicsCovered extends StatefulWidget {
-
-
   @override
   State<StatefulWidget> createState() {
     return new _TopicsCoveredState();
@@ -24,13 +23,14 @@ class TopicsCovered extends StatefulWidget {
 }
 
 class _TopicsCoveredState extends State<TopicsCovered> {
-   Staff? loggedStaff;
+  Staff? loggedStaff;
   Map datesOptions = new Map();
   Map divisions = new Map();
-   String? dateValue, topicId, topicsCoveredEditString;
+  String? dateValue, topicId, topicsCoveredEditString;
   bool dateSelected = false;
   List<Widget> previousTopicsCovered = [];
-  TextEditingController topicsCoveredEditController = new TextEditingController();
+  TextEditingController topicsCoveredEditController =
+      new TextEditingController();
   initState() {
     super.initState();
     getLoggedStaff();
@@ -43,8 +43,11 @@ class _TopicsCoveredState extends State<TopicsCovered> {
 
   Future<void> syncDates() async {
     EventObject objectEventDates = await getTopicsCoveredDates(
-        loggedStaff!.section!, loggedStaff!.academicYear!, loggedStaff!.stage!,
-        loggedStaff!.grade!, loggedStaff!.type!);
+        loggedStaff!.section!,
+        loggedStaff!.academicYear!,
+        loggedStaff!.stage!,
+        loggedStaff!.grade!,
+        loggedStaff!.type!);
     if (objectEventDates.success!) {
       Map? data = objectEventDates.object as Map?;
       List<dynamic> toto = data!['id'];
@@ -55,11 +58,9 @@ class _TopicsCoveredState extends State<TopicsCovered> {
       setState(() {
         datesOptions = datesArr;
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEventDates.object as String?;
-   /*   Flushbar(
+      /*   Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -73,8 +74,7 @@ class _TopicsCoveredState extends State<TopicsCovered> {
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
@@ -98,10 +98,7 @@ class _TopicsCoveredState extends State<TopicsCovered> {
         topicsCoveredArr.add(Container(
           child: Card(
             semanticContainer: true,
-            margin: EdgeInsets.all(MediaQuery
-                .of(context)
-                .size
-                .width * .05),
+            margin: EdgeInsets.all(MediaQuery.of(context).size.width * .05),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),
             ),
@@ -109,32 +106,33 @@ class _TopicsCoveredState extends State<TopicsCovered> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.all(MediaQuery
-                      .of(context)
-                      .size
-                      .width * .03),
+                  padding:
+                      EdgeInsets.all(MediaQuery.of(context).size.width * .03),
                   child: ExpandablePanel(
-                    header: Text(title,
+                    header: Text(
+                      title,
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           fontStyle: FontStyle.italic,
-                          color: AppTheme.appColor
-                      ),
+                          color: AppTheme.appColor),
                     ),
-                    collapsed: Text(topicText, softWrap: true, maxLines: 2, overflow: TextOverflow.ellipsis,),
-
-                    expanded: Text(topicText,
+                    collapsed: Text(
+                      topicText,
+                      softWrap: true,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    expanded: Text(
+                      topicText,
                       softWrap: true,
                       style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: AppTheme.appColor
-                      ),
-                      ),
+                          color: AppTheme.appColor),
+                    ),
                   ),
                 ),
-
                 Row(
                   children: <Widget>[
                     new IconButton(
@@ -164,7 +162,8 @@ class _TopicsCoveredState extends State<TopicsCovered> {
                                         child: TextField(
                                           maxLines: 5,
                                           keyboardType: TextInputType.multiline,
-                                          controller: topicsCoveredEditController,
+                                          controller:
+                                              topicsCoveredEditController,
                                           autofocus: true,
                                           decoration: InputDecoration(
                                             border: OutlineInputBorder(),
@@ -177,9 +176,7 @@ class _TopicsCoveredState extends State<TopicsCovered> {
                                           color: AppTheme.appColor,
                                           child: Text("Edit",
                                               style: TextStyle(
-                                                  color: Colors.white
-                                              )
-                                          ),
+                                                  color: Colors.white)),
                                           onPressed: () {
                                             topicId = data['id'][i].toString();
                                             topicsCoveredEditString =
@@ -201,17 +198,14 @@ class _TopicsCoveredState extends State<TopicsCovered> {
               ],
             ),
           ),
-        )
-        );
+        ));
       }
       setState(() {
         previousTopicsCovered = topicsCoveredArr;
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEventp.object as String?;
-   /*   Flushbar(
+      /*   Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -225,36 +219,35 @@ class _TopicsCoveredState extends State<TopicsCovered> {
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
+
   Future<void> deleteTopic() async {
     EventObject objectEventTopic = await deleteTopicsCovered(topicId!);
     setState(() {
       if (objectEventTopic.success!) {
-           Navigator.pushReplacement(
-             context,
-             MaterialPageRoute(builder: (context) => TopicsCovered()),
-           );
-       /*    Flushbar(
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => TopicsCovered()),
+        );
+        /*    Flushbar(
              title: "Success",
              message: "Deleted",
              icon: Icon(Icons.done_outline),
              backgroundColor: AppTheme.appColor,
              duration: Duration(seconds: 2),
            )..show(context);*/
-           Fluttertoast.showToast(
-               msg: "Deleted",
-               toastLength: Toast.LENGTH_LONG,
-               timeInSecForIosWeb: 3,
-               backgroundColor: AppTheme.appColor,
-               textColor: Colors.white,
-               fontSize: 16.0
-           );
-         }else {
+        Fluttertoast.showToast(
+            msg: "Deleted",
+            toastLength: Toast.LENGTH_LONG,
+            timeInSecForIosWeb: 3,
+            backgroundColor: AppTheme.appColor,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
         String? msg = objectEventTopic.object as String?;
-          /* Flushbar(
+        /* Flushbar(
              title: "Failed",
              message: msg.toString(),
              icon: Icon(Icons.close),
@@ -267,20 +260,21 @@ class _TopicsCoveredState extends State<TopicsCovered> {
             timeInSecForIosWeb: 3,
             backgroundColor: AppTheme.appColor,
             textColor: Colors.white,
-            fontSize: 16.0
-        );
-         }
+            fontSize: 16.0);
+      }
     });
   }
+
   Future<void> editTopic() async {
-    EventObject objectEventTopics  = await editTopicsCovered(topicId! , topicsCoveredEditString!);
+    EventObject objectEventTopics =
+        await editTopicsCovered(topicId!, topicsCoveredEditString!);
     setState(() {
-      if(objectEventTopics.success!){
+      if (objectEventTopics.success!) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => TopicsCovered()),
         );
-      /*  Flushbar(
+        /*  Flushbar(
           title: "Success",
           message: "Edit Done",
           icon: Icon(Icons.done_outline),
@@ -293,11 +287,10 @@ class _TopicsCoveredState extends State<TopicsCovered> {
             timeInSecForIosWeb: 3,
             backgroundColor: AppTheme.appColor,
             textColor: Colors.white,
-            fontSize: 16.0
-        );
-      }else {
+            fontSize: 16.0);
+      } else {
         String? msg = objectEventTopics.object as String?;
-      /*  Flushbar(
+        /*  Flushbar(
           title: "Failed",
           message: msg.toString(),
           icon: Icon(Icons.close),
@@ -310,14 +303,13 @@ class _TopicsCoveredState extends State<TopicsCovered> {
             timeInSecForIosWeb: 3,
             backgroundColor: AppTheme.appColor,
             textColor: Colors.white,
-            fontSize: 16.0
-        );
+            fontSize: 16.0);
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
-
     final dateUi = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: DropdownButton<String>(
@@ -338,66 +330,61 @@ class _TopicsCoveredState extends State<TopicsCovered> {
           },
           items: datesOptions
               .map((key, value) {
-            return MapEntry(
-                value,
-                DropdownMenuItem<String>(
-                  value: key,
-                  child: Text(value),
-                ));
-          })
+                return MapEntry(
+                    value,
+                    DropdownMenuItem<String>(
+                      value: key,
+                      child: Text(value),
+                    ));
+              })
               .values
               .toList()),
     );
 
     final topicsCoveredText = Center(
       child: IconButton(
-          icon: Icon(FontAwesomeIcons.plus, color: AppTheme.appColor),
+        icon: Icon(FontAwesomeIcons.plus, color: AppTheme.appColor),
         iconSize: MediaQuery.of(context).size.width * .08,
         onPressed: () async {
-         await Navigator.push(
-           context,
-           MaterialPageRoute(
-               builder: (context) =>
-             AddTopicsCovered(dateId: dateValue!)
-         ));
+          await Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AddTopicsCovered(dateId: dateValue!)));
         },
       ),
     );
 
-
     final body = Center(
       child: Column(
-          children: <Widget>[
-            Padding(
-               padding: EdgeInsets.only(top: 10),
-              ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-              child:Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * .5,
-                    child: dateUi,
-                  ),
-                  dateSelected ?
-                  Padding(
-                      padding: EdgeInsets.only(top: 10),
-                      child: topicsCoveredText
-                  )
-                      :Container()
-                ],
-              ),
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 10),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * .5,
+                  child: dateUi,
+                ),
+                dateSelected
+                    ? Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: topicsCoveredText)
+                    : Container()
+              ],
             ),
-            dateSelected ?
-            new Expanded(
-                child:ListView(
+          ),
+          dateSelected
+              ? new Expanded(
+                  child: ListView(
                   children: previousTopicsCovered,
-                )
-            )
-             :Container(),
-          ],
+                ))
+              : Container(),
+        ],
       ),
     );
 
@@ -407,15 +394,20 @@ class _TopicsCoveredState extends State<TopicsCovered> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
-                Navigator.of(context).pushReplacement(
-                    new  MaterialPageRoute(builder: (context) => HomePage(type: loggedStaff!.type!, sectionid: loggedStaff!.section!, Id: "", Academicyear: "")));
+                Navigator.of(context).pushReplacement(new MaterialPageRoute(
+                    builder: (context) => HomePage(
+                        type: loggedStaff!.type!,
+                        sectionid: loggedStaff!.section!,
+                        Id: "",
+                        Academicyear: "")));
               },
               child: CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('FlavorConfig.instance.values.imagePath!'),
               ),
             )
           ],
@@ -434,21 +426,25 @@ class _TopicsCoveredState extends State<TopicsCovered> {
       ),
       floatingActionButton: FloatingActionButton(
           elevation: 55,
-          onPressed: (){
-            logOut(loggedStaff!.type!,loggedStaff!.id!);
+          onPressed: () {
+            logOut(loggedStaff!.type!, loggedStaff!.id!);
             removeUserData();
-            while(Navigator.canPop(context)){
+            while (Navigator.canPop(context)) {
               Navigator.pop(context);
             }
 //          Navigator.pop(context);
             Navigator.of(context).pushReplacement(
-                new  MaterialPageRoute(builder: (context) => LoginPage()));
+                new MaterialPageRoute(builder: (context) => LoginPage()));
           },
-          child:Icon(FontAwesomeIcons.doorOpen,color: AppTheme.floatingButtonColor, size: 30,),
+          child: Icon(
+            FontAwesomeIcons.doorOpen,
+            color: AppTheme.floatingButtonColor,
+            size: 30,
+          ),
           backgroundColor: Colors.transparent,
-          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0),)
-
-      ),
+          shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(30.0),
+          )),
     );
   }
 }

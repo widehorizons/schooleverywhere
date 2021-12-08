@@ -15,6 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Pages/LoginPage.dart';
 import 'viewVideoPage.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class LessonsContentPage extends StatefulWidget {
   final String lessonId;
@@ -256,7 +257,7 @@ class _LessonsContentPageState extends State<LessonsContentPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -268,7 +269,8 @@ class _LessonsContentPageState extends State<LessonsContentPage> {
               },
               child: CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('FlavorConfig.instance.values.imagePath!'),
               ),
             )
           ],

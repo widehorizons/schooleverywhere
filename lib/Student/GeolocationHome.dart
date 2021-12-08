@@ -10,25 +10,22 @@ import '../Pages/LoginPage.dart';
 import '../Style/theme.dart';
 import '../SharedPreferences/Prefs.dart';
 import 'GeolocationPage.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class GeolocationHome extends StatefulWidget {
-
-
   @override
   State<StatefulWidget> createState() {
     return new _GeolocationHomeState();
   }
 }
 
-
-class _GeolocationHomeState extends  State<GeolocationHome>{
-
-   String? routeValue, periodValue;
-  Map routeOptions=new Map();
-  Map periodOptions=new Map();
+class _GeolocationHomeState extends State<GeolocationHome> {
+  String? routeValue, periodValue;
+  Map routeOptions = new Map();
+  Map periodOptions = new Map();
   bool routeSelected = false;
   bool periodSelected = false;
-   Parent? loggedParent;
+  Parent? loggedParent;
   //
   @override
   void initState() {
@@ -38,29 +35,31 @@ class _GeolocationHomeState extends  State<GeolocationHome>{
 
   Future<void> getLoggedParent() async {
     loggedParent = await getUserData() as Parent;
-    print( "dataP"+loggedParent!.regno);
+    print("dataP" + loggedParent!.regno);
     syncStudentRouteOptions();
   }
 
   Future<void> syncStudentRouteOptions() async {
     EventObject eventObject = await studentRouteOptions(
-        loggedParent!.regno.toString(),loggedParent!.academicYear.toString(),
-        loggedParent!.semester.toString(),loggedParent!.childeSectionSelected.toString(),
+        loggedParent!.regno.toString(),
+        loggedParent!.academicYear.toString(),
+        loggedParent!.semester.toString(),
+        loggedParent!.childeSectionSelected.toString(),
         loggedParent!.stage.toString());
-    if(eventObject.success!){
-      Map? data =eventObject.object as Map?;
+    if (eventObject.success!) {
+      Map? data = eventObject.object as Map?;
 
       List<dynamic> toto = data!['id'];
-      Map routeArr= new Map();
+      Map routeArr = new Map();
       for (int i = 0; i < toto.length; i++) {
-        routeArr[data['id'][i]]=data['bus'][i];
+        routeArr[data['id'][i]] = data['bus'][i];
       }
       setState(() {
-        routeOptions=routeArr;
+        routeOptions = routeArr;
       });
-    }else{
+    } else {
       String? msg = eventObject.object as String?;
-     /* Flushbar(
+      /* Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -74,27 +73,26 @@ class _GeolocationHomeState extends  State<GeolocationHome>{
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
-
   }
 
   Future<void> syncStudentPeriodOptions() async {
-    EventObject eventObject = await studentPeriodOptions(routeValue!,loggedParent!.academicYear);
-    if(eventObject.success!){
+    EventObject eventObject =
+        await studentPeriodOptions(routeValue!, loggedParent!.academicYear);
+    if (eventObject.success!) {
       Map? data = eventObject.object as Map?;
       List<dynamic> xoxo = data!['periodId'];
-      Map periodArr= new Map();
+      Map periodArr = new Map();
       for (int i = 0; i < xoxo.length; i++) {
-        periodArr[data['periodId'][i]]=data['periodData'][i];
+        periodArr[data['periodId'][i]] = data['periodData'][i];
       }
       setState(() {
-        periodOptions=periodArr;
+        periodOptions = periodArr;
       });
-    }else{
+    } else {
       String? msg = eventObject.object as String?;
-    /*  Flushbar(
+      /*  Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -108,50 +106,60 @@ class _GeolocationHomeState extends  State<GeolocationHome>{
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     final route = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: DropdownButton<String>(
-        isExpanded: true,
-        value: routeValue,
-        hint: Text("Select Bus Route"),
-        style: TextStyle(
-            color: AppTheme.appColor
-        ),
-        selectedItemBuilder: (BuildContext context){
-         return routeOptions.map<String,Widget>((key, value){
-            return MapEntry(value, Text(value,overflow: TextOverflow.ellipsis,style: TextStyle(color: Colors.black),));
-          }
-
-          ).values.toList();
-        },
-        underline: Container(
-          height: 2,
-          color: AppTheme.appColor,
-        ),
-        onChanged: (String? newValue) {
-          setState(() {
-            routeSelected = true;
-            routeValue = newValue!;
-            periodOptions.clear();
-            periodValue = '';
-            periodSelected = false;
-            syncStudentPeriodOptions();
-          });
-        },
-          items: routeOptions.map((key, value){
-            return MapEntry(value, DropdownMenuItem<String>(value: key,child: Text(value,),));
-          }
-
-          ).values.toList()
-      ),
+          isExpanded: true,
+          value: routeValue,
+          hint: Text("Select Bus Route"),
+          style: TextStyle(color: AppTheme.appColor),
+          selectedItemBuilder: (BuildContext context) {
+            return routeOptions
+                .map<String, Widget>((key, value) {
+                  return MapEntry(
+                      value,
+                      Text(
+                        value,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: Colors.black),
+                      ));
+                })
+                .values
+                .toList();
+          },
+          underline: Container(
+            height: 2,
+            color: AppTheme.appColor,
+          ),
+          onChanged: (String? newValue) {
+            setState(() {
+              routeSelected = true;
+              routeValue = newValue!;
+              periodOptions.clear();
+              periodValue = '';
+              periodSelected = false;
+              syncStudentPeriodOptions();
+            });
+          },
+          items: routeOptions
+              .map((key, value) {
+                return MapEntry(
+                    value,
+                    DropdownMenuItem<String>(
+                      value: key,
+                      child: Text(
+                        value,
+                      ),
+                    ));
+              })
+              .values
+              .toList()),
     );
 
     final period = Padding(
@@ -160,9 +168,7 @@ class _GeolocationHomeState extends  State<GeolocationHome>{
             isExpanded: true,
             value: periodValue,
             hint: Text("Select Period"),
-            style: TextStyle(
-                color: AppTheme.appColor
-            ),
+            style: TextStyle(color: AppTheme.appColor),
             underline: Container(
               height: 2,
               color: AppTheme.appColor,
@@ -173,13 +179,17 @@ class _GeolocationHomeState extends  State<GeolocationHome>{
                 periodValue = newValue!;
               });
             },
-            items: periodOptions.map((key, value){
-              return MapEntry(value, DropdownMenuItem<String>(value: key,child: Text(value),));
-            }
-
-            ).values.toList()
-        )
-    );
+            items: periodOptions
+                .map((key, value) {
+                  return MapEntry(
+                      value,
+                      DropdownMenuItem<String>(
+                        value: key,
+                        child: Text(value),
+                      ));
+                })
+                .values
+                .toList()));
 
     final goButton = Padding(
       padding: EdgeInsets.symmetric(vertical: 30.0),
@@ -191,8 +201,11 @@ class _GeolocationHomeState extends  State<GeolocationHome>{
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    GeolocationPage(routeid: routeValue!,periodid: periodValue!, parentSection: loggedParent!.childeSectionSelected,parentAcademicYear: loggedParent!.academicYear)),
+                builder: (context) => GeolocationPage(
+                    routeid: routeValue!,
+                    periodid: periodValue!,
+                    parentSection: loggedParent!.childeSectionSelected,
+                    parentAcademicYear: loggedParent!.academicYear)),
           );
         },
         padding: EdgeInsets.all(12),
@@ -206,22 +219,21 @@ class _GeolocationHomeState extends  State<GeolocationHome>{
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           SizedBox(
-            width: MediaQuery.of(context).size.width *.8,
+            width: MediaQuery.of(context).size.width * .8,
             child: route,
           ),
-          routeSelected ?
-          SizedBox(
-            width: MediaQuery.of(context).size.width *.8,
-            child: period,
-          )
-              :Container(),
-          periodSelected ?
-          SizedBox(
-            width: MediaQuery.of(context).size.width *.4,
-            child: goButton,
-          )
-              :Container(),
-
+          routeSelected
+              ? SizedBox(
+                  width: MediaQuery.of(context).size.width * .8,
+                  child: period,
+                )
+              : Container(),
+          periodSelected
+              ? SizedBox(
+                  width: MediaQuery.of(context).size.width * .4,
+                  child: goButton,
+                )
+              : Container(),
         ],
       ),
     );
@@ -232,10 +244,11 @@ class _GeolocationHomeState extends  State<GeolocationHome>{
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('FlavorConfig.instance.values.imagePath!'),
             )
           ],
         ),
@@ -252,22 +265,25 @@ class _GeolocationHomeState extends  State<GeolocationHome>{
       ),
       floatingActionButton: FloatingActionButton(
           elevation: 55,
-          onPressed: (){
-            logOut(loggedParent!.type!,loggedParent!.id!);
+          onPressed: () {
+            logOut(loggedParent!.type!, loggedParent!.id!);
             removeUserData();
-            while(Navigator.canPop(context)){
+            while (Navigator.canPop(context)) {
               Navigator.pop(context);
             }
 //          Navigator.pop(context);
             Navigator.of(context).pushReplacement(
-                new  MaterialPageRoute(builder: (context) => LoginPage()));
+                new MaterialPageRoute(builder: (context) => LoginPage()));
           },
-          child:Icon(FontAwesomeIcons.doorOpen,color: AppTheme.floatingButtonColor, size: 30,),
+          child: Icon(
+            FontAwesomeIcons.doorOpen,
+            color: AppTheme.floatingButtonColor,
+            size: 30,
+          ),
           backgroundColor: Colors.transparent,
-          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0),)
-
-      ),
+          shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(30.0),
+          )),
     );
   }
-
 }

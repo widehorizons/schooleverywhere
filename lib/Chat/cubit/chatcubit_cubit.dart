@@ -1,8 +1,8 @@
-import 'package:schooleverywhere/Constants/StringConstants.dart';
+import '../../Constants/StringConstants.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:schooleverywhere/Modules/EventObject.dart';
-import 'package:schooleverywhere/Networking/Futures.dart';
+import '../../Modules/EventObject.dart';
+import '../../Networking/Futures.dart';
 
 part 'chatcubit_state.dart';
 

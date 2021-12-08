@@ -18,22 +18,25 @@ import '../Pages/LoginPage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import 'package:jitsi_meet/jitsi_meet.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class StaffConferennce extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() {
     return new StaffConferennceState();
   }
 }
 
-
 class StaffConferennceState extends State<StaffConferennce> {
-
-   Management? loggedManagement;
- String? userAcademicYear,userSection,userSectionName,userId,userType,userName;
-   int? JoinStaff;
-   String? urlConference;
+  Management? loggedManagement;
+  String? userAcademicYear,
+      userSection,
+      userSectionName,
+      userId,
+      userType,
+      userName;
+  int? JoinStaff;
+  String? urlConference;
 
   var isAudioOnly = true;
   var isAudioMuted = true;
@@ -43,28 +46,26 @@ class StaffConferennceState extends State<StaffConferennce> {
     super.initState();
 
     getLoggedInUser();
-
   }
-  Future<void> getUrlConference()async{
+
+  Future<void> getUrlConference() async {
     EventObject objectEvent = new EventObject();
     objectEvent = await getUrlConferenceData(userSection!);
     // print("kkkkkkk" + objectEvent.object);
     Map? data = objectEvent.object as Map?;
     if (objectEvent.success!) {
       urlConference = data!['conference'];
-
     }
-
   }
-  Future<void> getLoggedInUser() async {
 
+  Future<void> getLoggedInUser() async {
     loggedManagement = await getUserData() as Management;
     userAcademicYear = loggedManagement!.academicYear;
     userSection = loggedManagement!.section;
     userSectionName = loggedManagement!.sectionName;
     userId = loggedManagement!.id!;
     userType = loggedManagement!.type!;
-    userName=loggedManagement!.name!;
+    userName = loggedManagement!.name!;
 
     JitsiMeet.addListener(JitsiMeetingListener(
         onConferenceWillJoin: _onConferenceWillJoin,
@@ -74,23 +75,23 @@ class StaffConferennceState extends State<StaffConferennce> {
     getUrlConference();
   }
 
-  Future<void> JoinConferenceStatus() async{
+  Future<void> JoinConferenceStatus() async {
     //print("fff");
     EventObject objectEvent = new EventObject();
     objectEvent = await JoinConferenceStaffMain(userId!);
     Map? data = objectEvent.object as Map?;
-     //print(userId+"gggg");
+    //print(userId+"gggg");
 
     if (objectEvent.success!) {
       JoinStaff = data!['data'];
-
     }
   }
-  Future<void> ConferenceTerminatedStatus() async{
+
+  Future<void> ConferenceTerminatedStatus() async {
     EventObject objectEvent = new EventObject();
     objectEvent = await ConferenceTerminatedStaff(JoinStaff!);
-
   }
+
   @override
   void dispose() {
     super.dispose();
@@ -99,8 +100,7 @@ class StaffConferennceState extends State<StaffConferennce> {
 
   @override
   Widget build(BuildContext context) {
-
-    final data=SingleChildScrollView(
+    final data = SingleChildScrollView(
       child: Column(
         children: <Widget>[
           SizedBox(
@@ -138,7 +138,6 @@ class StaffConferennceState extends State<StaffConferennce> {
               onPressed: () {
                 JoinConferenceStatus();
                 _joinMeeting();
-
               },
               child: Text(
                 "Conference",
@@ -160,10 +159,11 @@ class StaffConferennceState extends State<StaffConferennce> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('FlavorConfig.instance.values.imagePath!'),
             )
           ],
         ),
@@ -202,6 +202,7 @@ class StaffConferennceState extends State<StaffConferennce> {
           )),
     );
   }
+
   _onAudioOnlyChanged(bool? value) {
     setState(() {
       isAudioOnly = value!;
@@ -221,43 +222,44 @@ class StaffConferennceState extends State<StaffConferennce> {
   }
 
   _joinMeeting() async {
-
-
     try {
-      var options = JitsiMeetingOptions(room: ApiConstants.ConferenceSchoolName+"Schooleverywhere"+userId!)
+      var options = JitsiMeetingOptions(
+          room:
+              ApiConstants.ConferenceSchoolName + "Schooleverywhere" + userId!)
         ..serverURL = urlConference
         ..subject = "Schooleverywhere Conference"
         ..userDisplayName = userName
-
         ..audioOnly = isAudioOnly
         ..audioMuted = isAudioMuted
         ..videoMuted = isVideoMuted;
 
       debugPrint("JitsiMeetingOptions: $options");
-      await JitsiMeet.joinMeeting(options,
-          listener: JitsiMeetingListener(
-          onConferenceWillJoin: (message) {
-            debugPrint("${options.room} will join with message: $message");
-          },
-          onConferenceJoined: (message) {
-            debugPrint("${options.room} joined with message: $message");
-          },
-          onConferenceTerminated: (message) {
-            debugPrint("${options.room} terminated with message: $message");
-          },
-          genericListeners: [
-            JitsiGenericListener(
-                eventName: 'readyToClose',
-                callback: (dynamic message) {
-                  debugPrint("readyToClose callback");
-                }),
-          ]),);
+      await JitsiMeet.joinMeeting(
+        options,
+        listener: JitsiMeetingListener(
+            onConferenceWillJoin: (message) {
+              debugPrint("${options.room} will join with message: $message");
+            },
+            onConferenceJoined: (message) {
+              debugPrint("${options.room} joined with message: $message");
+            },
+            onConferenceTerminated: (message) {
+              debugPrint("${options.room} terminated with message: $message");
+            },
+            genericListeners: [
+              JitsiGenericListener(
+                  eventName: 'readyToClose',
+                  callback: (dynamic message) {
+                    debugPrint("readyToClose callback");
+                  }),
+            ]),
+      );
     } catch (error) {
       debugPrint("error: $error");
     }
   }
 
-void _onConferenceWillJoin(message) {
+  void _onConferenceWillJoin(message) {
     debugPrint("_onConferenceWillJoin broadcasted with message: $message");
   }
 

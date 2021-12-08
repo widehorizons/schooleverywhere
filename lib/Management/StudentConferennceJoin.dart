@@ -18,89 +18,86 @@ import '../Pages/LoginPage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import 'package:path/path.dart' as path;
-
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class StudentConferennceJoin extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() {
     return new StudentConferennceJoineState();
   }
 }
 
-
 class StudentConferennceJoineState extends State<StudentConferennceJoin> {
+  Management? loggedManagement;
 
-   Management? loggedManagement;
-
-  bool stageSelected = false,
-      gradeSelected = false,
-      classSelected = false;
-  TextEditingController messageValue= new TextEditingController();
-  TextEditingController subjectValue= new TextEditingController();
-   FileType? _pickingType;
-   File? filepath;
+  bool stageSelected = false, gradeSelected = false, classSelected = false;
+  TextEditingController messageValue = new TextEditingController();
+  TextEditingController subjectValue = new TextEditingController();
+  FileType? _pickingType;
+  File? filepath;
   String url = ApiConstants.FILE_UPLOAD_MANAGEMENT_BY_SELECT_API;
   bool isLoading = false;
   List<File> selectedFilesList = [];
   List<File> tempSelectedFilesList = [];
   List newFileName = [];
-   String? _extension,userSection,userAcademicYear,userStage,userGrade,userId,userType,userClass;
+  String? _extension,
+      userSection,
+      userAcademicYear,
+      userStage,
+      userGrade,
+      userId,
+      userType,
+      userClass;
   bool loadingPath = false;
   bool _hasValidMime = false;
-  bool dataSend=false;
-   List? teacherSelected,studentSelected,parentSelected;
+  bool dataSend = false;
+  List? teacherSelected, studentSelected, parentSelected;
   bool filesize = true;
-  List<dynamic>  listOfMessage = [];
+  List<dynamic> listOfMessage = [];
   Map sectionsOptions = new Map();
   Map stageOptions = new Map();
   Map gradeOptions = new Map();
 
-   String? stageValue,
-      stageName,
-      gradeValue,
-      gradeName,
-      classValue;
+  String? stageValue, stageName, gradeValue, gradeName, classValue;
 
-   String? urlConference,userName;
-   int? JoinStaff;
+  String? urlConference, userName;
+  int? JoinStaff;
   final uploader = FlutterUploader();
   initState() {
     super.initState();
 
     getLoggedInUser();
   }
-  Future<void> getUrlConference()async{
+
+  Future<void> getUrlConference() async {
     EventObject objectEvent = new EventObject();
-    objectEvent = await getUrlConferenceDataByStage(userSection!,stageValue!);
+    objectEvent = await getUrlConferenceDataByStage(userSection!, stageValue!);
     // print("kkkkkkk" + objectEvent.object);
     Map? data = objectEvent.object as Map?;
     if (objectEvent.success!) {
       urlConference = data!['conference'];
-      print( data['conference']);
+      print(data['conference']);
     }
     getLoggedInUser();
   }
-  Future<void> getLoggedInUser() async {
 
+  Future<void> getLoggedInUser() async {
     loggedManagement = await getUserData() as Management;
     userAcademicYear = loggedManagement!.academicYear;
     userSection = loggedManagement!.section;
     userId = loggedManagement!.id!;
     userType = loggedManagement!.type!;
-    userName=loggedManagement!.name!;
+    userName = loggedManagement!.name!;
     syncStageOptions();
     getUrlConference();
-
   }
 
-
   Future<void> syncStageOptions() async {
-    print("section"+userSection!);
-    print("stage"+userSection!);
-    print("id"+userId!);
-    EventObject objectEventStage = await stageManagmentOptions(
-        userSection!, userAcademicYear!, userId!);
+    print("section" + userSection!);
+    print("stage" + userSection!);
+    print("id" + userId!);
+    EventObject objectEventStage =
+        await stageManagmentOptions(userSection!, userAcademicYear!, userId!);
     if (objectEventStage.success!) {
       Map? data = objectEventStage.object as Map?;
       List<dynamic> x = data!['stageId'];
@@ -112,9 +109,7 @@ class StudentConferennceJoineState extends State<StudentConferennceJoin> {
         stageOptions = Stagearr;
         print("stage map:" + Stagearr.toString());
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEventStage.object as String?;
       /*Flushbar(
         title: "Failed",
@@ -130,14 +125,13 @@ class StudentConferennceJoineState extends State<StudentConferennceJoin> {
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
   Future<void> syncGradeOptions() async {
-    EventObject objectEventGarde =
-    await gradeManagementOptions(userSection!, stageValue!, userAcademicYear!, userId!);
+    EventObject objectEventGarde = await gradeManagementOptions(
+        userSection!, stageValue!, userAcademicYear!, userId!);
     if (objectEventGarde.success!) {
       Map? data = objectEventGarde.object as Map?;
       List<dynamic> y = data!['gardeId'];
@@ -149,9 +143,7 @@ class StudentConferennceJoineState extends State<StudentConferennceJoin> {
         gradeOptions = Gardearr;
         print("grade map:" + Gardearr.toString());
       });
-    }
-    else
-    {
+    } else {
       Object? msg = objectEventGarde.object;
       /*Flushbar(
         title: "Failed",
@@ -167,13 +159,14 @@ class StudentConferennceJoineState extends State<StudentConferennceJoin> {
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
   Future<void> _getMessages() async {
-    EventObject objectEventMessageData = await getConferenceDataStudentManagement(userAcademicYear!,userSection!, stageValue!,gradeValue!);
+    EventObject objectEventMessageData =
+        await getConferenceDataStudentManagement(
+            userAcademicYear!, userSection!, stageValue!, gradeValue!);
     if (objectEventMessageData.success!) {
       Map? messageData = objectEventMessageData.object as Map?;
       List<dynamic> listOfColumns = messageData!['data'];
@@ -187,34 +180,42 @@ class StudentConferennceJoineState extends State<StudentConferennceJoin> {
         onConferenceJoined: _onConferenceJoined,
         onConferenceTerminated: _onConferenceTerminated,
         onError: _onError));
-
   }
 
-  Future<void> JoinConferenceStatus(String roomChannelName, String staffid, String StaffSubjectId) async{
+  Future<void> JoinConferenceStatus(
+      String roomChannelName, String staffid, String StaffSubjectId) async {
     EventObject objectEvent = new EventObject();
-    objectEvent = await JoinConference(roomChannelName,userId!,userAcademicYear!,StaffSubjectId,userSection!,stageValue!,gradeValue!,'','','managment');
+    objectEvent = await JoinConference(
+        roomChannelName,
+        userId!,
+        userAcademicYear!,
+        StaffSubjectId,
+        userSection!,
+        stageValue!,
+        gradeValue!,
+        '',
+        '',
+        'managment');
     // print("kkkkkkk" + objectEvent.object);
     Map? data = objectEvent.object as Map?;
     if (objectEvent.success!) {
       JoinStaff = data!['data'];
-
     }
   }
-  Future<void> ConferenceTerminatedStatus() async{
+
+  Future<void> ConferenceTerminatedStatus() async {
     EventObject objectEvent = new EventObject();
     objectEvent = await ConferenceTerminated(JoinStaff!);
-
   }
+
   @override
   void dispose() {
     super.dispose();
     JitsiMeet.removeAllListeners();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     final stage = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: DropdownButton<String>(
@@ -235,18 +236,18 @@ class StudentConferennceJoineState extends State<StudentConferennceJoin> {
               gradeValue = "";
               gradeName = "";
               gradeSelected = false;
-             syncGradeOptions();
+              syncGradeOptions();
             });
           },
           items: stageOptions
               .map((key, value) {
-            return MapEntry(
-                value,
-                DropdownMenuItem<String>(
-                  value: key,
-                  child: Text(value),
-                ));
-          })
+                return MapEntry(
+                    value,
+                    DropdownMenuItem<String>(
+                      value: key,
+                      child: Text(value),
+                    ));
+              })
               .values
               .toList()),
     );
@@ -267,85 +268,103 @@ class StudentConferennceJoineState extends State<StudentConferennceJoin> {
               gradeValue = newValue!;
               gradeName = gradeOptions[newValue];
               _getMessages();
-              });
+            });
           },
           items: gradeOptions
               .map((key, value) {
-            return MapEntry(
-                value,
-                DropdownMenuItem<String>(
-                  value: key,
-                  child: Text(value),
-                ));
-          })
+                return MapEntry(
+                    value,
+                    DropdownMenuItem<String>(
+                      value: key,
+                      child: Text(value),
+                    ));
+              })
               .values
               .toList()),
     );
 
-
-
     final showData = ListView(
-          children: <Widget>[
-            DataTable(
-              columns: [
-                DataColumn(label: Text("Teacher",style: TextStyle(color: AppTheme.appColor, fontSize: 16),overflow: TextOverflow.ellipsis,)),
-                DataColumn(label: Text("Subject",style: TextStyle(color: AppTheme.appColor, fontSize: 16),overflow: TextOverflow.ellipsis,)),
-
-              ],
-              rows:
+      children: <Widget>[
+        DataTable(
+          columns: [
+            DataColumn(
+                label: Text(
+              "Teacher",
+              style: TextStyle(color: AppTheme.appColor, fontSize: 16),
+              overflow: TextOverflow.ellipsis,
+            )),
+            DataColumn(
+                label: Text(
+              "Subject",
+              style: TextStyle(color: AppTheme.appColor, fontSize: 16),
+              overflow: TextOverflow.ellipsis,
+            )),
+          ],
+          rows:
               listOfMessage // Loops through dataColumnText, each iteration assigning the value to element
                   .map(
-                ((element) => DataRow(
-                  cells: <DataCell>[
-                    DataCell(
-                      Text(element["staffname"],style: TextStyle(color: Colors.lightBlue, fontSize: 14),),
-                      onTap: () async {
-                        _joinMeeting(ApiConstants.ConferenceSchoolName+"Schooleverywhere"+element["staffid"]+element["subjectId"]+gradeValue!);
-                        JoinConferenceStatus(ApiConstants.ConferenceSchoolName+"Schooleverywhere"+element["staffid"]+element["subjectId"]+gradeValue!,element["staffid"],element["subjectId"]);
-
-                      },
-                    ),
-                    DataCell(Text(element["subject"],style: TextStyle(color: Colors.black, fontSize: 14),)),
-                    //Extracting from Map element the value
-
-                  ],
-                )),
-              )
+                    ((element) => DataRow(
+                          cells: <DataCell>[
+                            DataCell(
+                              Text(
+                                element["staffname"],
+                                style: TextStyle(
+                                    color: Colors.lightBlue, fontSize: 14),
+                              ),
+                              onTap: () async {
+                                _joinMeeting(ApiConstants.ConferenceSchoolName +
+                                    "Schooleverywhere" +
+                                    element["staffid"] +
+                                    element["subjectId"] +
+                                    gradeValue!);
+                                JoinConferenceStatus(
+                                    ApiConstants.ConferenceSchoolName +
+                                        "Schooleverywhere" +
+                                        element["staffid"] +
+                                        element["subjectId"] +
+                                        gradeValue!,
+                                    element["staffid"],
+                                    element["subjectId"]);
+                              },
+                            ),
+                            DataCell(Text(
+                              element["subject"],
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 14),
+                            )),
+                            //Extracting from Map element the value
+                          ],
+                        )),
+                  )
                   .toList(),
-            )
-          ],
-        );
+        )
+      ],
+    );
 
-
-    final body=  Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * .02),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * .5,
-              child: stage,
-            ),
-            stageSelected
-                ? SizedBox(
-              width: MediaQuery.of(context).size.width * .5,
-              child: grade,
-            )
-                : Container(),
-            gradeSelected
-                ? new Expanded(
-                child:showData
-            )
-                :Container(),
-          ],
-        ),
-      );
-
+    final body = Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Padding(
+            padding:
+                EdgeInsets.only(top: MediaQuery.of(context).size.width * .02),
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * .5,
+            child: stage,
+          ),
+          stageSelected
+              ? SizedBox(
+                  width: MediaQuery.of(context).size.width * .5,
+                  child: grade,
+                )
+              : Container(),
+          gradeSelected ? new Expanded(child: showData) : Container(),
+        ],
+      ),
+    );
 
     Widget _buildBody() {
-
       return body;
     }
 
@@ -355,10 +374,11 @@ class StudentConferennceJoineState extends State<StudentConferennceJoin> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('FlavorConfig.instance.values.imagePath!'),
             )
           ],
         ),
@@ -375,7 +395,6 @@ class StudentConferennceJoineState extends State<StudentConferennceJoin> {
         ),
         child: _buildBody(),
       ),
-
       floatingActionButton: FloatingActionButton(
           elevation: 55,
           onPressed: () {
@@ -399,38 +418,41 @@ class StudentConferennceJoineState extends State<StudentConferennceJoin> {
           )),
     );
   }
+
   _joinMeeting(String RoomChannel) async {
     print(RoomChannel);
 
     try {
-      var options = JitsiMeetingOptions(room: RoomChannel) // Required, spaces will be trimmed
+      var options = JitsiMeetingOptions(
+          room: RoomChannel) // Required, spaces will be trimmed
         ..serverURL = urlConference
         ..subject = "Schooleverywhere Conference"
         ..userDisplayName = userName
-
         ..audioOnly = false
         ..audioMuted = false
         ..videoMuted = false;
 
       debugPrint("JitsiMeetingOptions: $options");
-      await JitsiMeet.joinMeeting(options,
-          listener: JitsiMeetingListener(
-          onConferenceWillJoin: (message) {
-            debugPrint("${options.room} will join with message: $message");
-          },
-          onConferenceJoined: (message) {
-            debugPrint("${options.room} joined with message: $message");
-          },
-          onConferenceTerminated: (message) {
-            debugPrint("${options.room} terminated with message: $message");
-          },
-          genericListeners: [
-            JitsiGenericListener(
-                eventName: 'readyToClose',
-                callback: (dynamic message) {
-                  debugPrint("readyToClose callback");
-                }),
-          ]),);
+      await JitsiMeet.joinMeeting(
+        options,
+        listener: JitsiMeetingListener(
+            onConferenceWillJoin: (message) {
+              debugPrint("${options.room} will join with message: $message");
+            },
+            onConferenceJoined: (message) {
+              debugPrint("${options.room} joined with message: $message");
+            },
+            onConferenceTerminated: (message) {
+              debugPrint("${options.room} terminated with message: $message");
+            },
+            genericListeners: [
+              JitsiGenericListener(
+                  eventName: 'readyToClose',
+                  callback: (dynamic message) {
+                    debugPrint("readyToClose callback");
+                  }),
+            ]),
+      );
     } catch (error) {
       debugPrint("error: $error");
     }
@@ -453,5 +475,3 @@ class StudentConferennceJoineState extends State<StudentConferennceJoin> {
     debugPrint("_onError broadcasted: $error");
   }
 }
-
-

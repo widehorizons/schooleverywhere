@@ -14,6 +14,7 @@ import '../Style/theme.dart';
 
 import '../Pages/LoginPage.dart';
 import 'PreviousMaintenanceLocation.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class MaintenanceLocation extends StatefulWidget {
   @override
@@ -559,7 +560,7 @@ class _MaintenanceLocationState extends State<MaintenanceLocation> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -571,7 +572,8 @@ class _MaintenanceLocationState extends State<MaintenanceLocation> {
               },
               child: CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('FlavorConfig.instance.values.imagePath!'),
               ),
             )
           ],

@@ -1,4 +1,6 @@
 import 'dart:async';
+import '../config/flavor_config.dart';
+
 import '../Constants/StringConstants.dart';
 import '../SharedPreferences/Prefs.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -108,11 +110,12 @@ class _BusPageState extends State<BusPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               backgroundColor: Colors.transparent,
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('FlavorConfig.instance.values.imagePath!'),
             )
           ],
         ),

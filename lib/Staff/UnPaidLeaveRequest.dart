@@ -15,6 +15,7 @@ import '../Style/theme.dart';
 
 import '../Pages/LoginPage.dart';
 import 'UnPaidPreviousLeaveRequest.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class UnPaidLeaveRequest extends StatefulWidget {
   @override
@@ -431,7 +432,7 @@ class _UnPaidLeaveRequestState extends State<UnPaidLeaveRequest> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -443,7 +444,8 @@ class _UnPaidLeaveRequestState extends State<UnPaidLeaveRequest> {
               },
               child: CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('FlavorConfig.instance.values.imagePath!'),
               ),
             )
           ],

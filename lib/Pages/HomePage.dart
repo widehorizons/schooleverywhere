@@ -1,89 +1,90 @@
 // import 'package:get_version/get_version.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:schooleverywhere/Staff/UploadedTimeTable.dart';
-import '../Student/CambridgeConferenceStudentSession.dart';
-import '../Staff/CambridgeAdvancedStudentConferencePage.dart';
-import '../Staff/CambridgeStudentConferencePage.dart';
-import '../Management/cambridgeConference.dart';
-import '../Management/cambridgeAdvancedConference.dart';
-import '../Management/AdvancedStaffConferenceMangementPage.dart';
-import '../Management/StaffConferenceMangementPage.dart';
-import '../Management/StudentConferenceMangementPage.dart';
-import '../Staff/AdvancedStaffConferencePage.dart';
-import '../Staff/StaffConferencePage.dart';
-import '../Staff/AdvancedStudentConferencePage.dart';
-import '../Staff/StudentConferencePage.dart';
-import '../Networking/MainConstant.dart';
-import '../Staff/AdvancedConferenceJoinStaffJoinStaff.dart';
-import '../Staff/AdvancedConferenceStaffJoinStaff.dart';
-import '../Staff/AdvancedConferenceStaffJoinStaffRecorded.dart';
-import '../Student/AdvancedConferenceStudent.dart';
-import '../Staff/ConferenceStaffJoinStaff.dart';
-import '../Staff/ConferenceStaffstaff.dart';
-import '../Student/ConferenceStudent.dart';
-import '../Student/ViewMemo.dart';
-import '../Staff/Memo.dart';
-import '../Student/StudentLiveStream.dart';
-import '../Staff/LiveStream.dart';
-import '../Management/ByClassPage.dart';
-import '../Management/BySelect.dart';
-import '../Staff/LeaveRequest.dart';
-import '../Staff/MaintenanceLocation.dart';
-import '../Staff/UnPaidLeaveRequest.dart';
-import '../Staff/UnPaidVacationRequest.dart';
-import '../Staff/VacationRequest.dart';
-import '../Management/SMSPage.dart';
-import '../Management/AdvancedPage.dart';
-import '../Management/StudentAttendance.dart';
-import '../Management/StaffMail.dart';
-import '../Student/CambridgeDropSubjects.dart';
-import '../Modules/Management.dart';
-import '../Student/CambridgeDegree.dart';
-import '../Student/CambridgeRegistrationConfirmation.dart';
-import '../Student/CambrigeRegistration.dart';
-import '../Student/StudentBus.dart';
-import '../Modules/Parent.dart';
-import '../Modules/Staff.dart';
-import '../Modules/Student.dart';
-import '../Networking/ReportCard.dart';
-import '../Staff/ProgressReportStaffIndex.dart';
-import '../Student/AutomaticTimeTable.dart';
-import '../Student/StudentFees.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:schooleverywhere/Staff/UploadedTimeTable.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../Constants/StringConstants.dart';
+import '../Management/AdvancedPage.dart';
+import '../Management/AdvancedStaffConferenceMangementPage.dart';
+import '../Management/ByClassPage.dart';
+import '../Management/BySelect.dart';
+import '../Management/SMSPage.dart';
+import '../Management/StaffConferenceMangementPage.dart';
+import '../Management/StaffMail.dart';
+import '../Management/StudentAttendance.dart';
+import '../Management/StudentConferenceMangementPage.dart';
+import '../Management/cambridgeAdvancedConference.dart';
+import '../Management/cambridgeConference.dart';
 import '../Modules/EventObject.dart';
+import '../Modules/Management.dart';
+import '../Modules/Parent.dart';
+import '../Modules/Staff.dart';
+import '../Modules/Student.dart';
 import '../Networking/ApiConstants.dart';
 import '../Networking/Futures.dart';
+import '../Networking/ReportCard.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Staff/AddLessonsByClass.dart';
-import '../Staff/TopicsCovered.dart';
-import '../Student/GeolocationHome.dart';
-import '../Student/StudentTopicsCovered.dart';
-import '../Student/ReceiveFromTeacher.dart';
+import '../Staff/AdvancedConferenceJoinStaffJoinStaff.dart';
+import '../Staff/AdvancedConferenceStaffJoinStaff.dart';
+import '../Staff/AdvancedConferenceStaffJoinStaffRecorded.dart';
+import '../Staff/AdvancedStaffConferencePage.dart';
+import '../Staff/AdvancedStudentConferencePage.dart';
 import '../Staff/Assignments.dart';
-import '../Student/StudentAssignments.dart';
+import '../Staff/CambridgeAdvancedStudentConferencePage.dart';
+import '../Staff/CambridgeStudentConferencePage.dart';
+import '../Staff/ConferenceStaffJoinStaff.dart';
+import '../Staff/ConferenceStaffstaff.dart';
+import '../Staff/LeaveRequest.dart';
+import '../Staff/LiveStream.dart';
+import '../Staff/MaintenanceLocation.dart';
+import '../Staff/Memo.dart';
+import '../Staff/ProgressReportStaffIndex.dart';
+import '../Staff/SendToClass.dart';
+import '../Staff/StaffConferencePage.dart';
+import '../Staff/StudentConferencePage.dart';
+import '../Staff/TakeAttendance.dart';
+import '../Staff/TopicsCovered.dart';
+import '../Staff/UnPaidLeaveRequest.dart';
+import '../Staff/UnPaidVacationRequest.dart';
+import '../Staff/VacationRequest.dart';
+import '../Student/AdvancedConferenceStudent.dart';
+import '../Student/Attendance.dart';
+import '../Student/AutomaticTimeTable.dart';
+import '../Student/CambridgeConferenceStudentSession.dart';
+import '../Student/CambridgeDegree.dart';
+import '../Student/CambridgeDropSubjects.dart';
+import '../Student/CambridgeRegisterationID.dart';
+import '../Student/CambridgeRegistrationConfirmation.dart';
+import '../Student/CambrigeRegistration.dart';
+import '../Student/ConferenceStudent.dart';
+import '../Student/GeolocationHome.dart';
+import '../Student/MailInboxPage.dart';
 import '../Student/ProgressReportIndex.dart';
 import '../Student/ProgressReportIndex2.dart';
+import '../Student/ReceiveFromTeacher.dart';
 import '../Student/ReportCardIndex.dart';
 import '../Student/ReportCardIndex4.dart';
 import '../Student/ReportCardIndex4BySubDivision.dart';
 import '../Student/ReportCardIndex4LandScape.dart';
 import '../Student/ReportCardIndex4WithBorder.dart';
+import '../Student/StudentAssignments.dart';
+import '../Student/StudentBus.dart';
+import '../Student/StudentFees.dart';
+import '../Student/StudentLiveStream.dart';
+import '../Student/StudentTopicsCovered.dart';
 import '../Student/TimeTable.dart';
 import '../Student/ViewLessons.dart';
+import '../Student/ViewMemo.dart';
 import '../Style/theme.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'ChangeLogin.dart';
 import 'LoginPage.dart';
-import '../Staff/SendToClass.dart';
-import '../Student/MailInboxPage.dart';
-import '../Student/Attendance.dart';
-import '../Staff/TakeAttendance.dart';
-import '../Student/CambridgeRegisterationID.dart';
 import 'Meeting.dart';
-import 'package:badges/badges.dart';
 
 class HomePage extends StatefulWidget {
   final String type;
@@ -993,10 +994,11 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),
@@ -1075,8 +1077,9 @@ class _HomePageState extends State<HomePage> {
                               widget.type == STAFF_TYPE) {
                             studCon++;
                             String LinkName = "Student Conference";
-                            String imageUrl = MainConstant.BASE_URL_MAIN +
-                                "staff/linksImages/conference.png";
+                            String imageUrl =
+                                FlavorConfig.instance.values.baseUrl! +
+                                    "staff/linksImages/conference.png";
                             PageOptions.add(GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -1117,8 +1120,9 @@ class _HomePageState extends State<HomePage> {
                             studCon++;
                             String LinkName =
                                 "Cambridge Advanced Student Conference";
-                            String imageUrl = MainConstant.BASE_URL_MAIN +
-                                "staff/linksImages/conference.png";
+                            String imageUrl =
+                                FlavorConfig.instance.values.baseUrl! +
+                                    "staff/linksImages/conference.png";
                             PageOptions.add(GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -1158,8 +1162,9 @@ class _HomePageState extends State<HomePage> {
                                   widget.type == STAFF_TYPE) {
                             studCon++;
                             String LinkName = "Cambridge Student Conference";
-                            String imageUrl = MainConstant.BASE_URL_MAIN +
-                                "staff/linksImages/conference.png";
+                            String imageUrl =
+                                FlavorConfig.instance.values.baseUrl! +
+                                    "staff/linksImages/conference.png";
                             PageOptions.add(GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -1201,8 +1206,9 @@ class _HomePageState extends State<HomePage> {
                               widget.type == STAFF_TYPE) {
                             stuconadv++;
                             String LinkName = "Advanced Student Conference";
-                            String imageUrl = MainConstant.BASE_URL_MAIN +
-                                "staff/linksImages/advanced_conference.png";
+                            String imageUrl =
+                                FlavorConfig.instance.values.baseUrl! +
+                                    "staff/linksImages/advanced_conference.png";
                             PageOptions.add(GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -1242,8 +1248,9 @@ class _HomePageState extends State<HomePage> {
                               widget.type == STAFF_TYPE) {
                             staffCon++;
                             String LinkName = "Staff Conference";
-                            String imageUrl = MainConstant.BASE_URL_MAIN +
-                                "staff/linksImages/staff_conference.png";
+                            String imageUrl =
+                                FlavorConfig.instance.values.baseUrl! +
+                                    "staff/linksImages/staff_conference.png";
                             PageOptions.add(GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -1287,7 +1294,8 @@ class _HomePageState extends State<HomePage> {
                               widget.type == STAFF_TYPE) {
                             advstaffCon++;
                             String LinkName = "Advanced Staff Conference";
-                            String imageUrl = MainConstant.BASE_URL_MAIN +
+                            String imageUrl = FlavorConfig
+                                    .instance.values.baseUrl! +
                                 "staff/linksImages/advanced_staff_conference.png";
                             PageOptions.add(GestureDetector(
                               onTap: () {
@@ -1328,8 +1336,9 @@ class _HomePageState extends State<HomePage> {
                               widget.type == MANAGEMENT_TYPE) {
                             studConMan++;
                             String LinkName = "Student Conference";
-                            String imageUrl = MainConstant.BASE_URL_MAIN +
-                                "staff/linksImages/conference.png";
+                            String imageUrl =
+                                FlavorConfig.instance.values.baseUrl! +
+                                    "staff/linksImages/conference.png";
                             PageOptions.add(GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -1369,8 +1378,9 @@ class _HomePageState extends State<HomePage> {
                               widget.type == MANAGEMENT_TYPE) {
                             staffConMan++;
                             String LinkName = "Staff Conference";
-                            String imageUrl = MainConstant.BASE_URL_MAIN +
-                                "staff/linksImages/staff_conference.png";
+                            String imageUrl =
+                                FlavorConfig.instance.values.baseUrl! +
+                                    "staff/linksImages/staff_conference.png";
                             PageOptions.add(GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -1414,7 +1424,8 @@ class _HomePageState extends State<HomePage> {
                               widget.type == MANAGEMENT_TYPE) {
                             AdvstaffConMan++;
                             String LinkName = "Advanced Staff Confernce";
-                            String imageUrl = MainConstant.BASE_URL_MAIN +
+                            String imageUrl = FlavorConfig
+                                    .instance.values.baseUrl! +
                                 "staff/linksImages/advanced_staff_conference.png";
                             PageOptions.add(GestureDetector(
                               onTap: () {

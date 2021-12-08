@@ -18,6 +18,7 @@ import '../Style/theme.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import '../Pages/LoginPage.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class Memo extends StatefulWidget {
   @override
@@ -836,7 +837,7 @@ class _MemoState extends State<Memo> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -848,7 +849,8 @@ class _MemoState extends State<Memo> {
               },
               child: CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('FlavorConfig.instance.values.imagePath!'),
               ),
             )
           ],

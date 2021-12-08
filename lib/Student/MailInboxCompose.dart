@@ -21,6 +21,7 @@ import '../Pages/LoginPage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import 'package:path/path.dart' as path;
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 import 'MailInboxPage.dart';
 import 'SendMailInbox.dart';
@@ -1061,10 +1062,11 @@ class _MailInboxComposeState extends State<MailInboxCompose> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('FlavorConfig.instance.values.imagePath!'),
             )
           ],
         ),

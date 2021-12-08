@@ -11,6 +11,7 @@ import '../Pages/LoginPage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import 'package:jitsi_meet/jitsi_meet.dart';
+import '../config/flavor_config.dart';
 
 class CambridgeSupervisourConferenceStaff extends StatefulWidget {
   final String sessionid;
@@ -22,50 +23,49 @@ class CambridgeSupervisourConferenceStaff extends StatefulWidget {
   }
 }
 
-
-class CambridgeSupervisourConferenceStaffState extends State<CambridgeSupervisourConferenceStaff> {
-
-   Staff? loggedStaff;
-  TextEditingController subjectValue= new TextEditingController();
+class CambridgeSupervisourConferenceStaffState
+    extends State<CambridgeSupervisourConferenceStaff> {
+  Staff? loggedStaff;
+  TextEditingController subjectValue = new TextEditingController();
   String url = ApiConstants.FILE_UPLOAD_MANAGEMENT_BY_SELECT_API;
-   String? userSection,userAcademicYear,userId,userType;
-  List<dynamic>  listOfMessage = [];
-   String? userName;
-   String? urlConference;
-   int? JoinStaff;
-   String? IdRowJoin;
+  String? userSection, userAcademicYear, userId, userType;
+  List<dynamic> listOfMessage = [];
+  String? userName;
+  String? urlConference;
+  int? JoinStaff;
+  String? IdRowJoin;
   var isAudioOnly = true;
   var isAudioMuted = true;
   var isVideoMuted = true;
   initState() {
     super.initState();
     getLoggedInUser();
-
   }
 
-  Future<void> getUrlConference()async{
+  Future<void> getUrlConference() async {
     EventObject objectEvent = new EventObject();
     objectEvent = await getCambridgeUrlConferenceData(userSection!);
     String? data = objectEvent.object as String?;
     if (objectEvent.success!) {
       urlConference = data!;
     }
-
   }
-  Future<void> getLoggedInUser() async {
 
+  Future<void> getLoggedInUser() async {
     loggedStaff = await getUserData() as Staff;
     userAcademicYear = loggedStaff!.academicYear;
     userSection = loggedStaff!.section;
     userId = loggedStaff!.id;
     userType = loggedStaff!.type;
-    userName=loggedStaff!.name;
+    userName = loggedStaff!.name;
     getUrlConference();
     _getMessages();
-
   }
+
   Future<void> _getMessages() async {
-    EventObject objectEventMessageData = await getCambridgeAdvancedConferenceSupervisourData(widget.sessionid,userSection!,userAcademicYear!,userId!);
+    EventObject objectEventMessageData =
+        await getCambridgeAdvancedConferenceSupervisourData(
+            widget.sessionid, userSection!, userAcademicYear!, userId!);
     if (objectEventMessageData.success!) {
       Map? messageData = objectEventMessageData.object as Map?;
       List<dynamic> listOfColumns = messageData!['data'];
@@ -73,62 +73,78 @@ class CambridgeSupervisourConferenceStaffState extends State<CambridgeSupervisou
         listOfMessage = listOfColumns;
       });
     }
-
-
-
   }
-  Future<void> JoinConferenceStatus(String Id) async{
+
+  Future<void> JoinConferenceStatus(String Id) async {
     EventObject objectEvent = new EventObject();
-    objectEvent = await JoinCambridgeConferenceSatff(Id,userId!);
+    objectEvent = await JoinCambridgeConferenceSatff(Id, userId!);
     // print("kkkkkkk" + objectEvent.object);
     Map? data = objectEvent.object as Map?;
-
   }
-  Future<void> ConferenceTerminatedStatus(String Id) async{
+
+  Future<void> ConferenceTerminatedStatus(String Id) async {
     EventObject objectEvent = new EventObject();
-    objectEvent = await ConferenceCambridgeTerminatedStaffJoin(Id,userId!);
+    objectEvent = await ConferenceCambridgeTerminatedStaffJoin(Id, userId!);
+  }
 
+  SetConferenceJoinId(String IdRow) {
+    IdRowJoin = IdRow;
   }
-  SetConferenceJoinId(String IdRow){
-    IdRowJoin=IdRow;
-  }
+
   @override
   void dispose() {
     super.dispose();
     JitsiMeet.removeAllListeners();
   }
+
   @override
   Widget build(BuildContext context) {
     final showData = SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: DataTable(
           columns: [
-            DataColumn(label: Text("Subject",style: TextStyle(color: AppTheme.appColor, fontSize: 16),overflow: TextOverflow.ellipsis,)),
-            DataColumn(label: Text("Join",style: TextStyle(color: AppTheme.appColor, fontSize: 16),)),
+            DataColumn(
+                label: Text(
+              "Subject",
+              style: TextStyle(color: AppTheme.appColor, fontSize: 16),
+              overflow: TextOverflow.ellipsis,
+            )),
+            DataColumn(
+                label: Text(
+              "Join",
+              style: TextStyle(color: AppTheme.appColor, fontSize: 16),
+            )),
           ],
           rows:
-          listOfMessage // Loops through dataColumnText, each iteration assigning the value to element
-              .map(
-            ((element) => DataRow(
-              cells: <DataCell>[
-                DataCell(Text(element["subjectname"],style: TextStyle(color: Colors.black, fontSize: 14),)),
-                //Extracting from Map element the value
-                DataCell(
-                  Text("Conference",style: TextStyle(color: Colors.lightBlue, fontSize: 14),),
-                  onTap: () async {
-                    _joinMeeting(ApiConstants.ConferenceSchoolName+"Schooleverywhere"+element["staffid"]);
-                    SetConferenceJoinId(element["id"]);
-                    JoinConferenceStatus(element["id"]);
-
-                  },
-                ),
-              ],
-            )),
-          )
-              .toList(),
-        )
-    );
-
+              listOfMessage // Loops through dataColumnText, each iteration assigning the value to element
+                  .map(
+                    ((element) => DataRow(
+                          cells: <DataCell>[
+                            DataCell(Text(
+                              element["subjectname"],
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 14),
+                            )),
+                            //Extracting from Map element the value
+                            DataCell(
+                              Text(
+                                "Conference",
+                                style: TextStyle(
+                                    color: Colors.lightBlue, fontSize: 14),
+                              ),
+                              onTap: () async {
+                                _joinMeeting(ApiConstants.ConferenceSchoolName +
+                                    "Schooleverywhere" +
+                                    element["staffid"]);
+                                SetConferenceJoinId(element["id"]);
+                                JoinConferenceStatus(element["id"]);
+                              },
+                            ),
+                          ],
+                        )),
+                  )
+                  .toList(),
+        ));
 
     return Scaffold(
       appBar: new AppBar(
@@ -136,10 +152,11 @@ class CambridgeSupervisourConferenceStaffState extends State<CambridgeSupervisou
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('FlavorConfig.instance.values.imagePath!'),
             )
           ],
         ),
@@ -156,7 +173,6 @@ class CambridgeSupervisourConferenceStaffState extends State<CambridgeSupervisou
         ),
         child: showData,
       ),
-
       floatingActionButton: FloatingActionButton(
           elevation: 55,
           onPressed: () {
@@ -200,37 +216,36 @@ class CambridgeSupervisourConferenceStaffState extends State<CambridgeSupervisou
   }
 
   _joinMeeting(RoomChannel) async {
-
-
     try {
       var options = JitsiMeetingOptions(room: RoomChannel)
         ..serverURL = urlConference
         ..subject = "Schooleverywhere Conference"
         ..userDisplayName = userName
-
         ..audioOnly = isAudioOnly
         ..audioMuted = isAudioMuted
         ..videoMuted = isVideoMuted;
 
       debugPrint("JitsiMeetingOptions: $options");
-      await JitsiMeet.joinMeeting(options,
-          listener: JitsiMeetingListener(
-          onConferenceWillJoin: (message) {
-            debugPrint("${options.room} will join with message: $message");
-          },
-          onConferenceJoined: (message) {
-            debugPrint("${options.room} joined with message: $message");
-          },
-          onConferenceTerminated: (message) {
-            debugPrint("${options.room} terminated with message: $message");
-          },
-          genericListeners: [
-            JitsiGenericListener(
-                eventName: 'readyToClose',
-                callback: (dynamic message) {
-                  debugPrint("readyToClose callback");
-                }),
-          ]),);
+      await JitsiMeet.joinMeeting(
+        options,
+        listener: JitsiMeetingListener(
+            onConferenceWillJoin: (message) {
+              debugPrint("${options.room} will join with message: $message");
+            },
+            onConferenceJoined: (message) {
+              debugPrint("${options.room} joined with message: $message");
+            },
+            onConferenceTerminated: (message) {
+              debugPrint("${options.room} terminated with message: $message");
+            },
+            genericListeners: [
+              JitsiGenericListener(
+                  eventName: 'readyToClose',
+                  callback: (dynamic message) {
+                    debugPrint("readyToClose callback");
+                  }),
+            ]),
+      );
     } catch (error) {
       debugPrint("error: $error");
     }
@@ -252,7 +267,4 @@ class CambridgeSupervisourConferenceStaffState extends State<CambridgeSupervisou
   _onError(error) {
     debugPrint("_onError broadcasted: $error");
   }
-
 }
-
-

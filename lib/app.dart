@@ -1,60 +1,21 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:schooleverywhere/Chat/cubit/chatcubit_cubit.dart';
-import 'Chat/app_bloc_observer.dart';
-import 'Pages/SplashScreen.dart';
-import 'Staff/SendToClass.dart';
-import 'Student/ReceiveFromTeacher.dart';
-import 'Student/MailInboxPage.dart';
-import 'Student/Attendance.dart';
-import 'Student/StudentAssignments.dart';
-import 'Pages/StudentPage.dart';
-import 'Pages/StaffPage.dart';
-import 'Pages/ParentPage.dart';
-import 'Staff/Assignments.dart';
+
+import 'Chat/cubit/chatcubit_cubit.dart';
 import 'Pages/ManagementPage.dart';
+import 'Pages/ParentPage.dart';
+import 'Pages/SplashScreen.dart';
+import 'Pages/StaffPage.dart';
+import 'Pages/StudentPage.dart';
 import 'SharedPreferences/Prefs.dart';
-
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  print('Handling a background message ${message.messageId}');
-}
-
-const AndroidNotificationChannel channel = AndroidNotificationChannel(
-  'high_importance_channel', // id
-  'High Importance Notifications', // title
-  description:
-      'This channel is used for important notifications.', // description
-  importance: Importance.high,
-);
-
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
-
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  Bloc.observer = AppBlocObserver();
-
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
-
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
-  await FlutterDownloader.initialize();
-  runApp(new BlocProvider(create: (context) => ChatCubit(), child: MyApp()));
-}
+import 'Staff/Assignments.dart';
+import 'Student/Attendance.dart';
+import 'Student/MailInboxPage.dart';
+import 'Student/ReceiveFromTeacher.dart';
+import 'Student/StudentAssignments.dart';
+import 'firebase_config.dart';
 
 class MyApp extends StatefulWidget {
   @override

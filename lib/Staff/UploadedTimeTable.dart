@@ -7,21 +7,22 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_uploader/flutter_uploader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:schooleverywhere/Constants/StringConstants.dart';
-import 'package:schooleverywhere/Modules/EventObject.dart';
-import 'package:schooleverywhere/Modules/Management.dart';
+import '../Constants/StringConstants.dart';
+import '../Modules/EventObject.dart';
+import '../Modules/Management.dart';
 import 'package:path/path.dart' as path;
+import '../config/flavor_config.dart';
 
-import 'package:schooleverywhere/Modules/Staff.dart';
-import 'package:schooleverywhere/Modules/Student.dart';
-import 'package:schooleverywhere/Networking/ApiConstants.dart';
-import 'package:schooleverywhere/Networking/Futures.dart';
-import 'package:schooleverywhere/Pages/DownloadList.dart';
-import 'package:schooleverywhere/Pages/HomePage.dart';
-import 'package:schooleverywhere/SharedPreferences/Prefs.dart';
-import 'package:schooleverywhere/Style/theme.dart';
+import '../Modules/Staff.dart';
+import '../Modules/Student.dart';
+import '../Networking/ApiConstants.dart';
+import '../Networking/Futures.dart';
+import '../Pages/DownloadList.dart';
+import '../Pages/HomePage.dart';
+import '../SharedPreferences/Prefs.dart';
+import '../Style/theme.dart';
 import 'package:http/http.dart' as http;
-import 'package:schooleverywhere/widget/custom_dialog.dart';
+import '../widget/custom_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UploadedTimeTable extends StatefulWidget {
@@ -788,7 +789,7 @@ class _UploadedTimeTableState extends State<UploadedTimeTable> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pop(new MaterialPageRoute(
@@ -801,7 +802,8 @@ class _UploadedTimeTableState extends State<UploadedTimeTable> {
               child: CircleAvatar(
                 radius: 20,
                 backgroundColor: Colors.transparent,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],

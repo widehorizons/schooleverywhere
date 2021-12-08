@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../Modules/Staff.dart';
+
 import '../Constants/StringConstants.dart';
+import '../Modules/Staff.dart';
 import '../Modules/User.dart';
 import '../Pages/ManagementPage.dart';
 import '../Pages/StudentPage.dart';
 import '../SharedPreferences/Prefs.dart';
-
+import '../config/flavor_config.dart';
 import 'BusPage.dart';
 import 'LoginPage.dart';
 import 'ParentPage.dart';
@@ -97,7 +98,8 @@ class SplashScreenState extends State<SplashScreen> {
           CircleAvatar(
             backgroundColor: Colors.transparent,
             radius: MediaQuery.of(context).size.width * .20,
-            backgroundImage: AssetImage('img/logo.png'),
+            backgroundImage:
+                AssetImage('${FlavorConfig.instance.values.imagePath!}'),
           ),
         ],
       ),

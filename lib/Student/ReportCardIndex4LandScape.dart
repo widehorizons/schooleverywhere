@@ -13,6 +13,7 @@ import '../Style/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Pages/LoginPage.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class ReportCardIndex4LandScape extends StatefulWidget {
   final String type;
@@ -201,11 +202,12 @@ class _ReportCardIndex4LandScapeState extends State<ReportCardIndex4LandScape> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               backgroundColor: Colors.transparent,
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('FlavorConfig.instance.values.imagePath!'),
             )
           ],
         ),

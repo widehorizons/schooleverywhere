@@ -12,6 +12,7 @@ import '../Pages/HomePage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import '../Pages/LoginPage.dart';
+import '../config/flavor_config.dart';
 
 class recoredConferenceAdvanced extends StatefulWidget {
   @override
@@ -21,7 +22,7 @@ class recoredConferenceAdvanced extends StatefulWidget {
 }
 
 class _recoredConferenceAdvancedState extends State<recoredConferenceAdvanced> {
-   Staff? loggedStaff;
+  Staff? loggedStaff;
 
   String StaffSection = "Loading...";
   String StaffSectionId = "";
@@ -35,36 +36,34 @@ class _recoredConferenceAdvancedState extends State<recoredConferenceAdvanced> {
   String StaffClassId = "";
   String StaffSubject = "Loading...";
   String StaffSubjectId = "";
-  String academicYearValue ="Loading...";
-   String? staffid;
-  bool isLoading = false, checkSync =true;
-   String? urlConference;
-
-
+  String academicYearValue = "Loading...";
+  String? staffid;
+  bool isLoading = false, checkSync = true;
+  String? urlConference;
 
   Map staffclassOptions = new Map();
-   List? classSelected;
-  List<dynamic> classstaff=[];
-   String? channel;
+  List? classSelected;
+  List<dynamic> classstaff = [];
+  String? channel;
 
   initState() {
     super.initState();
     classSelected = [];
     getLoggedStaff();
-
   }
 
-  Future<void> getUrlConference()async{
+  Future<void> getUrlConference() async {
     EventObject objectEvent = new EventObject();
-    objectEvent = await getUrlConferenceDataByStage(StaffSectionId,StaffStageId);
+    objectEvent =
+        await getUrlConferenceDataByStage(StaffSectionId, StaffStageId);
     print("urlConference" + objectEvent.object.toString());
     Map? data = objectEvent.object as Map?;
     if (objectEvent.success!) {
       urlConference = data!['advancedConference'];
-
     }
     getUrlConference();
   }
+
   Future<void> getLoggedStaff() async {
     loggedStaff = await getUserData() as Staff;
     StaffSection = loggedStaff!.sectionName!;
@@ -79,27 +78,18 @@ class _recoredConferenceAdvancedState extends State<recoredConferenceAdvanced> {
     StaffClassId = loggedStaff!.staffClass!;
     StaffSubject = loggedStaff!.subjectName!;
     StaffSubjectId = loggedStaff!.subject!;
-    staffid=loggedStaff!.id;
+    staffid = loggedStaff!.id;
     academicYearValue = loggedStaff!.academicYear!;
-
-
-
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
-
-
-    final data=SingleChildScrollView(
+    final data = SingleChildScrollView(
       child: Column(
         children: <Widget>[
           SizedBox(
             height: 24.0,
           ),
-
           SizedBox(
             height: 64.0,
             width: double.maxFinite,
@@ -107,9 +97,17 @@ class _recoredConferenceAdvancedState extends State<recoredConferenceAdvanced> {
               onPressed: () async {
 //                JoinConferenceStatus(ApiConstants.ConferenceSchoolName+"Schooleverywhere"+staffid+StaffSubjectId+StaffGradeId);
 //                _joinMeeting();
-                await launch(
-                    ApiConstants.BASE_URL+"conference/advancedConferenceStaffStudentRecord.php?staff="+staffid!+"&subject="+StaffSubjectId+"&grade="+StaffGradeId+"&section="+StaffSectionId+"&stage="+StaffStageId);
-
+                await launch(ApiConstants.BASE_URL +
+                    "conference/advancedConferenceStaffStudentRecord.php?staff=" +
+                    staffid! +
+                    "&subject=" +
+                    StaffSubjectId +
+                    "&grade=" +
+                    StaffGradeId +
+                    "&section=" +
+                    StaffSectionId +
+                    "&stage=" +
+                    StaffStageId);
               },
               child: Text(
                 "Recorded Sessions",
@@ -131,7 +129,7 @@ class _recoredConferenceAdvancedState extends State<recoredConferenceAdvanced> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -143,7 +141,8 @@ class _recoredConferenceAdvancedState extends State<recoredConferenceAdvanced> {
               },
               child: CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('FlavorConfig.instance.values.imagePath!'),
               ),
             )
           ],
@@ -195,6 +194,4 @@ class _recoredConferenceAdvancedState extends State<recoredConferenceAdvanced> {
           )),
     );
   }
-
-
 }

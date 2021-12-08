@@ -13,6 +13,7 @@ import '../Pages/LoginPage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import 'AssignmentReplyPageFromStaff.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class StudentReplySendtoclassFromStaffContent extends StatefulWidget {
   dynamic id;
@@ -169,10 +170,11 @@ class _StudentReplySendtoclassFromStaffContentState
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('FlavorConfig.instance.values.imagePath!'),
             )
           ],
         ),

@@ -2,6 +2,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:schooleverywhere/Chat/chat.dart';
 import '../Constants/StringConstants.dart';
 import '../Modules/EventObject.dart';
 import '../Modules/Parent.dart';
@@ -11,7 +12,7 @@ import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import '../Pages/HomePage.dart';
 import '../Pages/LoginPage.dart';
-import 'ShowReceiveFromTeacherContentPage.dart';
+// import 'ShowReceiveFromTeacherContentPage.dart';
 
 class ReceiveFromTeacher extends StatefulWidget {
   final String type;
@@ -23,48 +24,48 @@ class ReceiveFromTeacher extends StatefulWidget {
 }
 
 class _ReceiveFromTeacherState extends State<ReceiveFromTeacher> {
-   Parent? loggedParent;
-   Student? loggedStudent;
+  Parent? loggedParent;
+  Student? loggedStudent;
   Map datesOptions = new Map();
   Map subjectOption = new Map();
   Map divisions = new Map();
   Map teacherOption = new Map();
   List<dynamic> dataShowContent = [];
-   String? subjectValue;
-   String? TeacherValue;
-   String? ChildrenId;
+  String? subjectValue;
+  String? TeacherValue;
+  String? ChildrenId;
   bool subjectSelected = false;
   bool TeacherSelected = false;
   List<Widget> topicsCoveredArr = [];
   List<Widget> previousTopicsCovered = [];
   TextEditingController topicsCoveredController = new TextEditingController();
-String? userId;
-String? userSection;
-String? userAcademicYear;
+  String? userId;
+  String? userSection;
+  String? userAcademicYear;
   initState() {
     super.initState();
-    if(widget.type == PARENT_TYPE)
-     getLoggedParent();
-    else   getLoggedStudent();
+    if (widget.type == PARENT_TYPE)
+      getLoggedParent();
+    else
+      getLoggedStudent();
   }
 
   Future<void> getLoggedParent() async {
-
     loggedParent = await getUserData() as Parent;
     syncReceiveFromTeacherSubject();
     userId = loggedParent!.id!;
-    userSection= loggedParent!.childeSectionSelected;
-    userAcademicYear=loggedParent!.academicYear;
-    ChildrenId=loggedParent!.regno;
+    userSection = loggedParent!.childeSectionSelected;
+    userAcademicYear = loggedParent!.academicYear;
+    ChildrenId = loggedParent!.regno;
   }
-  Future<void> getLoggedStudent() async {
 
+  Future<void> getLoggedStudent() async {
     loggedStudent = await getUserData() as Student;
     syncReceiveFromTeacherSubject();
     userId = loggedStudent!.id!;
-    userSection=loggedStudent!.section!;
-    userAcademicYear=loggedStudent!.academicYear!;
-    ChildrenId=loggedStudent!.id;
+    userSection = loggedStudent!.section!;
+    userAcademicYear = loggedStudent!.academicYear!;
+    ChildrenId = loggedStudent!.id;
   }
 
   Future<void> syncReceiveFromTeacherSubject() async {
@@ -95,11 +96,9 @@ String? userAcademicYear;
       setState(() {
         subjectOption = SubjectArr;
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEvent.object as String?;
-     /* Flushbar(
+      /* Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -113,8 +112,7 @@ String? userAcademicYear;
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
@@ -143,18 +141,16 @@ String? userAcademicYear;
       Map? data = objectEventr.object as Map?;
       List<dynamic> y = data!['staffId'];
       Map TeacherArr = new Map();
-        TeacherArr['All'] = 'All';
+      TeacherArr['All'] = 'All';
       for (int i = 0; i < y.length; i++) {
         TeacherArr[data['staffId'][i]] = data['satffName'][i];
       }
       setState(() {
         teacherOption = TeacherArr;
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEventr.object as String?;
-   /*   Flushbar(
+      /*   Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -168,8 +164,7 @@ String? userAcademicYear;
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
@@ -201,12 +196,11 @@ String? userAcademicYear;
       List<dynamic> listOfColumns = dataShowContentdata!['data'];
       setState(() {
         dataShowContent = listOfColumns;
+        print('Response from pre chat API ${dataShowContent}');
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEvents.object as String?;
-    /*  Flushbar(
+      /*  Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -220,14 +214,12 @@ String? userAcademicYear;
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     final SubjectSelect = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: DropdownButton<String>(
@@ -296,39 +288,46 @@ String? userAcademicYear;
         child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-              columns: [
-                DataColumn(label: Text("Subject")),
-                DataColumn(label: Text("Date")),
-                DataColumn(label: Text("Comment")),
-              ],
-              rows:
-                  dataShowContent // Loops through dataColumnText, each iteration assigning the value to element
-                      .map(
-                        ((element) => DataRow(
-                              cells: <DataCell>[
-                                DataCell(Text(element["Subject"])),
-                                DataCell(Text(element["Date"])),
-                                //Extracting from Map element the value
-                                DataCell(
+                scrollDirection: Axis.horizontal,
+                child: DataTable(
+                  columns: [
+                    DataColumn(label: Text("Subject")),
+                    DataColumn(label: Text("Date")),
+                    DataColumn(label: Text("")),
+                  ],
+                  rows:
+                      dataShowContent // Loops through dataColumnText, each iteration assigning the value to element
+                          .map(
+                            ((element) => DataRow(
+                                  cells: <DataCell>[
+                                    DataCell(Text(element["Subject"])),
+                                    DataCell(Text(element["Date"])),
+                                    //Extracting from Map element the value
+                                    DataCell(
+                                      Text(
+                                        'Reply',
+                                        style: TextStyle(
+                                            color: Colors.lightBlue,
+                                            fontSize: 14),
+                                      ),
+                                      onTap: () {
+                                        //TODO: Change the module of reply to be like a chat   SendToClassReplyPage(widget.type, widget.id))
 
-                                  Text('Read Comment',style: TextStyle(color: Colors.lightBlue, fontSize: 14),),
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        new MaterialPageRoute(
-                                            builder: (context) =>
-                                                ShowReceiveFromTeacherContentPage(
-                                                    element["id"].toString(),widget.type)));
-                                  },
-                                ),
-                              ],
-                            )),
-                      )
-                      .toList(),
-            ))
-        ));
+                                        Navigator.push(
+                                            context,
+                                            new MaterialPageRoute(
+                                                builder: (context) => Chat(
+                                                    ChildrenId!,
+                                                    element["id"].toString(),
+                                                    widget.type,
+                                                    element['Subjectid'])));
+                                      },
+                                    ),
+                                  ],
+                                )),
+                          )
+                          .toList(),
+                ))));
 
     final body = Center(
       child: Column(
@@ -345,11 +344,12 @@ String? userAcademicYear;
               : Container(),
           TeacherSelected
               ? new Expanded(
-              child:ListView(
-                children: <Widget>[
-                  showData,
-                ],
-              )): Container(),
+                  child: ListView(
+                  children: <Widget>[
+                    showData,
+                  ],
+                ))
+              : Container(),
         ],
       ),
     );
@@ -362,8 +362,12 @@ String? userAcademicYear;
             Text(SCHOOL_NAME),
             GestureDetector(
               onTap: () {
-                Navigator.of(context).pushReplacement(
-                    new  MaterialPageRoute(builder: (context) => HomePage(type: widget.type, sectionid: userSection!, Id: ChildrenId!, Academicyear: userAcademicYear!)));
+                Navigator.of(context).pushReplacement(new MaterialPageRoute(
+                    builder: (context) => HomePage(
+                        type: widget.type,
+                        sectionid: userSection!,
+                        Id: ChildrenId!,
+                        Academicyear: userAcademicYear!)));
               },
               child: CircleAvatar(
                 radius: 20,
@@ -388,21 +392,25 @@ String? userAcademicYear;
       ),
       floatingActionButton: FloatingActionButton(
           elevation: 55,
-          onPressed: (){
-            logOut(widget.type,userId!);
+          onPressed: () {
+            logOut(widget.type, userId!);
             removeUserData();
-            while(Navigator.canPop(context)){
+            while (Navigator.canPop(context)) {
               Navigator.pop(context);
             }
 //          Navigator.pop(context);
             Navigator.of(context).pushReplacement(
-                new  MaterialPageRoute(builder: (context) => LoginPage()));
+                new MaterialPageRoute(builder: (context) => LoginPage()));
           },
-          child:Icon(FontAwesomeIcons.doorOpen,color: AppTheme.floatingButtonColor, size: 30,),
+          child: Icon(
+            FontAwesomeIcons.doorOpen,
+            color: AppTheme.floatingButtonColor,
+            size: 30,
+          ),
           backgroundColor: Colors.transparent,
-          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0),)
-
-      ),
+          shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(30.0),
+          )),
     );
   }
 }

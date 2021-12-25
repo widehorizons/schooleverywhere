@@ -1,5 +1,6 @@
 // import 'package:get_version/get_version.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:schooleverywhere/Staff/UploadedTimeTable.dart';
 import '../Student/CambridgeConferenceStudentSession.dart';
 import '../Staff/CambridgeAdvancedStudentConferencePage.dart';
 import '../Staff/CambridgeStudentConferencePage.dart';
@@ -341,6 +342,14 @@ class _HomePageState extends State<HomePage> {
         return Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => TimeTable(widget.type)),
+        );
+      } else if (linkName == "Uploaded Time Table") {
+        return Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => UploadedTimeTable(
+                    type: widget.type,
+                  )),
         );
       } else if (linkName == "Automatic Time Table") {
         return Navigator.push(
@@ -816,6 +825,14 @@ class _HomePageState extends State<HomePage> {
         return Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => MailInboxPage(widget.type)),
+        );
+      } else if (linkName == "Uploaded Time Table") {
+        return Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => UploadedTimeTable(
+                    type: widget.type,
+                  )),
         );
       } else if (linkName == "By Select") {
         return Navigator.push(

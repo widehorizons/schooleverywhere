@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:async/async.dart';
 import 'package:http/http.dart' as http;
@@ -290,6 +291,7 @@ Future<EventObject> gradeStaffOptions(
 Future<EventObject> semesterOptions(
     String section, String year, String id) async {
   String myUrl = ApiConstants.SEMESTER_API;
+  print("Senester selection ===> $myUrl [$section] [$year] [$id]");
   Map mapValue;
   EventObject eventObject = new EventObject();
   try {
@@ -361,6 +363,9 @@ Future<EventObject> semesterStaffOptions(
   String myUrl = ApiConstants.SEMESTER_STAFF_API;
   Map mapValue;
   EventObject eventObject = new EventObject();
+  print(
+      "Senester selection ===> $myUrl [$section] [$stage]  [$grade] [$year] ");
+
   try {
     var response = await http.post(Uri.parse(myUrl), headers: {
       'Accept': 'application/json'
@@ -608,6 +613,7 @@ Future<EventObject> homePageOptions(String type, String Sectionid, String ID,
       });
     } else if (type == MANAGEMENT_TYPE) {
       myUrl = ApiConstants.PAGES_MANAGEMENT_API;
+
       response = await http.post(Uri.parse(myUrl),
           headers: {'Accept': 'application/json'},
           body: {"staffId": ID.toString()});
@@ -761,6 +767,8 @@ Future<EventObject> getReceiveFromTeacherShow(
     String Staffid,
     String ClassStudent) async {
   String myUrl = ApiConstants.GET_STUDENT_OF_RECEIVE_FROM_TEACHER_API;
+  print(
+      "[getReceiveFromTeacherShow] ==> Body{$section, $year , $stage , $grade , $semester , $subject , $Staffid , $ClassStudent} URL: $myUrl");
   Map mapValue;
   EventObject eventObject = new EventObject();
   try {
@@ -1143,8 +1151,10 @@ Future<dynamic> uploadFile(List selectedFile, url) async {
 }
 
 addSendToClass(
+    File voice,
     List fileslist,
     String comment,
+    String url,
     String staffId,
     String staffName,
     String year,
@@ -1163,11 +1173,10 @@ addSendToClass(
     dynamic files = jsonEncode(fileslist);
     dynamic classes = jsonEncode(staffClass);
     print(files.toString());
-    var response = await http.post(Uri.parse(myUrl), headers: {
-      'Accept': 'application/json'
-    }, body: {
+    Map<String, String> body = {
       "FileName": files,
       "Comment": comment,
+      "url": url,
       "StaffId": staffId,
       "StaffName": staffName,
       "SectionId": section,
@@ -1177,7 +1186,13 @@ addSendToClass(
       "ClassId": classes,
       "SubjectId": subject,
       "Year": year,
-    });
+    };
+
+    var request = http.MultipartRequest('POST', Uri.parse(myUrl));
+    request.fields.addAll(body);
+    request.files.add(await http.MultipartFile.fromPath('voice', voice.path));
+    final http.StreamedResponse streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
     if (response != null) {
       print('Response status : ${response.statusCode}');
       print('Response body : ${response.body}');
@@ -1208,6 +1223,67 @@ Future<EventObject> getUserDataRec(String id) async {
   try {
     var response = await http.post(Uri.parse(myUrl),
         headers: {'Accept': 'application/json'}, body: {"id": id});
+    if (response != null) {
+      Map mapValue = json.decode(response.body);
+      if (mapValue['success']) {
+        eventObject.success = true;
+        eventObject.object = mapValue;
+        return eventObject;
+      } else {
+        eventObject.success = false;
+        eventObject.object = mapValue['message'];
+        return eventObject;
+      }
+    } else {
+      return eventObject;
+    }
+  } catch (e) {
+    return eventObject;
+  }
+}
+
+//####################Chat Reply test ##########
+Future<EventObject> getStudentMessages(String messageId, String regno) async {
+  EventObject eventObject = new EventObject();
+  eventObject.success = false;
+  eventObject.object = "Some error happened.. try again later";
+  String myUrl = ApiConstants.STUDENT_CHAT_MESSAGES;
+  print("Fetching Studnt Replies API ==== > [$myUrl] [$messageId]  [$regno]");
+  try {
+    var response = await http.post(Uri.parse(myUrl),
+        headers: {'Accept': 'application/json'},
+        body: {"id": messageId, "regno": regno});
+    if (response != null) {
+      Map mapValue = json.decode(response.body);
+      if (mapValue['success']) {
+        eventObject.success = true;
+        eventObject.object = mapValue;
+        return eventObject;
+      } else {
+        eventObject.success = false;
+        eventObject.object = mapValue['message'];
+        return eventObject;
+      }
+    } else {
+      return eventObject;
+    }
+  } catch (e) {
+    return eventObject;
+  }
+}
+
+Future<EventObject> readReplySentToClass(
+    String messageId, String regno, String staffid) async {
+  EventObject eventObject = new EventObject();
+  eventObject.success = false;
+  eventObject.object = "Some error happened.. try again later";
+  String myUrl = ApiConstants.READ_REPLY_SENT_TO_CLASS;
+  print(
+      "Fetching Studnt Replies API for Staff ==== > [$myUrl] [$messageId]  [$regno] [$staffid]");
+  try {
+    var response = await http.post(Uri.parse(myUrl),
+        headers: {'Accept': 'application/json'},
+        body: {"mainid": messageId, "regno": regno, "staffid": staffid});
     if (response != null) {
       Map mapValue = json.decode(response.body);
       if (mapValue['success']) {
@@ -1480,7 +1556,7 @@ Future<EventObject> ReplyMailIboxStudent(
 Future<EventObject> getMessageDetails(
     String msgId, String section, String flag) async {
   String myUrl = ApiConstants.GET_MESSAGE_DETAILS_API;
-  print("urlm" + myUrl);
+  print("url" + myUrl + "id" "$msgId" "section" "$section" "flag" "$flag");
   EventObject eventObject = new EventObject();
   eventObject.success = false;
   eventObject.object = "Some error happened.. try again later";
@@ -1490,6 +1566,7 @@ Future<EventObject> getMessageDetails(
         body: {"id": msgId, "section": section, "flag": flag});
     if (response != null) {
       Map mapValue = json.decode(response.body);
+      print(mapValue);
       if (mapValue["success"]) {
         eventObject.success = true;
         eventObject.object = mapValue;
@@ -1671,12 +1748,16 @@ addMailInboxStaff(
     List parentList,
     String title,
     String message,
-    String regno) async {
+    String regno,
+    String url) async {
   String myUrl = ApiConstants.ADD_MAIL_INBOX_STAFF_API;
+
   dynamic files = jsonEncode(filesList);
   dynamic studentListEncode = jsonEncode(studentList);
   dynamic parentListEncode = jsonEncode(parentList);
   dynamic mangerEncode = jsonEncode(manger);
+  print(
+      "data Sent ===> $files $year $id $studentList $title $message $regno $url");
   var response = await http.post(Uri.parse(myUrl), headers: {
     'Accept': 'application/json'
   }, body: {
@@ -1688,8 +1769,11 @@ addMailInboxStaff(
     "message": message,
     "managers": mangerEncode,
     "regno": regno,
-    "parentid": parentListEncode
+    "parentid": parentListEncode,
+    "url": url
   });
+  print(
+      " year $year,staffid: $id,regnum $studentListEncode title: $title message $message managers: $mangerEncode, regno $regno parentid $parentListEncode,url $url");
   if (response != null) {
     print('Response status : ${response.statusCode}');
     print('Response bodyssss : ${response.body}');
@@ -3314,6 +3398,39 @@ Future<dynamic> addBySelect(
     "staffid": id,
     "title": title,
     "message": message,
+    "section": section,
+    "stage": stage,
+    "grade": grade,
+    "class": classselected
+  });
+  if (response != null) {
+    print('Response status : ${response.statusCode}');
+    print('Response bodyssss : ${response.body}');
+    return true;
+  } else {
+    print("addSendToClass: noResponse");
+    return false;
+  }
+}
+
+Future<dynamic> uploadTimeTable(
+  List filesList,
+  String year,
+  String section,
+  String stage,
+  String grade,
+  String classselected,
+  String semester,
+) async {
+  String myUrl = ApiConstants.ADD_UPLOADED_TIME_TABLE_API;
+  dynamic files = jsonEncode(filesList);
+
+  var response = await http.post(Uri.parse(myUrl), headers: {
+    'Accept': 'application/json'
+  }, body: {
+    "file": files,
+    "year": year,
+    "semester": semester,
     "section": section,
     "stage": stage,
     "grade": grade,
@@ -5793,6 +5910,7 @@ Future<EventObject> ReplySendToClassStudent(
   eventObject.object = "Some error happened.. try again later";
 
   String myUrl = ApiConstants.REPLY_SENDTOCLASS_STUDENT_API;
+  print("Reply : $myUrl");
   try {
     dynamic files = jsonEncode(fileslist);
     Map body = {
@@ -5819,6 +5937,124 @@ Future<EventObject> ReplySendToClassStudent(
   return eventObject;
 }
 
+Future<EventObject> replyReplySendtoclassStudent(
+    List fileslist,
+    String message,
+    String regno,
+    String id,
+    String staffid,
+    String staffName,
+    String subjectId,
+    String year) async {
+  EventObject eventObject = new EventObject();
+  eventObject.success = false;
+  eventObject.object = "Some error happened.. try again later";
+
+  String myUrl = ApiConstants.Reply_Reply_Send_To_Class_Student;
+  print(
+      "Reply from student : $myUrl  [$id] [$message] [$regno] [$staffName] [$staffid] [$subjectId] [$year]  ");
+  try {
+    Map<String, String> body = {
+      "message": message,
+      "regno": regno,
+      "id": id,
+      "staffid": staffid,
+      "staffname": staffName,
+      "subjectid": subjectId,
+      "year": year
+    };
+    var request = http.MultipartRequest('POST', Uri.parse(myUrl));
+    request.fields.addAll(body);
+    fileslist.forEach((element) async {
+      request.files.add(await http.MultipartFile.fromPath(
+          'FileName[]', File(element.path).absolute.path));
+    });
+
+    final http.StreamedResponse streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+    if (response.statusCode == 200) {
+      print(await response);
+    } else {
+      print(response.reasonPhrase);
+    }
+
+    if (response != null) {
+      print("Reply from student Response : ====> ${response.body}");
+      Map mapValue = json.decode(response.body);
+      if (mapValue["success"]) {
+        eventObject.success = true;
+        eventObject.object = mapValue;
+      } else {
+        print("Reply from student Response : ====> ${response.body}");
+        eventObject.object = mapValue["message"];
+      }
+      return eventObject;
+    }
+  } catch (e) {
+    return eventObject;
+  }
+  return eventObject;
+}
+
+Future<EventObject> replyReplySendtoclassReadStaffStudent(
+    List fileslist,
+    String message,
+    String regno,
+    String id,
+    String staffid,
+    String staffName,
+    String subjectId,
+    String year) async {
+  EventObject eventObject = new EventObject();
+  eventObject.success = false;
+  eventObject.object = "Some error happened.. try again later";
+
+  String myUrl = ApiConstants.Reply_Reply_Send_To_Class_READ_STAFF_STUDENT;
+  print(
+      "Reply from student : $myUrl [$id] [$message] [$regno] [$staffName] [$staffid] [$subjectId] [$year]");
+  try {
+    Map<String, String> body = {
+      "message": message,
+      "regno": regno,
+      "mainid": id,
+      "staffid": staffid,
+      "staffname": staffName,
+      "subjectid": subjectId,
+      "year": year
+    };
+    var request = http.MultipartRequest('POST', Uri.parse(myUrl));
+    request.fields.addAll(body);
+    fileslist.forEach((element) async {
+      request.files.add(await http.MultipartFile.fromPath(
+          'FileName[]', File(element.path).absolute.path));
+    });
+
+    final http.StreamedResponse streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+    if (response.statusCode == 200) {
+      print(await response);
+    } else {
+      print(response.reasonPhrase);
+    }
+
+    if (response != null) {
+      print("Reply from student Response : ====> ${response.body}");
+      Map mapValue = json.decode(response.body);
+      if (mapValue["success"]) {
+        eventObject.success = true;
+        eventObject.object = mapValue;
+      } else {
+        print("Reply from student Response : ====> ${response.body}");
+        eventObject.object = mapValue["message"];
+      }
+      return eventObject;
+    }
+  } catch (e) {
+    return eventObject;
+  }
+  return eventObject;
+}
+
 Future<EventObject> getStudentReplySendtoclassFromStaff(
     String year,
     String staffId,
@@ -5828,7 +6064,8 @@ Future<EventObject> getStudentReplySendtoclassFromStaff(
     String subjectId,
     String classId) async {
   String myUrl = ApiConstants.GET_STUDENT_REPLY_FROM_STAFF_OF_SENDTOCLASS_API;
-  print("send to class Reply from student ==> {$myUrl}");
+  print(
+      "send to class Reply from student ==> {$myUrl} Data :  $year, $staffId , $sectionId , $stageId , $gradeId , $subjectId , $classId");
   Map mapValue;
   EventObject eventObject = new EventObject();
   try {
@@ -5842,6 +6079,53 @@ Future<EventObject> getStudentReplySendtoclassFromStaff(
       "gradeid": gradeId,
       "subjectid": subjectId,
       "classid": classId,
+    });
+    if (response != null) {
+      mapValue = json.decode(response.body);
+      if (mapValue['success']) {
+        eventObject.success = true;
+        eventObject.object = mapValue;
+        return eventObject;
+      } else {
+        eventObject.success = false;
+        eventObject.object = mapValue['message'];
+        return eventObject;
+      }
+    }
+    return eventObject;
+  } catch (e) {
+    eventObject.success = false;
+    eventObject.object = "Some error happened.. try again later";
+    return eventObject;
+  }
+}
+
+Future<EventObject> getreplayfromsendtoclassfromstudents(
+    String year,
+    String staffId,
+    String sectionId,
+    String stageId,
+    String gradeId,
+    String subjectId,
+    String classId,
+    String semesterId) async {
+  String myUrl = ApiConstants.GET_REPLY_FROM_SEND_TO_CLASS_FROM_STUDENTS;
+  print(
+      "send to class Replies from student  ==> {$myUrl} Data :  $year, $staffId , $sectionId , $stageId , $gradeId , $subjectId , $classId , $semesterId");
+  Map mapValue;
+  EventObject eventObject = new EventObject();
+  try {
+    var response = await http.post(Uri.parse(myUrl), headers: {
+      'Accept': 'application/json'
+    }, body: {
+      "year": year,
+      "staffid": staffId,
+      "section": sectionId,
+      "stage": stageId,
+      "grade": gradeId,
+      "subject": subjectId,
+      "class": classId,
+      "semester": semesterId
     });
     if (response != null) {
       mapValue = json.decode(response.body);

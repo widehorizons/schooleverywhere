@@ -36,7 +36,7 @@ class DownloadListState extends State<DownloadList> {
     _bindBackgroundIsolate();
 
     FlutterDownloader.registerCallback(downloadCallback);
-
+    print("Attached Files here ${widget.Attachment}");
     _isLoading = true;
     _permissionReady = false;
 
@@ -96,6 +96,9 @@ class DownloadListState extends State<DownloadList> {
             : _permissionReady
                 ? new Expanded(
                     child: new ListView(
+                      physics: (_items.length <= 1)
+                          ? NeverScrollableScrollPhysics()
+                          : BouncingScrollPhysics(),
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       children: _items
                           .map((item) => item.task == null
@@ -132,7 +135,8 @@ class DownloadListState extends State<DownloadList> {
                                       children: <Widget>[
                                         new Container(
                                           width: double.infinity,
-                                          height: 64.0,
+                                          height:
+                                              (_items.length <= 1) ? 20 : 64.0,
                                           child: new Row(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.center,
@@ -299,7 +303,7 @@ class DownloadListState extends State<DownloadList> {
         ],
       );
     } else {
-      return null!;
+      return Icon(Icons.error_outline);
     }
   }
 
@@ -356,19 +360,6 @@ class DownloadListState extends State<DownloadList> {
           Permission.storage,
         ].request();
       }
-      // PermissionStatus permission = await PermissionHandler()
-      //     .checkPermissionStatus(PermissionGroup.storage);
-      // if (permission != PermissionStatus.granted) {
-      //   Map<PermissionGroup, PermissionStatus> permissions =
-      //       await PermissionHandler()
-      //           .requestPermissions([PermissionGroup.storage]);
-      //   if (permissions[PermissionGroup.storage] == PermissionStatus.granted) {
-      //     return true;
-      //   }
-      // } else {
-      //   return true;
-      // }
-      // return true;
     } else {
       return true;
     }
@@ -383,7 +374,7 @@ class DownloadListState extends State<DownloadList> {
     _items = [];
 
     _tasks!.addAll(_documents.map((document) =>
-        _TaskInfo(name: document['name'], link: document['link'])));
+        _TaskInfo(name: document['name'] ?? "", link: document['link'])));
 
     // _items.add(_ItemHolder(name: 'Documents', task: null));
     for (int i = count; i < _tasks!.length; i++) {

@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 // import 'package:downloads_path_provider/downloads_path_provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:flushbar/flushbar.dart';
@@ -12,14 +11,13 @@ import '../Modules/Student.dart';
 import '../Networking/Futures.dart';
 import '../Pages/DownloadList.dart';
 import '../Pages/LoginPage.dart';
-import '../Student/MailInboxContentsPage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import 'SendToClassReplyPage.dart';
 import '../Student/viewAudioPage.dart';
 
 class ShowReceiveFromTeacherContentPage extends StatefulWidget {
-  dynamic id;
+  final dynamic id;
   final String type;
 
   ShowReceiveFromTeacherContentPage(this.id, this.type);

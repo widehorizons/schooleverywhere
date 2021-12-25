@@ -1,9 +1,13 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:schooleverywhere/Chat/cubit/chatcubit_cubit.dart';
+import 'Chat/app_bloc_observer.dart';
 import 'Pages/SplashScreen.dart';
+import 'Staff/SendToClass.dart';
 import 'Student/ReceiveFromTeacher.dart';
 import 'Student/MailInboxPage.dart';
 import 'Student/Attendance.dart';
@@ -11,7 +15,6 @@ import 'Student/StudentAssignments.dart';
 import 'Pages/StudentPage.dart';
 import 'Pages/StaffPage.dart';
 import 'Pages/ParentPage.dart';
-import 'Staff/SendToClass.dart';
 import 'Staff/Assignments.dart';
 import 'Pages/ManagementPage.dart';
 import 'SharedPreferences/Prefs.dart';
@@ -35,6 +38,7 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  Bloc.observer = AppBlocObserver();
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -49,7 +53,7 @@ Future<void> main() async {
     sound: true,
   );
   await FlutterDownloader.initialize();
-  runApp(new MyApp());
+  runApp(new BlocProvider(create: (context) => ChatCubit(), child: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -63,6 +67,7 @@ class _MyAppState extends State<MyApp> {
   String textValue = 'Hello World !';
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       new FlutterLocalNotificationsPlugin();
+  late ChatCubit chatCubit;
 
   String? typeUser;
   bool isLoading = false;
@@ -71,7 +76,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     getLoggedInUser();
-
+    chatCubit = BlocProvider.of<ChatCubit>(context);
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage? message) {
@@ -120,13 +125,17 @@ class _MyAppState extends State<MyApp> {
 
   void _notificationNavigator(RemoteMessage? message) {
     Map<String, dynamic> messageData = message!.data;
-
+    print("Notification Data ==================>> $messageData");
     switch (messageData['screen']) {
       case "ReceiveFromTeacher":
         navigatorKey.currentState!.push(
             MaterialPageRoute(builder: (_) => ReceiveFromTeacher(typeUser!)));
         break;
       case "Mail Inbox":
+        navigatorKey.currentState!
+            .push(MaterialPageRoute(builder: (_) => MailInboxPage(typeUser!)));
+        break;
+      case "New Mailbox":
         navigatorKey.currentState!
             .push(MaterialPageRoute(builder: (_) => MailInboxPage(typeUser!)));
         break;
@@ -139,8 +148,11 @@ class _MyAppState extends State<MyApp> {
             MaterialPageRoute(builder: (_) => StudentAssignments(typeUser!)));
         break;
       case "Reply Send to class":
-        navigatorKey.currentState!
-            .push(MaterialPageRoute(builder: (_) => SendToClass()));
+        print("Notification Data For Chat ==================>> $messageData");
+        chatCubit.getAllMessages(
+            messageData['role'], messageData['id'], messageData['regno'],
+            staffid: messageData['staffid']);
+
         break;
       case "Reply Assignment":
         navigatorKey.currentState!

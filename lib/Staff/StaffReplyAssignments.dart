@@ -138,7 +138,7 @@ class _StaffReplyAssignmentsState extends State<StaffReplyAssignments> {
                   columns: [
                     DataColumn(label: Text("Name")),
                     DataColumn(label: Text("Date")),
-                    DataColumn(label: Text("Description")),
+                    DataColumn(label: Text("")),
                   ],
                   rows:
                       dataShowContent // Loops through dataColumnText, each iteration assigning the value to element

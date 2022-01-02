@@ -1,20 +1,20 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart' as p;
-import 'package:html2md/html2md.dart' as html2md;
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:flutter/material.dart';
-
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'cubit/chatcubit_cubit.dart';
+
 import '../Constants/StringConstants.dart';
+import '../Modules/Parent.dart';
 import '../Modules/Staff.dart';
 import '../Modules/Student.dart';
 import '../Networking/ApiConstants.dart';
@@ -23,10 +23,9 @@ import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import '../widget/full_photo.dart';
 import '../widget/loading.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'Model/chat_messages.dart';
 import 'components/chat_player_widget.dart';
+import 'cubit/chatcubit_cubit.dart';
 import 'keyboard_unit.dart';
 
 class Chat extends StatefulWidget {
@@ -89,6 +88,7 @@ class ChatScreenState extends State<ChatScreen> {
   late String groupChatId;
   late SharedPreferences prefs;
   Staff? loggedStaff;
+  Parent? loggedParent;
   String? year;
   Student? loggedStudent;
   late File imageFile;
@@ -128,6 +128,11 @@ class ChatScreenState extends State<ChatScreen> {
       year = loggedStudent!.academicYear!;
       print("studentData " + loggedStudent!.id! + " " + widget.id);
       getData();
+    } else if (widget.type == PARENT_TYPE) {
+      print("Chat For Parent");
+      loggedParent = await getUserData() as Parent;
+      year = loggedParent!.academicYear;
+      getData();
     } else {
       loggedStaff = await getUserData() as Staff;
       year = loggedStaff!.academicYear!;
@@ -140,7 +145,7 @@ class ChatScreenState extends State<ChatScreen> {
 
   Future<void> getData() async {
     print("ID:" + widget.id.toString());
-    if (widget.type == 'Student') {
+    if (widget.type == 'Student' || widget.type == PARENT_TYPE) {
       BlocProvider.of<ChatCubit>(context).getAllMessages(
         widget.type,
         widget.id,
@@ -440,7 +445,7 @@ class ChatScreenState extends State<ChatScreen> {
                 (message.replymessage!.trim() != '')
                     ? Container(
                         child: Text(
-                          html2md.convert(message.replymessage!),
+                          message.replymessage!,
                           style: TextStyle(color: Colors.white),
                         ),
                         padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),

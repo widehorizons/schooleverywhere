@@ -201,7 +201,9 @@ class _ChatPlayerWidgetState extends State<ChatPlayerWidget> {
             _position!.inMilliseconds < _duration!.inMilliseconds)
         ? _position
         : null;
-    final result = await _audioPlayer.play(widget.url, position: playPosition);
+    final result = await _audioPlayer.play(
+        "https://schooleverywhere-fisluxor.com/schooleverywhere/recorde/html/soundTeacherRecorde/2132052831473c182d3e14014fa24ce197009f433b129201210308.wav",
+        position: playPosition);
     if (result == 1) setState(() => _playerState = PlayerState.playing);
 
     // default playback rate is 1.0

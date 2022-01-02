@@ -1,8 +1,9 @@
-import 'package:schooleverywhere/Constants/StringConstants.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:schooleverywhere/Modules/EventObject.dart';
-import 'package:schooleverywhere/Networking/Futures.dart';
+
+import '../../Constants/StringConstants.dart';
+import '../../Modules/EventObject.dart';
+import '../../Networking/Futures.dart';
 
 part 'chatcubit_state.dart';
 
@@ -44,7 +45,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   getAllMessages(String role, String messageId, String regno,
       {String? staffid}) async {
-    if (role == STUDENT_TYPE) {
+    if (role == STUDENT_TYPE || role == PARENT_TYPE) {
       print(
           "get messages from cubit is working well [$role] [$messageId] [$regno]");
       EventObject eventObject = await getStudentMessages(messageId, regno);

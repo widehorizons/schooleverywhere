@@ -356,7 +356,7 @@ class _SendToClassReplyPageState extends State<SendToClassReplyPage> {
                 radius: 20,
                 backgroundColor: Colors.transparent,
                 backgroundImage:
-                    AssetImage('FlavorConfig.instance.values.imagePath!'),
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],

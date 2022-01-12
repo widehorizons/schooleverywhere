@@ -18,7 +18,8 @@ Future<void> main() async {
           baseUrl: "https://schooleverywhere-try.com/schooleverywhere/",
           schoolName: 'Schooleverywhere',
           schoolWebsite: 'https://schooleverywhere-try.com/',
-          imagePath: 'img/schooleverywhere.png'));
+          imagePath: 'img/schooleverywhere.png',
+          audioFilePath: '/data/user/0/com.schooleverywhere/cache/audio.wav'));
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -36,6 +37,6 @@ Future<void> main() async {
     badge: true,
     sound: true,
   );
-  await FlutterDownloader.initialize();
+  await FlutterDownloader.initialize(debug: true);
   runApp(new BlocProvider(create: (context) => ChatCubit(), child: MyApp()));
 }

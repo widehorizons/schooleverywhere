@@ -355,7 +355,7 @@ class _ProgressReportIndex2State extends State<ProgressReportIndex2> {
               backgroundColor: Colors.transparent,
               radius: 20,
               backgroundImage:
-                  AssetImage('FlavorConfig.instance.values.imagePath!'),
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),

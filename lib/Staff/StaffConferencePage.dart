@@ -116,7 +116,7 @@ class _StaffConferencePageState extends State<StaffConferencePage> {
             CircleAvatar(
               radius: 20,
               backgroundImage:
-                  AssetImage('FlavorConfig.instance.values.imagePath!'),
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),

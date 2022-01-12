@@ -217,7 +217,7 @@ class _ProgressReportPageState extends State<ProgressReportPage> {
               backgroundColor: Colors.transparent,
               radius: 20,
               backgroundImage:
-                  AssetImage('FlavorConfig.instance.values.imagePath!'),
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),

@@ -382,7 +382,7 @@ class _PreviousVacationRequestState extends State<PreviousVacationRequest> {
                 radius: 20,
                 backgroundColor: Colors.transparent,
                 backgroundImage:
-                    AssetImage('FlavorConfig.instance.values.imagePath!'),
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],

@@ -524,7 +524,7 @@ class ByClassPageState extends State<ByClassPage> {
             CircleAvatar(
               radius: 20,
               backgroundImage:
-                  AssetImage('FlavorConfig.instance.values.imagePath!'),
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),

@@ -667,7 +667,7 @@ class StudentAttendanceState extends State<StudentAttendance> {
             CircleAvatar(
               radius: 20,
               backgroundImage:
-                  AssetImage('FlavorConfig.instance.values.imagePath!'),
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),

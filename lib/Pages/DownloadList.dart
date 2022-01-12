@@ -21,6 +21,7 @@ class DownloadList extends StatefulWidget with WidgetsBindingObserver {
 }
 
 class DownloadListState extends State<DownloadList> {
+  static const debug = true;
   List<_TaskInfo>? _tasks;
   late List<_ItemHolder> _items;
   late bool _isLoading;
@@ -77,10 +78,20 @@ class DownloadListState extends State<DownloadList> {
     IsolateNameServer.removePortNameMapping('downloader_send_port');
   }
 
+  // static void downloadCallback(
+  //     String id, DownloadTaskStatus status, int progress) {
+  //   print(
+  //       'Background Isolate Callback: task ($id) is in status ($status) and process ($progress)');
+  //   final SendPort send =
+  //       IsolateNameServer.lookupPortByName('downloader_send_port')!;
+  //   send.send([id, status, progress]);
+  // }
   static void downloadCallback(
       String id, DownloadTaskStatus status, int progress) {
-    print(
-        'Background Isolate Callback: task ($id) is in status ($status) and process ($progress)');
+    if (debug) {
+      print(
+          'Background Isolate Callback: task ($id) is in status ($status) and process ($progress)');
+    }
     final SendPort send =
         IsolateNameServer.lookupPortByName('downloader_send_port')!;
     send.send([id, status, progress]);
@@ -308,6 +319,8 @@ class DownloadListState extends State<DownloadList> {
   }
 
   void _requestDownload(_TaskInfo task) async {
+    print(
+        "downloading task ${task.name} has status [${task.status}] and ${task.progress}");
     task.taskId = (await FlutterDownloader.enqueue(
         url: task.link!,
         headers: {"auth": "test_for_sql_encoding"},

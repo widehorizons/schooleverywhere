@@ -1194,6 +1194,7 @@ addSendToClass(
     final http.StreamedResponse streamedResponse = await request.send();
     final response = await http.Response.fromStream(streamedResponse);
     if (response != null) {
+      print('Response URL : ${response.request!.url}');
       print('Response status : ${response.statusCode}');
       print('Response body : ${response.body}');
       mapValue = json.decode(response.body);

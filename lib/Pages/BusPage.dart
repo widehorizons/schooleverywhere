@@ -1,7 +1,6 @@
 import 'dart:async';
 import '../config/flavor_config.dart';
 
-import '../Constants/StringConstants.dart';
 import '../SharedPreferences/Prefs.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,6 @@ import '../Style/theme.dart';
 import 'package:location/location.dart' as prefix;
 import 'package:flutter/services.dart';
 
-import '../Modules/Bus.dart';
 import '../Modules/User.dart';
 import 'LoginPage.dart';
 
@@ -115,7 +113,7 @@ class _BusPageState extends State<BusPage> {
               backgroundColor: Colors.transparent,
               radius: 20,
               backgroundImage:
-                  AssetImage('FlavorConfig.instance.values.imagePath!'),
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),

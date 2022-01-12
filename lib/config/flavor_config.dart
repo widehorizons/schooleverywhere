@@ -2,19 +2,21 @@ import 'package:flutter/material.dart';
 
 import 'string_utils.dart';
 
-enum Flavor { SCHOOLEVERYWHERE, ALROWAD }
+enum Flavor { SCHOOLEVERYWHERE, ALROWAD, GOLDEN }
 
 class FlavorValues {
   FlavorValues({
     required this.imagePath,
     required this.schoolName,
     required this.schoolWebsite,
+    required this.audioFilePath,
     required this.baseUrl,
   });
 
   final String? baseUrl;
   final String? schoolName;
   final String? schoolWebsite;
+  final String? audioFilePath;
   final String? imagePath;
   //Add other flavor specific values, e.g database name
 

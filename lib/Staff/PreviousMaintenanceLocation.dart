@@ -232,7 +232,7 @@ class _PreviousMaintenanceLocationState
                 radius: 20,
                 backgroundColor: Colors.transparent,
                 backgroundImage:
-                    AssetImage('FlavorConfig.instance.values.imagePath!'),
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],

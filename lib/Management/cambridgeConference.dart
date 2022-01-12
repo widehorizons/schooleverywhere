@@ -171,7 +171,7 @@ class cambridgeConferenceState extends State<cambridgeConference> {
             CircleAvatar(
               radius: 20,
               backgroundImage:
-                  AssetImage('FlavorConfig.instance.values.imagePath!'),
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),

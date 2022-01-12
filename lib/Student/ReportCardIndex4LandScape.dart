@@ -207,7 +207,7 @@ class _ReportCardIndex4LandScapeState extends State<ReportCardIndex4LandScape> {
               backgroundColor: Colors.transparent,
               radius: 20,
               backgroundImage:
-                  AssetImage('FlavorConfig.instance.values.imagePath!'),
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),

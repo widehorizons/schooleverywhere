@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:record/record.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class AudioRecorder extends StatefulWidget {
   final void Function(String path) onStop;
@@ -142,8 +143,7 @@ class _AudioRecorderState extends State<AudioRecorder> {
     try {
       if (await _audioRecorder.hasPermission()) {
         await _audioRecorder.start(
-            path: "/data/user/0/com.schooleverywhere/cache/audio.wav");
-
+            path: '/storage/emulated/0/Download/temp.wav');
         bool isRecording = await _audioRecorder.isRecording();
         setState(() {
           _isRecording = isRecording;

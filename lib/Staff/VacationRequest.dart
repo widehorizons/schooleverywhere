@@ -415,7 +415,7 @@ class _VacationRequestState extends State<VacationRequest> {
               child: CircleAvatar(
                 radius: 20,
                 backgroundImage:
-                    AssetImage('FlavorConfig.instance.values.imagePath!'),
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],

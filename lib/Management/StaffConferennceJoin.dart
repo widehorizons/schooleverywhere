@@ -17,25 +17,27 @@ import '../Networking/Futures.dart';
 import '../Pages/LoginPage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
-import 'package:jitsi_meet/jitsi_meet.dart';
+// import 'package:jitsi_meet/jitsi_meet.dart';
 
 class StaffConferennceJoin extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() {
     return new StaffConferennceJoinState();
   }
 }
 
-
 class StaffConferennceJoinState extends State<StaffConferennceJoin> {
-
-   Management? loggedManagement;
-   String? userAcademicYear,userSection,userSectionName,userId,userType,userName;
-   int? JoinStaff;
-   String? urlConference;
-   String? IdRowJoin;
-  List<dynamic>  listOfMessage = [];
+  Management? loggedManagement;
+  String? userAcademicYear,
+      userSection,
+      userSectionName,
+      userId,
+      userType,
+      userName;
+  int? JoinStaff;
+  String? urlConference;
+  String? IdRowJoin;
+  List<dynamic> listOfMessage = [];
   var isAudioOnly = true;
   var isAudioMuted = true;
   var isVideoMuted = true;
@@ -44,25 +46,25 @@ class StaffConferennceJoinState extends State<StaffConferennceJoin> {
     super.initState();
     getLoggedInUser();
   }
-  Future<void> getUrlConference()async{
+
+  Future<void> getUrlConference() async {
     EventObject objectEvent = new EventObject();
     objectEvent = await getUrlConferenceData(userSection!);
     // print("kkkkkkk" + objectEvent.object);
     Map? data = objectEvent.object as Map?;
     if (objectEvent.success!) {
       urlConference = data!['conference'];
-
     }
   }
-  Future<void> getLoggedInUser() async {
 
+  Future<void> getLoggedInUser() async {
     loggedManagement = await getUserData() as Management;
     userAcademicYear = loggedManagement!.academicYear;
     userSection = loggedManagement!.section;
     userSectionName = loggedManagement!.sectionName;
     userId = loggedManagement!.id!;
     userType = loggedManagement!.type!;
-    userName=loggedManagement!.name!;
+    userName = loggedManagement!.name!;
     getUrlConference();
     _getMessages();
   }
@@ -77,74 +79,96 @@ class StaffConferennceJoinState extends State<StaffConferennceJoin> {
       });
     }
 
-    JitsiMeet.addListener(JitsiMeetingListener(
-        onConferenceWillJoin: _onConferenceWillJoin,
-        onConferenceJoined: _onConferenceJoined,
-        onConferenceTerminated: _onConferenceTerminated,
-        onError: _onError));
-
+    // JitsiMeet.addListener(JitsiMeetingListener(
+    //     onConferenceWillJoin: _onConferenceWillJoin,
+    //     onConferenceJoined: _onConferenceJoined,
+    //     onConferenceTerminated: _onConferenceTerminated,
+    //     onError: _onError));
   }
 
-  Future<void> JoinConferenceStatus(String Id) async{
+  Future<void> JoinConferenceStatus(String Id) async {
     EventObject objectEvent = new EventObject();
-    objectEvent = await JoinConferenceSatff(Id,userId!);
+    objectEvent = await JoinConferenceSatff(Id, userId!);
     // print("kkkkkkk" + objectEvent.object);
     Map? data = objectEvent.object as Map?;
-
   }
-  Future<void> ConferenceTerminatedStatus(String Id) async{
+
+  Future<void> ConferenceTerminatedStatus(String Id) async {
     EventObject objectEvent = new EventObject();
-    objectEvent = await ConferenceTerminatedStaffJoin(Id,userId!);
+    objectEvent = await ConferenceTerminatedStaffJoin(Id, userId!);
+  }
 
+  SetConferenceJoinId(String IdRow) {
+    IdRowJoin = IdRow;
   }
-  SetConferenceJoinId(String IdRow){
-    IdRowJoin=IdRow;
-  }
+
   @override
   void dispose() {
     super.dispose();
-    JitsiMeet.removeAllListeners();
+    // JitsiMeet.removeAllListeners();
   }
 
   @override
   Widget build(BuildContext context) {
-
     final showData = Center(
         child: ListView(
-          children: <Widget>[
-            DataTable(
-              columns: [
-                DataColumn(label: Text("Staff Name",style: TextStyle(color: AppTheme.appColor, fontSize: 16),overflow: TextOverflow.ellipsis,)),
-
-                DataColumn(label: Text("Start",style: TextStyle(color: AppTheme.appColor, fontSize: 16),)),
-                DataColumn(label: Text("Join",style: TextStyle(color: AppTheme.appColor, fontSize: 16),)),
-              ],
-              rows:
+      children: <Widget>[
+        DataTable(
+          columns: [
+            DataColumn(
+                label: Text(
+              "Staff Name",
+              style: TextStyle(color: AppTheme.appColor, fontSize: 16),
+              overflow: TextOverflow.ellipsis,
+            )),
+            DataColumn(
+                label: Text(
+              "Start",
+              style: TextStyle(color: AppTheme.appColor, fontSize: 16),
+            )),
+            DataColumn(
+                label: Text(
+              "Join",
+              style: TextStyle(color: AppTheme.appColor, fontSize: 16),
+            )),
+          ],
+          rows:
               listOfMessage // Loops through dataColumnText, each iteration assigning the value to element
                   .map(
-                ((element) => DataRow(
-                  cells: <DataCell>[
-                    DataCell(Text(element["staffname"],style: TextStyle(color: Colors.black, fontSize: 14),)),
+                    ((element) => DataRow(
+                          cells: <DataCell>[
+                            DataCell(Text(
+                              element["staffname"],
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 14),
+                            )),
 
-                    DataCell(Text(element["startdate"],style: TextStyle(color: Colors.black, fontSize: 14),)),
+                            DataCell(Text(
+                              element["startdate"],
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 14),
+                            )),
 
-                    //Extracting from Map element the value
-                    DataCell(
-                      Text("Conference",style: TextStyle(color: Colors.lightBlue, fontSize: 14),),
-                      onTap: () async {
-                        _joinMeeting(ApiConstants.ConferenceSchoolName+"Schooleverywhere"+element["staffid"]);
-                        SetConferenceJoinId(element["id"]);
-                        JoinConferenceStatus(element["id"]);
-
-                      },
-                    ),
-                  ],
-                )),
-              )
+                            //Extracting from Map element the value
+                            DataCell(
+                              Text(
+                                "Conference",
+                                style: TextStyle(
+                                    color: Colors.lightBlue, fontSize: 14),
+                              ),
+                              onTap: () async {
+                                // _joinMeeting(ApiConstants.ConferenceSchoolName+"Schooleverywhere"+element["staffid"]);
+                                SetConferenceJoinId(element["id"]);
+                                JoinConferenceStatus(element["id"]);
+                              },
+                            ),
+                          ],
+                        )),
+                  )
                   .toList(),
-            )
-          ],
-        ));
+        )
+      ],
+    ));
 
     return Scaffold(
       appBar: new AppBar(
@@ -169,8 +193,8 @@ class StaffConferennceJoinState extends State<StaffConferennceJoin> {
             fit: BoxFit.cover,
           ),
         ),
-        child:
-        Padding(padding: EdgeInsets.symmetric(vertical: 10.0), child: showData),
+        child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.0), child: showData),
       ),
       floatingActionButton: FloatingActionButton(
           elevation: 55,
@@ -194,6 +218,7 @@ class StaffConferennceJoinState extends State<StaffConferennceJoin> {
           )),
     );
   }
+
   _onAudioOnlyChanged(bool value) {
     setState(() {
       isAudioOnly = value;
@@ -212,42 +237,41 @@ class StaffConferennceJoinState extends State<StaffConferennceJoin> {
     });
   }
 
-  _joinMeeting(RoomChannel) async {
+  // _joinMeeting(RoomChannel) async {
 
+  //   try {
+  //     var options = JitsiMeetingOptions(room: RoomChannel) // Required, spaces will be trimmed
+  //       ..serverURL = urlConference
+  //       ..subject = "Schooleverywhere Conference"
+  //       ..userDisplayName = userName
 
-    try {
-      var options = JitsiMeetingOptions(room: RoomChannel) // Required, spaces will be trimmed
-        ..serverURL = urlConference
-        ..subject = "Schooleverywhere Conference"
-        ..userDisplayName = userName
+  //       ..audioOnly = isAudioOnly
+  //       ..audioMuted = isAudioMuted
+  //       ..videoMuted = isVideoMuted;
 
-        ..audioOnly = isAudioOnly
-        ..audioMuted = isAudioMuted
-        ..videoMuted = isVideoMuted;
-
-      debugPrint("JitsiMeetingOptions: $options");
-      await JitsiMeet.joinMeeting(options,
-          listener: JitsiMeetingListener(
-          onConferenceWillJoin: (message) {
-            debugPrint("${options.room} will join with message: $message");
-          },
-          onConferenceJoined: (message) {
-            debugPrint("${options.room} joined with message: $message");
-          },
-          onConferenceTerminated: (message) {
-            debugPrint("${options.room} terminated with message: $message");
-          },
-          genericListeners: [
-            JitsiGenericListener(
-                eventName: 'readyToClose',
-                callback: (dynamic message) {
-                  debugPrint("readyToClose callback");
-                }),
-          ]),);
-    } catch (error) {
-      debugPrint("error: $error");
-    }
-  }
+  //     debugPrint("JitsiMeetingOptions: $options");
+  //     await JitsiMeet.joinMeeting(options,
+  //         listener: JitsiMeetingListener(
+  //         onConferenceWillJoin: (message) {
+  //           debugPrint("${options.room} will join with message: $message");
+  //         },
+  //         onConferenceJoined: (message) {
+  //           debugPrint("${options.room} joined with message: $message");
+  //         },
+  //         onConferenceTerminated: (message) {
+  //           debugPrint("${options.room} terminated with message: $message");
+  //         },
+  //         genericListeners: [
+  //           JitsiGenericListener(
+  //               eventName: 'readyToClose',
+  //               callback: (dynamic message) {
+  //                 debugPrint("readyToClose callback");
+  //               }),
+  //         ]),);
+  //   } catch (error) {
+  //     debugPrint("error: $error");
+  //   }
+  // }
 
   void _onConferenceWillJoin(message) {
     debugPrint("_onConferenceWillJoin broadcasted with message: $message");
@@ -266,5 +290,3 @@ class StaffConferennceJoinState extends State<StaffConferennceJoin> {
     debugPrint("_onError broadcasted: $error");
   }
 }
-
-

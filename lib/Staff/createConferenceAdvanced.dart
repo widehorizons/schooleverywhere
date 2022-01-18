@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jitsi_meet/jitsi_meet.dart';
+// import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../Networking/ApiConstants.dart';
@@ -21,7 +21,7 @@ class createConferenceAdvanced extends StatefulWidget {
 }
 
 class _createConferenceAdvancedState extends State<createConferenceAdvanced> {
-   Staff? loggedStaff;
+  Staff? loggedStaff;
 
   String StaffSection = "Loading...";
   String StaffSectionId = "";
@@ -35,17 +35,15 @@ class _createConferenceAdvancedState extends State<createConferenceAdvanced> {
   String StaffClassId = "";
   String StaffSubject = "Loading...";
   String StaffSubjectId = "";
-  String academicYearValue ="Loading...";
-   String? staffid;
-  bool isLoading = false, checkSync =true;
-   String? urlConference;
-
-
+  String academicYearValue = "Loading...";
+  String? staffid;
+  bool isLoading = false, checkSync = true;
+  String? urlConference;
 
   Map staffclassOptions = new Map();
-   List? classSelected;
-  List<dynamic> classstaff=[];
-   String? channel;
+  List? classSelected;
+  List<dynamic> classstaff = [];
+  String? channel;
 
   initState() {
     super.initState();
@@ -53,16 +51,17 @@ class _createConferenceAdvancedState extends State<createConferenceAdvanced> {
     getLoggedStaff();
   }
 
-  Future<void> getUrlConference()async{
+  Future<void> getUrlConference() async {
     EventObject objectEvent = new EventObject();
-    objectEvent = await getUrlConferenceDataByStage(StaffSectionId,StaffStageId);
+    objectEvent =
+        await getUrlConferenceDataByStage(StaffSectionId, StaffStageId);
     // print("kkkkkkk" + objectEvent.object);
     Map? data = objectEvent.object as Map?;
     if (objectEvent.success!) {
       urlConference = data!['advancedConference'];
     }
-
   }
+
   Future<void> getLoggedStaff() async {
     loggedStaff = await getUserData() as Staff;
     StaffSection = loggedStaff!.sectionName!;
@@ -77,25 +76,19 @@ class _createConferenceAdvancedState extends State<createConferenceAdvanced> {
     StaffClassId = loggedStaff!.staffClass!;
     StaffSubject = loggedStaff!.subjectName!;
     StaffSubjectId = loggedStaff!.subject!;
-    staffid=loggedStaff!.id;
+    staffid = loggedStaff!.id;
     academicYearValue = loggedStaff!.academicYear!;
     getUrlConference();
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
-
-
-    final data=SingleChildScrollView(
+    final data = SingleChildScrollView(
       child: Column(
         children: <Widget>[
           SizedBox(
             height: 24.0,
           ),
-
           SizedBox(
             height: 64.0,
             width: double.maxFinite,
@@ -103,9 +96,17 @@ class _createConferenceAdvancedState extends State<createConferenceAdvanced> {
               onPressed: () async {
 //                JoinConferenceStatus(ApiConstants.ConferenceSchoolName+"Schooleverywhere"+staffid+StaffSubjectId+StaffGradeId);
 //                _joinMeeting();
-                await launch(
-                    ApiConstants.BASE_URL+"conference/advancedConferenceStaffStudent.php?staff="+staffid!+"&subject="+StaffSubjectId+"&grade="+StaffGradeId+"&section="+StaffSectionId+"&stage="+StaffStageId);
-
+                await launch(ApiConstants.BASE_URL +
+                    "conference/advancedConferenceStaffStudent.php?staff=" +
+                    staffid! +
+                    "&subject=" +
+                    StaffSubjectId +
+                    "&grade=" +
+                    StaffGradeId +
+                    "&section=" +
+                    StaffSectionId +
+                    "&stage=" +
+                    StaffStageId);
               },
               child: Text(
                 "Conference",
@@ -191,6 +192,4 @@ class _createConferenceAdvancedState extends State<createConferenceAdvanced> {
           )),
     );
   }
-
-
 }

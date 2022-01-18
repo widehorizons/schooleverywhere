@@ -72,7 +72,7 @@ class ByClassPageState extends State<ByClassPage> {
     if (_pickingType != FileType.custom || _hasValidMime) {
       setState(() => loadingPath = true);
       try {
-         FilePickerResult? result = await FilePicker.platform
+        FilePickerResult? result = await FilePicker.platform
             .pickFiles(allowMultiple: true, type: FileType.any);
 
         if (result != null) {
@@ -282,7 +282,7 @@ class ByClassPageState extends State<ByClassPage> {
     final managementclass = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
+          // autovalidate: false,
           title: Text("Student"),
           validator: (value) {
             if (value == null) {

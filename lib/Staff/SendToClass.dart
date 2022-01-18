@@ -176,7 +176,7 @@ class _SendToClassState extends State<SendToClass> {
     final selectedClasses = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
+          // autovalidate: false,
           title: Text("Class"),
           validator: (value) {
             if (value == null) return 'Please select one or more class(s)';

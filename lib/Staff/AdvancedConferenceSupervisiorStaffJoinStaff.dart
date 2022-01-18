@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jitsi_meet/jitsi_meet.dart';
+// import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../Networking/ApiConstants.dart';
@@ -13,7 +13,6 @@ import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import '../Pages/LoginPage.dart';
 
-
 class AdvancedConferenceSupervisiorStaffJoinStaff extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -21,8 +20,8 @@ class AdvancedConferenceSupervisiorStaffJoinStaff extends StatefulWidget {
   }
 }
 
-class _AdvancedConferenceSupervisiorStaffJoinStaffState extends State<AdvancedConferenceSupervisiorStaffJoinStaff> {
-
+class _AdvancedConferenceSupervisiorStaffJoinStaffState
+    extends State<AdvancedConferenceSupervisiorStaffJoinStaff> {
   Staff? loggedStaff;
 
   String StaffSection = "Loading...";
@@ -37,19 +36,18 @@ class _AdvancedConferenceSupervisiorStaffJoinStaffState extends State<AdvancedCo
   String StaffClassId = "";
   String StaffSubject = "Loading...";
   String StaffSubjectId = "";
-  String academicYearValue ="Loading...";
+  String academicYearValue = "Loading...";
   String? staffid;
-  bool isLoading = false, checkSync =true;
+  bool isLoading = false, checkSync = true;
   String? urlConference;
   int? JoinStaff;
-  String ?IdRowJoin;
-  List<dynamic>  listOfMessage = [];
+  String? IdRowJoin;
+  List<dynamic> listOfMessage = [];
   @override
   void initState() {
     super.initState();
     getLoggedStaff();
   }
-
 
   Future<void> getLoggedStaff() async {
     loggedStaff = await getUserData() as Staff;
@@ -65,16 +63,15 @@ class _AdvancedConferenceSupervisiorStaffJoinStaffState extends State<AdvancedCo
     StaffClassId = loggedStaff!.staffClass!;
     StaffSubject = loggedStaff!.subjectName!;
     StaffSubjectId = loggedStaff!.subject!;
-    staffid=loggedStaff!.id;
+    staffid = loggedStaff!.id;
     academicYearValue = loggedStaff!.academicYear!;
 
     _getMessages();
-
-
   }
 
   Future<void> _getMessages() async {
-    EventObject objectEventMessageData = await getConferenceSupervisiorStaffData(staffid!,academicYearValue);
+    EventObject objectEventMessageData =
+        await getConferenceSupervisiorStaffData(staffid!, academicYearValue);
     if (objectEventMessageData.success!) {
       Map? messageData = objectEventMessageData.object as Map?;
       List<dynamic> listOfColumns = messageData!['data'];
@@ -82,60 +79,97 @@ class _AdvancedConferenceSupervisiorStaffJoinStaffState extends State<AdvancedCo
         listOfMessage = listOfColumns;
       });
     }
-
   }
-
 
   @override
   Widget build(BuildContext context) {
     final showData = Center(
         child: ListView(
-          children: <Widget>[
-            DataTable(
-              columns: [
-                DataColumn(label: Text("Staff Name",style: TextStyle(color: AppTheme.appColor, fontSize: 16),overflow: TextOverflow.ellipsis,)),
-
-                DataColumn(label: Text("Grade/Subject",style: TextStyle(color: AppTheme.appColor, fontSize: 16),)),
-
-                DataColumn(label: Text("Recorded",style: TextStyle(color: AppTheme.appColor, fontSize: 16),)),
-              ],
-              rows:
+      children: <Widget>[
+        DataTable(
+          columns: [
+            DataColumn(
+                label: Text(
+              "Staff Name",
+              style: TextStyle(color: AppTheme.appColor, fontSize: 16),
+              overflow: TextOverflow.ellipsis,
+            )),
+            DataColumn(
+                label: Text(
+              "Grade/Subject",
+              style: TextStyle(color: AppTheme.appColor, fontSize: 16),
+            )),
+            DataColumn(
+                label: Text(
+              "Recorded",
+              style: TextStyle(color: AppTheme.appColor, fontSize: 16),
+            )),
+          ],
+          rows:
               listOfMessage // Loops through dataColumnText, each iteration assigning the value to element
                   .map(
-                ((element) => DataRow(
-                  cells: <DataCell>[
-                    DataCell(
-                      Text(element["staffname"],style: TextStyle(color: Colors.lightBlue, fontSize: 14),),
-                      onTap: () async {
+                    ((element) => DataRow(
+                          cells: <DataCell>[
+                            DataCell(
+                              Text(
+                                element["staffname"],
+                                style: TextStyle(
+                                    color: Colors.lightBlue, fontSize: 14),
+                              ),
+                              onTap: () async {
 //                        _joinMeeting(ApiConstants.ConferenceSchoolName+"Schooleverywhere"+element["staffid"]+element["subjectId"]+element["gradeId"]);
 //                        JoinConferenceStatus(ApiConstants.ConferenceSchoolName+"Schooleverywhere"+element["staffid"]+element["subjectId"]+element["gradeId"],element["staffid"],element["subjectId"]);
-                        await launch(
-                            ApiConstants.BASE_URL+"conference/supervisiorAdvancedConference.php?staff="+element["staffid"]+"&myid="+staffid!+"&subject="+element["subjectId"]+"&grade="+element["gradeId"]+"&section="+StaffSectionId);
+                                await launch(ApiConstants.BASE_URL +
+                                    "conference/supervisiorAdvancedConference.php?staff=" +
+                                    element["staffid"] +
+                                    "&myid=" +
+                                    staffid! +
+                                    "&subject=" +
+                                    element["subjectId"] +
+                                    "&grade=" +
+                                    element["gradeId"] +
+                                    "&section=" +
+                                    StaffSectionId);
+                              },
+                            ),
 
-                      },
-                    ),
+                            DataCell(Text(
+                              element["gradeName"] +
+                                  "/" +
+                                  element["subjectName"],
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 14),
+                            )),
 
-                    DataCell(Text(element["gradeName"]+"/"+element["subjectName"],style: TextStyle(color: Colors.black, fontSize: 14),)),
+                            //Extracting from Map element the value
 
-                    //Extracting from Map element the value
-
-                    DataCell(
-                      Text("Recorded",style: TextStyle(color: Colors.lightBlue, fontSize: 14),),
-                      onTap: () async {
+                            DataCell(
+                              Text(
+                                "Recorded",
+                                style: TextStyle(
+                                    color: Colors.lightBlue, fontSize: 14),
+                              ),
+                              onTap: () async {
 //                        _joinMeeting(ApiConstants.ConferenceSchoolName+"Schooleverywhere"+element["staffid"]+element["subjectId"]+element["gradeId"]);
 //                        JoinConferenceStatus(ApiConstants.ConferenceSchoolName+"Schooleverywhere"+element["staffid"]+element["subjectId"]+element["gradeId"],element["staffid"],element["subjectId"]);
-                        await launch(
-                            ApiConstants.BASE_URL+"conference/supervisiorAdvancedConferenceRecorded.php?staff="+element["staffid"]+"&subject="+element["subjectId"]+"&grade="+element["gradeId"]+"&section="+StaffSectionId);
-
-                      },
-                    ),
-                  ],
-                )),
-              )
+                                await launch(ApiConstants.BASE_URL +
+                                    "conference/supervisiorAdvancedConferenceRecorded.php?staff=" +
+                                    element["staffid"] +
+                                    "&subject=" +
+                                    element["subjectId"] +
+                                    "&grade=" +
+                                    element["gradeId"] +
+                                    "&section=" +
+                                    StaffSectionId);
+                              },
+                            ),
+                          ],
+                        )),
+                  )
                   .toList(),
-            )
-          ],
-        ));
+        )
+      ],
+    ));
 
     return Scaffold(
       appBar: new AppBar(
@@ -170,29 +204,29 @@ class _AdvancedConferenceSupervisiorStaffJoinStaffState extends State<AdvancedCo
             fit: BoxFit.cover,
           ),
         ),
-        child:
-        Padding(padding: EdgeInsets.symmetric(vertical: 10.0), child: showData),
+        child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.0), child: showData),
       ),
-
       floatingActionButton: FloatingActionButton(
           elevation: 55,
-          onPressed: (){
+          onPressed: () {
             logOut(loggedStaff!.type!, loggedStaff!.id!);
             removeUserData();
-            while(Navigator.canPop(context)){
+            while (Navigator.canPop(context)) {
               Navigator.pop(context);
             }
             Navigator.of(context).pushReplacement(
-                new  MaterialPageRoute(builder: (context) => LoginPage()));
+                new MaterialPageRoute(builder: (context) => LoginPage()));
           },
-          child:Icon(FontAwesomeIcons.doorOpen,color: AppTheme.floatingButtonColor, size: 30,),
+          child: Icon(
+            FontAwesomeIcons.doorOpen,
+            color: AppTheme.floatingButtonColor,
+            size: 30,
+          ),
           backgroundColor: Colors.transparent,
-          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0),)
-
-      ),
+          shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(30.0),
+          )),
     );
   }
-
 }
-
-

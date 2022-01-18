@@ -333,7 +333,7 @@ class _MemoState extends State<Memo> {
     final selectedIWas = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
+          // autovalidate: false,
           title: Text("I was"),
           validator: (value) {
             if (value == null) return 'Please select one or more';
@@ -353,7 +353,7 @@ class _MemoState extends State<Memo> {
     final selectedINeed = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
+          // autovalidate: false,
           title: Text("I need"),
           validator: (value) {
             if (value == null) return 'Please select one or more';

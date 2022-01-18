@@ -19,7 +19,8 @@ class AdvancedConferenceStaffJoinStaffRecorded extends StatefulWidget {
   }
 }
 
-class _AdvancedConferenceStaffJoinStaffRecordedState extends State<AdvancedConferenceStaffJoinStaffRecorded> {
+class _AdvancedConferenceStaffJoinStaffRecordedState
+    extends State<AdvancedConferenceStaffJoinStaffRecorded> {
   Staff? loggedStaff;
 
   String StaffSection = "Loading...";
@@ -34,36 +35,32 @@ class _AdvancedConferenceStaffJoinStaffRecordedState extends State<AdvancedConfe
   String StaffClassId = "";
   String StaffSubject = "Loading...";
   String StaffSubjectId = "";
-  String academicYearValue ="Loading...";
+  String academicYearValue = "Loading...";
   String? staffid;
-  bool isLoading = false, checkSync =true;
+  bool isLoading = false, checkSync = true;
   String? urlConference;
-
-
 
   Map staffclassOptions = new Map();
   List? classSelected;
-  List<dynamic> classstaff= [];
+  List<dynamic> classstaff = [];
   String? channel;
 
   initState() {
     super.initState();
     classSelected = [];
     getLoggedStaff();
-
   }
 
-  Future<void> getUrlConference()async{
+  Future<void> getUrlConference() async {
     EventObject objectEvent = new EventObject();
     objectEvent = await getUrlConferenceData(StaffSectionId);
     // print("kkkkkkk" + objectEvent.object);
     Map? data = objectEvent.object as Map?;
     if (objectEvent.success!) {
       urlConference = data!['advancedConference'];
-
     }
-
   }
+
   Future<void> getLoggedStaff() async {
     loggedStaff = await getUserData() as Staff;
     StaffSection = loggedStaff!.sectionName!;
@@ -78,36 +75,32 @@ class _AdvancedConferenceStaffJoinStaffRecordedState extends State<AdvancedConfe
     StaffClassId = loggedStaff!.staffClass!;
     StaffSubject = loggedStaff!.subjectName!;
     StaffSubjectId = loggedStaff!.subject!;
-    staffid=loggedStaff!.id;
+    staffid = loggedStaff!.id;
     academicYearValue = loggedStaff!.academicYear!;
 
     getUrlConference();
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
-
-
-    final data=SingleChildScrollView(
+    final data = SingleChildScrollView(
       child: Column(
         children: <Widget>[
           SizedBox(
             height: 24.0,
           ),
-
           SizedBox(
             height: 64.0,
             width: double.maxFinite,
             child: RaisedButton(
               onPressed: () async {
 //                JoinConferenceStatus(ApiConstants.ConferenceSchoolName+"Schooleverywhere"+staffid+StaffSubjectId+StaffGradeId);
-//                _joinMeeting();
-                await launch(
-                    ApiConstants.BASE_URL+"conference/advancedConferenceStaffStaffRecord.php?staff="+staffid!+"&section="+StaffSectionId);
-
+                //  _joinMeeting();
+                await launch(ApiConstants.BASE_URL +
+                    "conference/advancedConferenceStaffStaffRecord.php?staff=" +
+                    staffid! +
+                    "&section=" +
+                    StaffSectionId);
               },
               child: Text(
                 "Recorded Sessions",
@@ -193,6 +186,4 @@ class _AdvancedConferenceStaffJoinStaffRecordedState extends State<AdvancedConfe
           )),
     );
   }
-
-
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:jitsi_meet/jitsi_meet.dart';
+import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../Networking/ApiConstants.dart';
@@ -117,7 +117,7 @@ class _AdvancedConferenceSupervisiorStaffJoinStaffState
                                     color: Colors.lightBlue, fontSize: 14),
                               ),
                               onTap: () async {
-//                        _joinMeeting(ApiConstants.ConferenceSchoolName+"Schooleverywhere"+element["staffid"]+element["subjectId"]+element["gradeId"]);
+                                //  _joinMeeting(ApiConstants.ConferenceSchoolName+"Schooleverywhere"+element["staffid"]+element["subjectId"]+element["gradeId"]);
 //                        JoinConferenceStatus(ApiConstants.ConferenceSchoolName+"Schooleverywhere"+element["staffid"]+element["subjectId"]+element["gradeId"],element["staffid"],element["subjectId"]);
                                 await launch(ApiConstants.BASE_URL +
                                     "conference/supervisiorAdvancedConference.php?staff=" +

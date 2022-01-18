@@ -17,7 +17,7 @@ import '../Networking/Futures.dart';
 import '../Pages/LoginPage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
-// import 'package:jitsi_meet/jitsi_meet.dart';
+import 'package:jitsi_meet/jitsi_meet.dart';
 
 class StaffConferennceJoin extends StatefulWidget {
   @override
@@ -79,11 +79,11 @@ class StaffConferennceJoinState extends State<StaffConferennceJoin> {
       });
     }
 
-    // JitsiMeet.addListener(JitsiMeetingListener(
-    //     onConferenceWillJoin: _onConferenceWillJoin,
-    //     onConferenceJoined: _onConferenceJoined,
-    //     onConferenceTerminated: _onConferenceTerminated,
-    //     onError: _onError));
+    JitsiMeet.addListener(JitsiMeetingListener(
+        onConferenceWillJoin: _onConferenceWillJoin,
+        onConferenceJoined: _onConferenceJoined,
+        onConferenceTerminated: _onConferenceTerminated,
+        onError: _onError));
   }
 
   Future<void> JoinConferenceStatus(String Id) async {
@@ -105,7 +105,7 @@ class StaffConferennceJoinState extends State<StaffConferennceJoin> {
   @override
   void dispose() {
     super.dispose();
-    // JitsiMeet.removeAllListeners();
+    JitsiMeet.removeAllListeners();
   }
 
   @override
@@ -237,41 +237,42 @@ class StaffConferennceJoinState extends State<StaffConferennceJoin> {
     });
   }
 
-  // _joinMeeting(RoomChannel) async {
+  _joinMeeting(RoomChannel) async {
+    try {
+      var options = JitsiMeetingOptions(
+          room: RoomChannel) // Required, spaces will be trimmed
+        ..serverURL = urlConference
+        ..subject = "Schooleverywhere Conference"
+        ..userDisplayName = userName
+        ..audioOnly = isAudioOnly
+        ..audioMuted = isAudioMuted
+        ..videoMuted = isVideoMuted;
 
-  //   try {
-  //     var options = JitsiMeetingOptions(room: RoomChannel) // Required, spaces will be trimmed
-  //       ..serverURL = urlConference
-  //       ..subject = "Schooleverywhere Conference"
-  //       ..userDisplayName = userName
-
-  //       ..audioOnly = isAudioOnly
-  //       ..audioMuted = isAudioMuted
-  //       ..videoMuted = isVideoMuted;
-
-  //     debugPrint("JitsiMeetingOptions: $options");
-  //     await JitsiMeet.joinMeeting(options,
-  //         listener: JitsiMeetingListener(
-  //         onConferenceWillJoin: (message) {
-  //           debugPrint("${options.room} will join with message: $message");
-  //         },
-  //         onConferenceJoined: (message) {
-  //           debugPrint("${options.room} joined with message: $message");
-  //         },
-  //         onConferenceTerminated: (message) {
-  //           debugPrint("${options.room} terminated with message: $message");
-  //         },
-  //         genericListeners: [
-  //           JitsiGenericListener(
-  //               eventName: 'readyToClose',
-  //               callback: (dynamic message) {
-  //                 debugPrint("readyToClose callback");
-  //               }),
-  //         ]),);
-  //   } catch (error) {
-  //     debugPrint("error: $error");
-  //   }
-  // }
+      debugPrint("JitsiMeetingOptions: $options");
+      await JitsiMeet.joinMeeting(
+        options,
+        listener: JitsiMeetingListener(
+            onConferenceWillJoin: (message) {
+              debugPrint("${options.room} will join with message: $message");
+            },
+            onConferenceJoined: (message) {
+              debugPrint("${options.room} joined with message: $message");
+            },
+            onConferenceTerminated: (message) {
+              debugPrint("${options.room} terminated with message: $message");
+            },
+            genericListeners: [
+              JitsiGenericListener(
+                  eventName: 'readyToClose',
+                  callback: (dynamic message) {
+                    debugPrint("readyToClose callback");
+                  }),
+            ]),
+      );
+    } catch (error) {
+      debugPrint("error: $error");
+    }
+  }
 
   void _onConferenceWillJoin(message) {
     debugPrint("_onConferenceWillJoin broadcasted with message: $message");

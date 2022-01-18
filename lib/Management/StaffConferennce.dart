@@ -17,7 +17,7 @@ import '../Networking/Futures.dart';
 import '../Pages/LoginPage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
-// import 'package:jitsi_meet/jitsi_meet.dart';
+import 'package:jitsi_meet/jitsi_meet.dart';
 
 class StaffConferennce extends StatefulWidget {
   @override
@@ -66,11 +66,11 @@ class StaffConferennceState extends State<StaffConferennce> {
     userType = loggedManagement!.type!;
     userName = loggedManagement!.name!;
 
-    // JitsiMeet.addListener(JitsiMeetingListener(
-    //     onConferenceWillJoin: _onConferenceWillJoin,
-    //     onConferenceJoined: _onConferenceJoined,
-    //     onConferenceTerminated: _onConferenceTerminated,
-    //     onError: _onError));
+    JitsiMeet.addListener(JitsiMeetingListener(
+        onConferenceWillJoin: _onConferenceWillJoin,
+        onConferenceJoined: _onConferenceJoined,
+        onConferenceTerminated: _onConferenceTerminated,
+        onError: _onError));
     getUrlConference();
   }
 
@@ -94,7 +94,7 @@ class StaffConferennceState extends State<StaffConferennce> {
   @override
   void dispose() {
     super.dispose();
-    // JitsiMeet.removeAllListeners();
+    JitsiMeet.removeAllListeners();
   }
 
   @override
@@ -219,41 +219,43 @@ class StaffConferennceState extends State<StaffConferennce> {
     });
   }
 
-  // _joinMeeting() async {
+  _joinMeeting() async {
+    try {
+      var options = JitsiMeetingOptions(
+          room:
+              ApiConstants.ConferenceSchoolName + "Schooleverywhere" + userId!)
+        ..serverURL = urlConference
+        ..subject = "Schooleverywhere Conference"
+        ..userDisplayName = userName
+        ..audioOnly = isAudioOnly
+        ..audioMuted = isAudioMuted
+        ..videoMuted = isVideoMuted;
 
-  //   try {
-  //     var options = JitsiMeetingOptions(room: ApiConstants.ConferenceSchoolName+"Schooleverywhere"+userId!)
-  //       ..serverURL = urlConference
-  //       ..subject = "Schooleverywhere Conference"
-  //       ..userDisplayName = userName
-
-  //       ..audioOnly = isAudioOnly
-  //       ..audioMuted = isAudioMuted
-  //       ..videoMuted = isVideoMuted;
-
-  //     debugPrint("JitsiMeetingOptions: $options");
-  //     await JitsiMeet.joinMeeting(options,
-  //         listener: JitsiMeetingListener(
-  //         onConferenceWillJoin: (message) {
-  //           debugPrint("${options.room} will join with message: $message");
-  //         },
-  //         onConferenceJoined: (message) {
-  //           debugPrint("${options.room} joined with message: $message");
-  //         },
-  //         onConferenceTerminated: (message) {
-  //           debugPrint("${options.room} terminated with message: $message");
-  //         },
-  //         genericListeners: [
-  //           JitsiGenericListener(
-  //               eventName: 'readyToClose',
-  //               callback: (dynamic message) {
-  //                 debugPrint("readyToClose callback");
-  //               }),
-  //         ]),);
-  //   } catch (error) {
-  //     debugPrint("error: $error");
-  //   }
-  // }
+      debugPrint("JitsiMeetingOptions: $options");
+      await JitsiMeet.joinMeeting(
+        options,
+        listener: JitsiMeetingListener(
+            onConferenceWillJoin: (message) {
+              debugPrint("${options.room} will join with message: $message");
+            },
+            onConferenceJoined: (message) {
+              debugPrint("${options.room} joined with message: $message");
+            },
+            onConferenceTerminated: (message) {
+              debugPrint("${options.room} terminated with message: $message");
+            },
+            genericListeners: [
+              JitsiGenericListener(
+                  eventName: 'readyToClose',
+                  callback: (dynamic message) {
+                    debugPrint("readyToClose callback");
+                  }),
+            ]),
+      );
+    } catch (error) {
+      debugPrint("error: $error");
+    }
+  }
 
   void _onConferenceWillJoin(message) {
     debugPrint("_onConferenceWillJoin broadcasted with message: $message");

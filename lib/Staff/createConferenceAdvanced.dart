@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:jitsi_meet/jitsi_meet.dart';
+import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../Networking/ApiConstants.dart';
@@ -94,8 +94,8 @@ class _createConferenceAdvancedState extends State<createConferenceAdvanced> {
             width: double.maxFinite,
             child: RaisedButton(
               onPressed: () async {
-//                JoinConferenceStatus(ApiConstants.ConferenceSchoolName+"Schooleverywhere"+staffid+StaffSubjectId+StaffGradeId);
-//                _joinMeeting();
+                //  JoinConferenceStatus(ApiConstants.ConferenceSchoolName+"Schooleverywhere"+staffid+StaffSubjectId+StaffGradeId);
+                //  _joinMeeting();
                 await launch(ApiConstants.BASE_URL +
                     "conference/advancedConferenceStaffStudent.php?staff=" +
                     staffid! +

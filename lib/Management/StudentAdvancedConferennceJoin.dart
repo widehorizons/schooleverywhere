@@ -13,7 +13,7 @@ import 'package:flutter_uploader/flutter_uploader.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../Constants/StringConstants.dart';
 import '../Modules/EventObject.dart';
-// import 'package:jitsi_meet/jitsi_meet.dart';
+import 'package:jitsi_meet/jitsi_meet.dart';
 import '../Networking/ApiConstants.dart';
 import '../Networking/Futures.dart';
 import '../Pages/LoginPage.dart';

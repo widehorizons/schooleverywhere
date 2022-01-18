@@ -10,7 +10,6 @@ import 'package:multiselect_formfield/multiselect_formfield.dart';
 import '../Constants/StringConstants.dart';
 import '../Modules/EventObject.dart';
 import '../Modules/Staff.dart';
-import '../Networking/ApiConstants.dart';
 import '../Networking/Futures.dart';
 import '../Pages/HomePage.dart';
 import '../SharedPreferences/Prefs.dart';
@@ -414,9 +413,9 @@ class _MemoState extends State<Memo> {
                               maxLines: 1,
                               decoration: new InputDecoration(labelText: ""),
                               keyboardType: TextInputType.number,
-                              inputFormatters: <TextInputFormatter>[
-                                WhitelistingTextInputFormatter.digitsOnly
-                              ],
+                              // inputFormatters: <TextInputFormatter>[
+                              //   WhitelistingTextInputFormatter.digitsOnly
+                              // ],
                             ))
                           ],
                         )),

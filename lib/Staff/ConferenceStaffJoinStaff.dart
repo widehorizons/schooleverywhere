@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jitsi_meet/jitsi_meet.dart';
+// import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../Networking/ApiConstants.dart';
 import '../Constants/StringConstants.dart';
@@ -88,11 +88,11 @@ class _ConferenceStaffJoinStaffState extends State<ConferenceStaffJoinStaff> {
       });
     }
 
-    JitsiMeet.addListener(JitsiMeetingListener(
-        onConferenceWillJoin: _onConferenceWillJoin,
-        onConferenceJoined: _onConferenceJoined,
-        onConferenceTerminated: _onConferenceTerminated,
-        onError: _onError));
+    // JitsiMeet.addListener(JitsiMeetingListener(
+    //     onConferenceWillJoin: _onConferenceWillJoin,
+    //     onConferenceJoined: _onConferenceJoined,
+    //     onConferenceTerminated: _onConferenceTerminated,
+    //     onError: _onError));
   }
 
   Future<void> JoinConferenceStatus(String Id) async {
@@ -114,7 +114,7 @@ class _ConferenceStaffJoinStaffState extends State<ConferenceStaffJoinStaff> {
   @override
   void dispose() {
     super.dispose();
-    JitsiMeet.removeAllListeners();
+    // JitsiMeet.removeAllListeners();
   }
 
   @override
@@ -166,9 +166,9 @@ class _ConferenceStaffJoinStaffState extends State<ConferenceStaffJoinStaff> {
                                     color: Colors.lightBlue, fontSize: 14),
                               ),
                               onTap: () async {
-                                _joinMeeting(ApiConstants.ConferenceSchoolName +
-                                    "Schooleverywhere" +
-                                    element["staffid"]);
+                                // _joinMeeting(ApiConstants.ConferenceSchoolName +
+                                //     "Schooleverywhere" +
+                                //     element["staffid"]);
                                 SetConferenceJoinId(element["id"]);
                                 JoinConferenceStatus(element["id"]);
                               },
@@ -239,43 +239,43 @@ class _ConferenceStaffJoinStaffState extends State<ConferenceStaffJoinStaff> {
     );
   }
 
-  _joinMeeting(String RoomChannel) async {
-    print(RoomChannel);
+  // _joinMeeting(String RoomChannel) async {
+  //   print(RoomChannel);
 
-    try {
-      var options = JitsiMeetingOptions(room: RoomChannel)
-        ..serverURL = urlConference
-        ..subject = "Schooleverywhere Conference"
-        ..userDisplayName = loggedStaff!.name
-        ..audioOnly = false
-        ..audioMuted = false
-        ..videoMuted = false;
+  //   try {
+  //     var options = JitsiMeetingOptions(room: RoomChannel)
+  //       ..serverURL = urlConference
+  //       ..subject = "Schooleverywhere Conference"
+  //       ..userDisplayName = loggedStaff!.name
+  //       ..audioOnly = false
+  //       ..audioMuted = false
+  //       ..videoMuted = false;
 
-      debugPrint("JitsiMeetingOptions: $options");
-      await JitsiMeet.joinMeeting(
-        options,
-        listener: JitsiMeetingListener(
-            onConferenceWillJoin: (message) {
-              debugPrint("${options.room} will join with message: $message");
-            },
-            onConferenceJoined: (message) {
-              debugPrint("${options.room} joined with message: $message");
-            },
-            onConferenceTerminated: (message) {
-              debugPrint("${options.room} terminated with message: $message");
-            },
-            genericListeners: [
-              JitsiGenericListener(
-                  eventName: 'readyToClose',
-                  callback: (dynamic message) {
-                    debugPrint("readyToClose callback");
-                  }),
-            ]),
-      );
-    } catch (error) {
-      debugPrint("error: $error");
-    }
-  }
+  //     debugPrint("JitsiMeetingOptions: $options");
+  //     await JitsiMeet.joinMeeting(
+  //       options,
+  //       listener: JitsiMeetingListener(
+  //           onConferenceWillJoin: (message) {
+  //             debugPrint("${options.room} will join with message: $message");
+  //           },
+  //           onConferenceJoined: (message) {
+  //             debugPrint("${options.room} joined with message: $message");
+  //           },
+  //           onConferenceTerminated: (message) {
+  //             debugPrint("${options.room} terminated with message: $message");
+  //           },
+  //           genericListeners: [
+  //             JitsiGenericListener(
+  //                 eventName: 'readyToClose',
+  //                 callback: (dynamic message) {
+  //                   debugPrint("readyToClose callback");
+  //                 }),
+  //           ]),
+  //     );
+  //   } catch (error) {
+  //     debugPrint("error: $error");
+  //   }
+  // }
 
   void _onConferenceWillJoin(message) {
     debugPrint("_onConferenceWillJoin broadcasted with message: $message");

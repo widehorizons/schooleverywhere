@@ -465,7 +465,7 @@ class _SendToClassState extends State<SendToClass> {
                             (selectedFilesList.isNotEmpty ||
                                 CommentValue.text.isNotEmpty)) {
                           datasend = await addSendToClass(
-                              voice!,
+                              voice,
                               NewFileName,
                               CommentValue.text,
                               urlValue.text,

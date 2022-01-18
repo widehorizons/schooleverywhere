@@ -1151,7 +1151,7 @@ Future<dynamic> uploadFile(List selectedFile, url) async {
 }
 
 addSendToClass(
-    File voice,
+    File? voice,
     List fileslist,
     String comment,
     String url,
@@ -1190,7 +1190,8 @@ addSendToClass(
 
     var request = http.MultipartRequest('POST', Uri.parse(myUrl));
     request.fields.addAll(body);
-    request.files.add(await http.MultipartFile.fromPath('voice', voice.path));
+    if (voice != null)
+      request.files.add(await http.MultipartFile.fromPath('voice', voice.path));
     final http.StreamedResponse streamedResponse = await request.send();
     final response = await http.Response.fromStream(streamedResponse);
     if (response != null) {

@@ -1,4 +1,4 @@
-package com.schooleverywhere.schooleverywhere
+package com.schooleverywhere.tantaroyal
 
 import io.flutter.embedding.android.FlutterActivity
 

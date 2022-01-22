@@ -142,8 +142,7 @@ class _AudioRecorderState extends State<AudioRecorder> {
     try {
       if (await _audioRecorder.hasPermission()) {
         await _audioRecorder.start(
-            path:
-                "/data/user/0/com.schooleverywhere.schooleverywhere/cache/audio.wav");
+            path: "/storage/emulated/0/Download/temp.wav");
 
         bool isRecording = await _audioRecorder.isRecording();
         setState(() {

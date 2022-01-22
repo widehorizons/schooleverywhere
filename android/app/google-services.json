@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:839579222585:android:2e2634d648a66e1fff83e8",
         "android_client_info": {
-          "package_name": "com.schooleverywhere.schooleverywhere"
+          "package_name": "com.schooleverywhere.tantaroyal"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "839579222585-mnn6e0sbdapbrlg7bqsdj3s0ojdecgo8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.schooleverywhere.schooleverywhere",
+            "package_name": "com.schooleverywhere.tantaroyal",
             "certificate_hash": "e1809fbe8a1718b7e85bca7cc04a31b6da603b50"
           }
         },

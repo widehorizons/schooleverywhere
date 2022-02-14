@@ -253,11 +253,11 @@ class _PreviousMaintenanceLocationState
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.add_comment),
-            title: Text('New Problem'),
+            label: 'New Problem',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.low_priority),
-            title: Text('Previous'),
+            label: 'Previous',
           ),
         ],
         currentIndex: _selectedIndex,

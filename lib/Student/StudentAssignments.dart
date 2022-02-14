@@ -421,15 +421,15 @@ class _StudentAssignmentsState extends State<StudentAssignments> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.email),
-            title: Text('Assignments'),
+            label: 'Assignments',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.announcement),
-            title: Text('Teacher Reply'),
+            label: 'Teacher Reply',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.reply_all),
-            title: Text('My Reply'),
+            label: 'My Reply',
           ),
         ],
         currentIndex: _selectedIndex,

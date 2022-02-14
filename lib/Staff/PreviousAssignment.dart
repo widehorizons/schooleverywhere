@@ -293,19 +293,19 @@ class _PreviousAssignmentsState extends State<PreviousAssignments> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.add_comment),
-            title: Text('New'),
+            label: 'New',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.low_priority),
-            title: Text('Previous'),
+            label: 'Previous',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.announcement),
-            title: Text('Student Reply'),
+            label: 'Student Reply',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.reply_all),
-            title: Text('My Reply'),
+            label: 'My Reply',
           ),
         ],
         type: BottomNavigationBarType.fixed,

@@ -397,11 +397,11 @@ class _UnPaidPreviousLeaveRequestState
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.add_comment),
-            title: Text('New Request'),
+            label: 'New Request',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.low_priority),
-            title: Text('Previous'),
+            label: 'Previous',
           ),
         ],
         currentIndex: _selectedIndex,

@@ -55,7 +55,6 @@ dependencies:
   zoom_widget: ^0.2.1
   fluttertoast: ^8.0.8
   # get_version: ^0.2.2
-  jitsi_meet: ^4.0.0
   badges: ^2.0.1
   video_player: ^2.2.5
   chewie: ^1.2.2

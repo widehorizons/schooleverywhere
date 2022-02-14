@@ -415,9 +415,7 @@ class _MemoState extends State<Memo> {
                               maxLines: 1,
                               decoration: new InputDecoration(labelText: ""),
                               keyboardType: TextInputType.number,
-                              inputFormatters: <TextInputFormatter>[
-                                WhitelistingTextInputFormatter.digitsOnly
-                              ],
+                              inputFormatters: <TextInputFormatter>[],
                             ))
                           ],
                         )),

@@ -251,15 +251,15 @@ class _MailInboxPageState extends State<MailInboxPage> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.add_comment),
-            title: Text('Compose'),
+            label: 'Compose',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.done_outline),
-            title: Text('Send'),
+            label: 'Send',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.email),
-            title: Text('Recieve'),
+            label: 'Recieve',
           ),
         ],
         currentIndex: _selectedIndex,

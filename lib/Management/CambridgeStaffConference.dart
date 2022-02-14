@@ -9,7 +9,7 @@ import '../Networking/Futures.dart';
 import '../Pages/LoginPage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
-import 'package:jitsi_meet/jitsi_meet.dart';
+// import 'package:jitsi_meet/jitsi_meet.dart';
 import '../config/flavor_config.dart';
 
 class CambridgeStaffConference extends StatefulWidget {
@@ -92,7 +92,7 @@ class CambridgeStaffConferenceState extends State<CambridgeStaffConference> {
   @override
   void dispose() {
     super.dispose();
-    JitsiMeet.removeAllListeners();
+    // JitsiMeet.removeAllListeners();
   }
 
   @override
@@ -143,9 +143,6 @@ class CambridgeStaffConferenceState extends State<CambridgeStaffConference> {
                                     color: Colors.lightBlue, fontSize: 14),
                               ),
                               onTap: () async {
-                                _joinMeeting(ApiConstants.ConferenceSchoolName +
-                                    "Schooleverywhere" +
-                                    element["staffid"]);
                                 SetConferenceJoinId(element["id"]);
                                 JoinConferenceStatus(element["id"]);
                               },
@@ -223,43 +220,6 @@ class CambridgeStaffConferenceState extends State<CambridgeStaffConference> {
     setState(() {
       isVideoMuted = value;
     });
-  }
-
-  _joinMeeting(RoomChannel) async {
-    try {
-      var options = JitsiMeetingOptions(
-          room: RoomChannel) // Required, spaces will be trimmed
-        ..serverURL = urlConference
-        ..subject = "Schooleverywhere Conference"
-        ..userDisplayName = userName
-        ..audioOnly = isAudioOnly
-        ..audioMuted = isAudioMuted
-        ..videoMuted = isVideoMuted;
-
-      debugPrint("JitsiMeetingOptions: $options");
-      await JitsiMeet.joinMeeting(
-        options,
-        listener: JitsiMeetingListener(
-            onConferenceWillJoin: (message) {
-              debugPrint("${options.room} will join with message: $message");
-            },
-            onConferenceJoined: (message) {
-              debugPrint("${options.room} joined with message: $message");
-            },
-            onConferenceTerminated: (message) {
-              debugPrint("${options.room} terminated with message: $message");
-            },
-            genericListeners: [
-              JitsiGenericListener(
-                  eventName: 'readyToClose',
-                  callback: (dynamic message) {
-                    debugPrint("readyToClose callback");
-                  }),
-            ]),
-      );
-    } catch (error) {
-      debugPrint("error: $error");
-    }
   }
 
   void _onConferenceWillJoin(message) {

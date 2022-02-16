@@ -602,11 +602,11 @@ class _SendToClassState extends State<SendToClass> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.add_comment),
-            title: Text('New'),
+            label: 'New',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.announcement),
-            title: Text('Student Reply'),
+            label: 'Student Reply',
           ),
         ],
         type: BottomNavigationBarType.fixed,

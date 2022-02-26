@@ -55,7 +55,9 @@ class SplashScreenState extends State<SplashScreen> {
       } else if (loggedUser.type == PARENT_TYPE) {
         return new ParentPage();
       } else {
-        return new BusPage();
+        return new ParentPage();
+
+        // return new BusPage();
       }
     } else {
       return new LoginPage();

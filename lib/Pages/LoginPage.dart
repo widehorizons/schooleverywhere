@@ -328,7 +328,9 @@ class _LoginPageState extends State<LoginPage> {
     } else if (loggedUser == PARENT_TYPE) {
       return new ParentPage();
     } else {
-      return new BusPage();
+      return new ParentPage();
+
+      // return new BusPage();
     }
   }
 }

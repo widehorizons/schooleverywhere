@@ -188,12 +188,12 @@ class _GeolocationHomeState extends  State<GeolocationHome>{
           borderRadius: BorderRadius.circular(24),
         ),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    GeolocationPage(routeid: routeValue!,periodid: periodValue!, parentSection: loggedParent!.childeSectionSelected,parentAcademicYear: loggedParent!.academicYear)),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //       builder: (context) =>
+          //           GeolocationPage(routeid: routeValue!,periodid: periodValue!, parentSection: loggedParent!.childeSectionSelected,parentAcademicYear: loggedParent!.academicYear)),
+          // );
         },
         padding: EdgeInsets.all(12),
         color: AppTheme.appColor,

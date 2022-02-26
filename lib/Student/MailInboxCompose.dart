@@ -308,7 +308,7 @@ class _MailInboxComposeState extends State<MailInboxCompose> {
     final selectedManagement = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
+          autovalidate: AutovalidateMode.disabled,
           title: Text("Managers"),
           validator: (value) {
             if (value == null) return 'Please select one or more option(s)';
@@ -329,7 +329,7 @@ class _MailInboxComposeState extends State<MailInboxCompose> {
     final selectedTeacher = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
+          autovalidate: AutovalidateMode.disabled,
           title: Text("Teacher"),
           validator: (value) {
             if (value == null) {
@@ -354,7 +354,7 @@ class _MailInboxComposeState extends State<MailInboxCompose> {
     final selectedStudent = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
+          autovalidate: AutovalidateMode.disabled,
           title: Text("Student"),
           validator: (value) {
             if (value == null) {
@@ -379,7 +379,7 @@ class _MailInboxComposeState extends State<MailInboxCompose> {
     final selectedParent = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
+          autovalidate: AutovalidateMode.disabled,
           title: Text("Parents"),
           validator: (value) {
             if (value == null) {

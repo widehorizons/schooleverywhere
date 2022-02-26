@@ -312,7 +312,7 @@ class SMSPageState extends State<SMSPage> {
     final selectedStudent = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
+          autovalidate: AutovalidateMode.disabled,
           title: Text("Student"),
           validator: (value) {
             if (value == null) {

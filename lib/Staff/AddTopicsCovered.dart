@@ -247,7 +247,7 @@ class _AddTopicsCoveredState extends State<AddTopicsCovered> {
           SizedBox(
             width: MediaQuery.of(context).size.width * .75,
             child: MultiSelectFormField(
-                autovalidate: false,
+                autovalidate: AutovalidateMode.disabled,
                 title: Text("Class"),
                 validator: (value) {
                   if (value == null)

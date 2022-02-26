@@ -209,7 +209,7 @@ class _TakeAttendanceState extends State<TakeAttendance> {
     final selectedPrecent = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
+          autovalidate: AutovalidateMode.disabled,
           title: Text("Present"),
           validator: (value) {
             if (value == null) return 'Please select one or more option(s)';
@@ -244,7 +244,7 @@ class _TakeAttendanceState extends State<TakeAttendance> {
     final selectedOD = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
+          autovalidate: AutovalidateMode.disabled,
           title: Text("OD"),
           validator: (value) {
             if (value == null) return 'Please select one or more option(s)';
@@ -279,7 +279,7 @@ class _TakeAttendanceState extends State<TakeAttendance> {
     final selectedAbsent = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
+          autovalidate: AutovalidateMode.disabled,
           title: Text("Absent"),
           validator: (value) {
             if (value == null) return 'Please select one or more option(s)';
@@ -314,7 +314,7 @@ class _TakeAttendanceState extends State<TakeAttendance> {
     final selectedMedical = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
+          autovalidate: AutovalidateMode.disabled,
           title: Text("Medical"),
           validator: (value) {
             if (value == null) return 'Please select one or more option(s)';
@@ -349,7 +349,7 @@ class _TakeAttendanceState extends State<TakeAttendance> {
     final selectedLate = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
+          autovalidate: AutovalidateMode.disabled,
           title: Text("Late"),
           validator: (value) {
             if (value == null) return 'Please select one or more option(s)';
@@ -384,7 +384,7 @@ class _TakeAttendanceState extends State<TakeAttendance> {
     final selectedExcuse = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
+          autovalidate: AutovalidateMode.disabled,
           title: Text("Excuse"),
           validator: (value) {
             if (value == null) return 'Please select one or more option(s)';

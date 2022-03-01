@@ -161,7 +161,6 @@ class _AddLessonsByClassState extends State<AddLessonsByClass> {
     final selectedClasses = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: AutovalidateMode.disabled,
           title: Text("Class"),
           validator: (value) {
             if (value == null) return 'Please select one or more class(s)';

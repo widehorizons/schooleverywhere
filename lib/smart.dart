@@ -14,15 +14,14 @@ Future<void> main() async {
   FlavorConfig(
       flavor: Flavor.SCHOOLEVERYWHERE,
       values: FlavorValues(
-        baseUrl: "https://schooleverywhere-try.com/schooleverywhere/",
-        schoolName: 'Schooleverywhere',
-        schoolWebsite: 'https://schooleverywhere-try.com/',
-        imagePath: 'img/schooleverywhere.png',
+        baseUrl: "https://schooleverywhere-smart.com/schooleverywhere/",
+        schoolName: 'Smart School',
+        imagePath: 'img/smart.png',
+        schoolWebsite: 'http://smartschool-egy.com/',
       ));
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // Bloc.observer = AppBlocObserver();
 
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 

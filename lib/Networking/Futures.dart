@@ -95,6 +95,7 @@ Future<EventObject> loginTypeOptions() async {
       Uri.parse(myUrl),
       headers: {'Accept': 'application/json'},
     );
+    print("Login type API $myUrl");
     if (response != null) {
       mapValue = json.decode(response.body);
       print("map:" + mapValue.toString());
@@ -4001,9 +4002,12 @@ Future<EventObject> typeProgressReport(
       "year": studentYear.toString(),
       "pagetype": PageType,
     });
+    print(
+        "typeProgressReport ==> $myUrl , params ==> body: section: ${studentSection.toString()}  year: ${studentYear.toString()}pagetype: $PageType");
     if (response != null) {
       print('Response status : ${response.statusCode}');
       print('Response body : ${response.body}');
+      print('pageType : $PageType');
 
       mapValue = json.decode(response.body);
       if (mapValue['success']) {

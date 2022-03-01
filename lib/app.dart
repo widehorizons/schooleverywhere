@@ -41,8 +41,7 @@ class _MyAppState extends State<MyApp> {
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage? message) {
-      print("Message recived ${message!.data}");
-      _notificationNavigator(message);
+      // _notificationNavigator(message);
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -85,9 +84,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _notificationNavigator(RemoteMessage? message) {
-    Map<String, dynamic> messageData = message!.data;
+    Map<String, dynamic>? messageData = message?.data;
     print("Notification Data ==================>> $messageData");
-    switch (messageData['screen']) {
+    switch (messageData!['screen']) {
       case "ReceiveFromTeacher":
         navigatorKey.currentState!.push(
             MaterialPageRoute(builder: (_) => ReceiveFromTeacher(typeUser!)));

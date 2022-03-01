@@ -170,8 +170,8 @@ class _ConferenceStaffJoinStaffState extends State<ConferenceStaffJoinStaff> {
                                 // _joinMeeting(ApiConstants.ConferenceSchoolName +
                                 //     "Schooleverywhere" +
                                 //     element["staffid"]);
-                                // SetConferenceJoinId(element["id"]);
-                                // JoinConferenceStatus(element["id"]);
+                                SetConferenceJoinId(element["id"]);
+                                JoinConferenceStatus(element["id"]);
                               },
                             ),
                           ],

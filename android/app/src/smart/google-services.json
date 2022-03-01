@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "560370624428",
+    "firebase_url": "https://smart-school-8d437.firebaseio.com",
+    "project_id": "smart-school-8d437",
+    "storage_bucket": "smart-school-8d437.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:560370624428:android:1096dbd69d23019b83bc09",
+        "android_client_info": {
+          "package_name": "com.schooleverywhere.smart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "560370624428-am81jkkfgago5jg670d3t2hc6a0avqk1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoToD0xuQhbLGoGWqY35TRcnlUPARdyEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "560370624428-am81jkkfgago5jg670d3t2hc6a0avqk1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "560370624428-88us666gcfq7vddvgvqtauer0d0rptnh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.widehorizons.smartSchool"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

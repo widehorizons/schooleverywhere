@@ -172,14 +172,14 @@ class _ConferenceSupervisiorStaffJoinStaffState
                                 //     element["staffid"] +
                                 //     element["subjectId"] +
                                 //     element["gradeId"]);
-                                // JoinConferenceStatus(
-                                //     ApiConstants.ConferenceSchoolName +
-                                //         "Schooleverywhere" +
-                                //         element["staffid"] +
-                                //         element["subjectId"] +
-                                //         element["gradeId"],
-                                //     element["staffid"],
-                                //     element["subjectId"]);
+                                JoinConferenceStatus(
+                                    ApiConstants.ConferenceSchoolName +
+                                        "Schooleverywhere" +
+                                        element["staffid"] +
+                                        element["subjectId"] +
+                                        element["gradeId"],
+                                    element["staffid"],
+                                    element["subjectId"]);
                               },
                             ),
 

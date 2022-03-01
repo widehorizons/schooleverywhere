@@ -143,6 +143,9 @@ class CambridgeStaffConferenceState extends State<CambridgeStaffConference> {
                                     color: Colors.lightBlue, fontSize: 14),
                               ),
                               onTap: () async {
+                                // _joinMeeting(ApiConstants.ConferenceSchoolName +
+                                //     "Schooleverywhere" +
+                                //     element["staffid"]);
                                 SetConferenceJoinId(element["id"]);
                                 JoinConferenceStatus(element["id"]);
                               },
@@ -221,6 +224,43 @@ class CambridgeStaffConferenceState extends State<CambridgeStaffConference> {
       isVideoMuted = value;
     });
   }
+
+  // _joinMeeting(RoomChannel) async {
+  //   try {
+  //     var options = JitsiMeetingOptions(
+  //         room: RoomChannel) // Required, spaces will be trimmed
+  //       ..serverURL = urlConference
+  //       ..subject = "Schooleverywhere Conference"
+  //       ..userDisplayName = userName
+  //       ..audioOnly = isAudioOnly
+  //       ..audioMuted = isAudioMuted
+  //       ..videoMuted = isVideoMuted;
+
+  //     debugPrint("JitsiMeetingOptions: $options");
+  //     await JitsiMeet.joinMeeting(
+  //       options,
+  //       listener: JitsiMeetingListener(
+  //           onConferenceWillJoin: (message) {
+  //             debugPrint("${options.room} will join with message: $message");
+  //           },
+  //           onConferenceJoined: (message) {
+  //             debugPrint("${options.room} joined with message: $message");
+  //           },
+  //           onConferenceTerminated: (message) {
+  //             debugPrint("${options.room} terminated with message: $message");
+  //           },
+  //           genericListeners: [
+  //             JitsiGenericListener(
+  //                 eventName: 'readyToClose',
+  //                 callback: (dynamic message) {
+  //                   debugPrint("readyToClose callback");
+  //                 }),
+  //           ]),
+  //     );
+  //   } catch (error) {
+  //     debugPrint("error: $error");
+  //   }
+  // }
 
   void _onConferenceWillJoin(message) {
     debugPrint("_onConferenceWillJoin broadcasted with message: $message");

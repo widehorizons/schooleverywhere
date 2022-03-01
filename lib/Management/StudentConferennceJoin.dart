@@ -312,7 +312,19 @@ class StudentConferennceJoineState extends State<StudentConferennceJoin> {
                                     color: Colors.lightBlue, fontSize: 14),
                               ),
                               onTap: () async {
-                               
+                                // _joinMeeting(ApiConstants.ConferenceSchoolName +
+                                //     "Schooleverywhere" +
+                                //     element["staffid"] +
+                                //     element["subjectId"] +
+                                //     gradeValue!);
+                                JoinConferenceStatus(
+                                    ApiConstants.ConferenceSchoolName +
+                                        "Schooleverywhere" +
+                                        element["staffid"] +
+                                        element["subjectId"] +
+                                        gradeValue!,
+                                    element["staffid"],
+                                    element["subjectId"]);
                               },
                             ),
                             DataCell(Text(

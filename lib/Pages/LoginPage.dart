@@ -180,7 +180,7 @@ class _LoginPageState extends State<LoginPage> {
         style: TextStyle(color: AppTheme.appColor),
       ),
       onPressed: () async {
-        await launch(FlavorConfig.instance.values.baseUrl!);
+        await launch(FlavorConfig.instance.values.schoolWebsite!);
       },
     );
 

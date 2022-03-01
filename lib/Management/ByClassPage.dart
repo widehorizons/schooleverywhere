@@ -283,7 +283,6 @@ class ByClassPageState extends State<ByClassPage> {
     final managementclass = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: AutovalidateMode.disabled,
           title: Text("Student"),
           validator: (value) {
             if (value == null) {

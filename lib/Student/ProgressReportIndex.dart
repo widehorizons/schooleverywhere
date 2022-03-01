@@ -259,12 +259,14 @@ class _ProgressReportIndexState extends State<ProgressReportIndex> {
             }
           } else {
             if (typeOptions == 'printProgressReportAltTwo') {
+              print("typeOptions == 'printProgressReportAltTwo'");
               setState(() {
                 typename = ProgressReport.SCHOOL_PROGRESS_REPORT_ALT_TWO_LINK;
               });
             } else {
               setState(() {
                 typename = ProgressReport.SCHOOL_PROGRESS_REPORT_ALT_ONE_LINK;
+                // typename = ProgressReport.SCHOOL_PROGRESS_REPORT_ALT_TWO_LINK;
               });
             }
           }

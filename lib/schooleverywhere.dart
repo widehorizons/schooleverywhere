@@ -15,11 +15,11 @@ Future<void> main() async {
   FlavorConfig(
       flavor: Flavor.SCHOOLEVERYWHERE,
       values: FlavorValues(
-          baseUrl: "https://schooleverywhere-try.com/schooleverywhere/",
-          schoolName: 'Schooleverywhere',
-          schoolWebsite: 'https://schooleverywhere-try.com/',
-          imagePath: 'img/schooleverywhere.png',
-          audioFilePath: '/data/user/0/com.schooleverywhere/cache/audio.wav'));
+        baseUrl: "https://schooleverywhere-try.com/schooleverywhere/",
+        schoolName: 'Schooleverywhere',
+        schoolWebsite: 'https://schooleverywhere-try.com/',
+        imagePath: 'img/schooleverywhere.png',
+      ));
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

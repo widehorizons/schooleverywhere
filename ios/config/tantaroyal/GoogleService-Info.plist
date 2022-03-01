@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>329700175350-m6nm2su65mleqqjb0k0f7tqf5hh22otf.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.329700175350-m6nm2su65mleqqjb0k0f7tqf5hh22otf</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>329700175350-u42341mrftf185pi6l8iktfqs3c2n7fo.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBbA3tuvZDGMSLwDgZf-u-UtEoQ_8R_HNI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>329700175350</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.schooleverywhere.tantaroyal</string>
+	<key>PROJECT_ID</key>
+	<string>tantaroyal-b7f08</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tantaroyal-b7f08.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:329700175350:ios:d4e74f9ccac756ce256bd7</string>
+</dict>
+</plist>

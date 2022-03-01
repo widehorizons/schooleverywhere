@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../Constants/StringConstants.dart';
 import '../Modules/EventObject.dart';
 import '../Modules/Messages.dart';
@@ -15,6 +16,7 @@ import '../Student/MailInboxReplyPage.dart';
 import '../Style/theme.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Pages/LoginPage.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class MailInboxContentsPage extends StatefulWidget {
   final String msgId;
@@ -67,7 +69,8 @@ class _MailInboxContentsPageState extends State<MailInboxContentsPage> {
           data['attachment'],
           data['messageReplayStatus'].toString(),
           data['senderName'].toString(),
-          data['path'].toString());
+          data['path'].toString(),
+          data['url'].toString());
       setState(() {
         data;
         print("id2m" + msg.messageReplayStatus.toString());
@@ -218,12 +221,31 @@ class _MailInboxContentsPageState extends State<MailInboxContentsPage> {
                                                 fontSize: 14),
                                           ))
                                         ]),
+                                        if (msg.url != null && msg.url != '')
+                                          DataRow(cells: [
+                                            DataCell(Text(
+                                              "URL",
+                                              style: TextStyle(
+                                                  color: AppTheme.appColor,
+                                                  fontSize: 14),
+                                            )),
+                                            DataCell(InkWell(
+                                                onTap: () async =>
+                                                    await launch(msg.url!),
+                                                child: Text(
+                                                  msg.url!,
+                                                  style: TextStyle(
+                                                      color: Colors.blue,
+                                                      decoration: TextDecoration
+                                                          .underline),
+                                                )))
+                                          ]),
                                       ],
                                       headingRowHeight: 0,
                                       horizontalMargin: 15,
                                     ),
                                     new Expanded(
-                                        flex: 1,
+                                        flex: 3,
                                         child: SingleChildScrollView(
                                           child: Container(
                                             margin: EdgeInsets.all(15.0),
@@ -264,7 +286,7 @@ class _MailInboxContentsPageState extends State<MailInboxContentsPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -276,7 +298,8 @@ class _MailInboxContentsPageState extends State<MailInboxContentsPage> {
               },
               child: CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],

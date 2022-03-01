@@ -13,6 +13,7 @@ import '../Style/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Pages/LoginPage.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class ProgressReportIndex extends StatefulWidget {
   final String type;
@@ -258,12 +259,14 @@ class _ProgressReportIndexState extends State<ProgressReportIndex> {
             }
           } else {
             if (typeOptions == 'printProgressReportAltTwo') {
+              print("typeOptions == 'printProgressReportAltTwo'");
               setState(() {
                 typename = ProgressReport.SCHOOL_PROGRESS_REPORT_ALT_TWO_LINK;
               });
             } else {
               setState(() {
                 typename = ProgressReport.SCHOOL_PROGRESS_REPORT_ALT_ONE_LINK;
+                // typename = ProgressReport.SCHOOL_PROGRESS_REPORT_ALT_TWO_LINK;
               });
             }
           }
@@ -331,11 +334,12 @@ class _ProgressReportIndexState extends State<ProgressReportIndex> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               backgroundColor: Colors.transparent,
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),

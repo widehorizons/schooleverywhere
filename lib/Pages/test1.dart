@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../config/flavor_config.dart';
 import '../Constants/StringConstants.dart';
 import '../Modules/Student.dart';
 import '../Style/theme.dart';
@@ -40,11 +41,12 @@ class _test1State extends State<test1> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               backgroundColor: Colors.transparent,
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),

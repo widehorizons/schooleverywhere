@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 import '../Constants/StringConstants.dart';
 import '../Pages/HomePage.dart';
 import '../Pages/LoginPage.dart';
@@ -246,7 +247,6 @@ class _AddTopicsCoveredState extends State<AddTopicsCovered> {
           SizedBox(
             width: MediaQuery.of(context).size.width * .75,
             child: MultiSelectFormField(
-                autovalidate: false,
                 title: Text("Class"),
                 validator: (value) {
                   if (value == null)
@@ -298,7 +298,7 @@ class _AddTopicsCoveredState extends State<AddTopicsCovered> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -310,7 +310,8 @@ class _AddTopicsCoveredState extends State<AddTopicsCovered> {
               },
               child: CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],

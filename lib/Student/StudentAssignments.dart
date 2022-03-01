@@ -14,7 +14,7 @@ import '../Pages/LoginPage.dart';
 import 'ShowAssignmentsContentPage.dart';
 import 'StudentReplyAssignments.dart';
 import 'TeacherReplyAssignments.dart';
-
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class StudentAssignments extends StatefulWidget {
   final String type;
@@ -26,15 +26,15 @@ class StudentAssignments extends StatefulWidget {
 }
 
 class _StudentAssignmentsState extends State<StudentAssignments> {
-   Parent? loggedParent;
-   Student? loggedStudent;
+  Parent? loggedParent;
+  Student? loggedStudent;
   Map datesOptions = new Map();
   Map subjectOption = new Map();
   Map divisions = new Map();
   Map teacherOption = new Map();
   List<dynamic> dataShowContent = [];
-   String? subjectValue;
-   String? TeacherValue;
+  String? subjectValue;
+  String? TeacherValue;
   bool subjectSelected = false;
   bool TeacherSelected = false;
   List<Widget> topicsCoveredArr = [];
@@ -43,32 +43,31 @@ class _StudentAssignmentsState extends State<StudentAssignments> {
   String? userId;
   String? userSection;
   String? userAcademicYear;
-   String? childern;
+  String? childern;
   initState() {
     super.initState();
-    if(widget.type == PARENT_TYPE)
+    if (widget.type == PARENT_TYPE)
       getLoggedParent();
-    else   getLoggedStudent();
+    else
+      getLoggedStudent();
   }
 
   Future<void> getLoggedParent() async {
-
     loggedParent = await getUserData() as Parent;
     syncAssignmentsSubject();
     userId = loggedParent!.id!;
-    userSection= loggedParent!.childeSectionSelected;
-    userAcademicYear=loggedParent!.academicYear;
-    childern=loggedParent!.regno;
+    userSection = loggedParent!.childeSectionSelected;
+    userAcademicYear = loggedParent!.academicYear;
+    childern = loggedParent!.regno;
   }
 
   Future<void> getLoggedStudent() async {
-
     loggedStudent = await getUserData() as Student;
     syncAssignmentsSubject();
     userId = loggedStudent!.id!;
-    userSection=loggedStudent!.section!;
-    userAcademicYear=loggedStudent!.academicYear!;
-    childern=loggedStudent!.id;
+    userSection = loggedStudent!.section!;
+    userAcademicYear = loggedStudent!.academicYear!;
+    childern = loggedStudent!.id;
   }
 
   Future<void> syncAssignmentsSubject() async {
@@ -99,11 +98,9 @@ class _StudentAssignmentsState extends State<StudentAssignments> {
       setState(() {
         subjectOption = SubjectArr;
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEvent.object as String?;
-    /*  Flushbar(
+      /*  Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -117,8 +114,7 @@ class _StudentAssignmentsState extends State<StudentAssignments> {
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
@@ -154,11 +150,9 @@ class _StudentAssignmentsState extends State<StudentAssignments> {
       setState(() {
         teacherOption = TeacherArr;
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEventr.object as String?;
-    /*  Flushbar(
+      /*  Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -172,8 +166,7 @@ class _StudentAssignmentsState extends State<StudentAssignments> {
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
@@ -206,11 +199,9 @@ class _StudentAssignmentsState extends State<StudentAssignments> {
       setState(() {
         dataShowContent = listOfColumns;
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEvents.object as String?;
-   /*   Flushbar(
+      /*   Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -224,8 +215,7 @@ class _StudentAssignmentsState extends State<StudentAssignments> {
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
@@ -258,7 +248,6 @@ class _StudentAssignmentsState extends State<StudentAssignments> {
 
   @override
   Widget build(BuildContext context) {
-
     final SubjectSelect = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: DropdownButton<String>(
@@ -282,13 +271,13 @@ class _StudentAssignmentsState extends State<StudentAssignments> {
           },
           items: subjectOption
               .map((key, value) {
-            return MapEntry(
-                value,
-                DropdownMenuItem<String>(
-                  value: key,
-                  child: Text(value),
-                ));
-          })
+                return MapEntry(
+                    value,
+                    DropdownMenuItem<String>(
+                      value: key,
+                      child: Text(value),
+                    ));
+              })
               .values
               .toList()),
     );
@@ -312,13 +301,13 @@ class _StudentAssignmentsState extends State<StudentAssignments> {
           },
           items: teacherOption
               .map((key, value) {
-            return MapEntry(
-                value,
-                DropdownMenuItem<String>(
-                  value: key,
-                  child: Text(value),
-                ));
-          })
+                return MapEntry(
+                    value,
+                    DropdownMenuItem<String>(
+                      value: key,
+                      child: Text(value),
+                    ));
+              })
               .values
               .toList()),
     );
@@ -327,79 +316,90 @@ class _StudentAssignmentsState extends State<StudentAssignments> {
         child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-              columns: [
-                DataColumn(label: Text("Subject")),
-                DataColumn(label: Text("Date")),
-                DataColumn(label: Text("Description")),
-              ],
-              rows:
-              dataShowContent // Loops through dataColumnText, each iteration assigning the value to element
-                  .map(
-                ((element) => DataRow(
-                  cells: <DataCell>[
-                    DataCell(Text(element["Subject"])),
-                    DataCell(Text(element["Date"])),
-                    //Extracting from Map element the value
-                    DataCell(
-
-                      Text('Read Description',style: TextStyle(color: Colors.lightBlue, fontSize: 14),),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (context) =>
-                                    ShowAssignmentsContentPage(
-                                        element["id"].toString(),widget.type)));
-                      },
-                    ),
+                scrollDirection: Axis.horizontal,
+                child: DataTable(
+                  columns: [
+                    DataColumn(label: Text("Subject")),
+                    DataColumn(label: Text("Date")),
+                    DataColumn(label: Text("Description")),
                   ],
-                )),
-              )
-                  .toList(),
-            ))
-        ));
+                  rows:
+                      dataShowContent // Loops through dataColumnText, each iteration assigning the value to element
+                          .map(
+                            ((element) => DataRow(
+                                  cells: <DataCell>[
+                                    DataCell(Text(element["Subject"])),
+                                    DataCell(Text(element["Date"])),
+                                    //Extracting from Map element the value
+                                    DataCell(
+                                      Text(
+                                        'Read Description',
+                                        style: TextStyle(
+                                            color: Colors.lightBlue,
+                                            fontSize: 14),
+                                      ),
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            new MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ShowAssignmentsContentPage(
+                                                        element["id"]
+                                                            .toString(),
+                                                        widget.type)));
+                                      },
+                                    ),
+                                  ],
+                                )),
+                          )
+                          .toList(),
+                ))));
 
-    final body =  Center(
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                width: MediaQuery.of(context).size.width * .5,
-                child: SubjectSelect,
-              ),
-              subjectSelected
-                  ? SizedBox(
-                width: MediaQuery.of(context).size.width * .5,
-                child: Teacher,
-              )
-                  : Container(),
-              TeacherSelected
-                  ? new Expanded(
-                  child:ListView(
-                children: <Widget>[
-                  showData,
-                ],
-              )): Container(),
-            ],
+    final body = Center(
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            width: MediaQuery.of(context).size.width * .5,
+            child: SubjectSelect,
           ),
-        );
+          subjectSelected
+              ? SizedBox(
+                  width: MediaQuery.of(context).size.width * .5,
+                  child: Teacher,
+                )
+              : Container(),
+          TeacherSelected
+              ? new Expanded(
+                  child: ListView(
+                  children: <Widget>[
+                    showData,
+                  ],
+                ))
+              : Container(),
+        ],
+      ),
+    );
     return Scaffold(
       appBar: new AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
-                Navigator.of(context).pushReplacement(
-                    new  MaterialPageRoute(builder: (context) => HomePage(type: widget.type, sectionid: userSection!, Id: childern!, Academicyear: userAcademicYear!)));
+                Navigator.of(context).pushReplacement(new MaterialPageRoute(
+                    builder: (context) => HomePage(
+                        type: widget.type,
+                        sectionid: userSection!,
+                        Id: childern!,
+                        Academicyear: userAcademicYear!)));
               },
               child: CircleAvatar(
                 radius: 20,
                 backgroundColor: Colors.transparent,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],
@@ -421,15 +421,15 @@ class _StudentAssignmentsState extends State<StudentAssignments> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.email),
-            title: Text('Assignments'),
+            label: 'Assignments',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.announcement),
-            title: Text('Teacher Reply'),
+            label: 'Teacher Reply',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.reply_all),
-            title: Text('My Reply'),
+            label: 'My Reply',
           ),
         ],
         currentIndex: _selectedIndex,
@@ -438,21 +438,25 @@ class _StudentAssignmentsState extends State<StudentAssignments> {
       ),
       floatingActionButton: FloatingActionButton(
           elevation: 55,
-          onPressed: (){
-            logOut(widget.type,userId!);
+          onPressed: () {
+            logOut(widget.type, userId!);
             removeUserData();
-            while(Navigator.canPop(context)){
+            while (Navigator.canPop(context)) {
               Navigator.pop(context);
             }
 //          Navigator.pop(context);
             Navigator.of(context).pushReplacement(
-                new  MaterialPageRoute(builder: (context) => LoginPage()));
+                new MaterialPageRoute(builder: (context) => LoginPage()));
           },
-          child:Icon(FontAwesomeIcons.doorOpen,color: AppTheme.floatingButtonColor, size: 30,),
+          child: Icon(
+            FontAwesomeIcons.doorOpen,
+            color: AppTheme.floatingButtonColor,
+            size: 30,
+          ),
           backgroundColor: Colors.transparent,
-          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0),)
-
-      ),
+          shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(30.0),
+          )),
     );
   }
 }

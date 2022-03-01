@@ -2,6 +2,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 import '../Constants/StringConstants.dart';
 import '../Modules/EventObject.dart';
 import '../Modules/Management.dart';
@@ -19,13 +20,13 @@ class ManagementPage extends StatefulWidget {
   }
 }
 
-class _ManagementPageState extends State<ManagementPage>{
-   String? academicYearValue, sectionValue, sectionNameVal;
+class _ManagementPageState extends State<ManagementPage> {
+  String? academicYearValue, sectionValue, sectionNameVal;
   bool sectionSelected = false;
   bool academicYearSelected = false;
-  Map sectionsOptions=new Map();
+  Map sectionsOptions = new Map();
   List<String> academicYearsOptions = [];
-     Management? loggedManagement;
+  Management? loggedManagement;
 
   @override
   initState() {
@@ -34,9 +35,9 @@ class _ManagementPageState extends State<ManagementPage>{
   }
 
   Future<void> getLoggedManagement() async {
-    loggedManagement =  await getUserData() as Management ;
-    if (loggedManagement!.section!= null &&
-        loggedManagement!.academicYear!= null) {
+    loggedManagement = await getUserData() as Management;
+    if (loggedManagement!.section != null &&
+        loggedManagement!.academicYear != null) {
       sectionValue = loggedManagement!.section;
       sectionNameVal = loggedManagement!.sectionName;
       academicYearValue = loggedManagement!.academicYear;
@@ -44,12 +45,13 @@ class _ManagementPageState extends State<ManagementPage>{
       academicYearSelected = true;
       syncSectionOptions();
       syncAcademicYearOptions();
-    }
-    else syncSectionOptions();
+    } else
+      syncSectionOptions();
   }
 
   Future<void> syncSectionOptions() async {
-    EventObject objectEventSection = await sectionOptions(loggedManagement!.id!);
+    EventObject objectEventSection =
+        await sectionOptions(loggedManagement!.id!);
     if (objectEventSection.success!) {
       Map? toto = objectEventSection.object as Map?;
       List<dynamic> x = toto!['sectionId'];
@@ -60,11 +62,9 @@ class _ManagementPageState extends State<ManagementPage>{
       setState(() {
         sectionsOptions = Sectionarr;
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEventSection.object as String?;
-     /* Flushbar(
+      /* Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -78,8 +78,7 @@ class _ManagementPageState extends State<ManagementPage>{
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
@@ -87,7 +86,7 @@ class _ManagementPageState extends State<ManagementPage>{
     EventObject objectEventYear = await academicYearOptions(sectionValue!);
     if (objectEventYear.success!) {
       List? toto = objectEventYear.object as List?;
-          List<String> convert = [];
+      List<String> convert = [];
       for (int i = 0; i < toto!.length; i++) {
         convert.add(toto[i].toString());
       }
@@ -95,11 +94,9 @@ class _ManagementPageState extends State<ManagementPage>{
         academicYearsOptions = convert;
       });
       print("Data: " + toto.toString());
-    }
-    else
-    {
+    } else {
       String? msg = objectEventYear.object as String?;
-  /*    Flushbar(
+      /*    Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -113,28 +110,23 @@ class _ManagementPageState extends State<ManagementPage>{
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     final section = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: DropdownButton<String>(
-        isExpanded: true,
-        value: sectionValue,
-        hint: Text("Select Your Section"),
-        style: TextStyle(
-            color: AppTheme.appColor
-        ),
-        underline: Container(
-          height: 2,
-          color: AppTheme.appColor,
-        ),
+          isExpanded: true,
+          value: sectionValue,
+          hint: Text("Select Your Section"),
+          style: TextStyle(color: AppTheme.appColor),
+          underline: Container(
+            height: 2,
+            color: AppTheme.appColor,
+          ),
           onChanged: (String? newValue) {
             setState(() {
               sectionSelected = true;
@@ -146,12 +138,17 @@ class _ManagementPageState extends State<ManagementPage>{
               syncAcademicYearOptions();
             });
           },
-          items: sectionsOptions.map((key, value){
-            return MapEntry(value, DropdownMenuItem<String>(value: key,child: Text(value),));
-          }
-
-          ).values.toList()
-      ),
+          items: sectionsOptions
+              .map((key, value) {
+                return MapEntry(
+                    value,
+                    DropdownMenuItem<String>(
+                      value: key,
+                      child: Text(value),
+                    ));
+              })
+              .values
+              .toList()),
     );
     final academicYear = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
@@ -159,9 +156,7 @@ class _ManagementPageState extends State<ManagementPage>{
         isExpanded: true,
         value: academicYearValue,
         hint: Text("Select Academic Year"),
-        style: TextStyle(
-            color: AppTheme.appColor
-        ),
+        style: TextStyle(color: AppTheme.appColor),
         underline: Container(
           height: 2,
           color: AppTheme.appColor,
@@ -172,14 +167,13 @@ class _ManagementPageState extends State<ManagementPage>{
             academicYearValue = newValue!;
           });
         },
-        items: academicYearsOptions
-            .map<DropdownMenuItem<String>>((String value) {
+        items:
+            academicYearsOptions.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(value),
           );
-        })
-            .toList(),
+        }).toList(),
       ),
     );
 
@@ -201,76 +195,83 @@ class _ManagementPageState extends State<ManagementPage>{
       child: Column(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * .15),
+            padding:
+                EdgeInsets.only(top: MediaQuery.of(context).size.height * .15),
             child: new Icon(
-                Icons.person, color: AppTheme.appColor,
-                size: MediaQuery.of(context).size.height * .15,
+              Icons.person,
+              color: AppTheme.appColor,
+              size: MediaQuery.of(context).size.height * .15,
             ),
           ),
           SizedBox(
-            width: MediaQuery.of(context).size.width *.5,
+            width: MediaQuery.of(context).size.width * .5,
             child: section,
           ),
-          sectionSelected ?
-          SizedBox(
-            width: MediaQuery.of(context).size.width *.5,
-            child: academicYear,
-          )
-              :Container(),
-          academicYearSelected ?
-          SizedBox(
-            width: MediaQuery.of(context).size.width *.4,
-            child: goButton,
-          )
-              :Container(),
+          sectionSelected
+              ? SizedBox(
+                  width: MediaQuery.of(context).size.width * .5,
+                  child: academicYear,
+                )
+              : Container(),
+          academicYearSelected
+              ? SizedBox(
+                  width: MediaQuery.of(context).size.width * .4,
+                  child: goButton,
+                )
+              : Container(),
         ],
       ),
     );
     return Scaffold(
-        appBar: new AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              Text(SCHOOL_NAME),
-              CircleAvatar(
-                radius: 20,
-                backgroundColor: Colors.transparent,
-
-                backgroundImage: AssetImage('img/logo.png'),
-              )
-            ],
-          ),
-          backgroundColor: AppTheme.appColor,
+      appBar: new AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Text(FlavorConfig.instance.values.schoolName!),
+            CircleAvatar(
+              radius: 20,
+              backgroundColor: Colors.transparent,
+              backgroundImage:
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
+            )
+          ],
         ),
-        body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('img/bg.png'),
-              fit: BoxFit.cover,
-            ),
+        backgroundColor: AppTheme.appColor,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('img/bg.png'),
+            fit: BoxFit.cover,
           ),
-          child: body,
         ),
+        child: body,
+      ),
       floatingActionButton: FloatingActionButton(
           elevation: 55,
-          onPressed: (){
-            logOut(loggedManagement!.type!,loggedManagement!.id!);
+          onPressed: () {
+            logOut(loggedManagement!.type!, loggedManagement!.id!);
             removeUserData();
-            while(Navigator.canPop(context)){
+            while (Navigator.canPop(context)) {
               Navigator.pop(context);
             }
 //          Navigator.pop(context);
             Navigator.of(context).pushReplacement(
-                new  MaterialPageRoute(builder: (context) => LoginPage()));
+                new MaterialPageRoute(builder: (context) => LoginPage()));
           },
-          child:Icon(FontAwesomeIcons.doorOpen,color: AppTheme.floatingButtonColor, size: 30,),
+          child: Icon(
+            FontAwesomeIcons.doorOpen,
+            color: AppTheme.floatingButtonColor,
+            size: 30,
+          ),
           backgroundColor: Colors.transparent,
-          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0),)
-
-      ),
+          shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(30.0),
+          )),
     );
   }
+
   Future<void> goHomePage() async {
     loggedManagement!.section = sectionValue!;
     loggedManagement!.sectionName = sectionNameVal!;
@@ -279,8 +280,11 @@ class _ManagementPageState extends State<ManagementPage>{
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) =>
-              HomePage(type: loggedManagement!.type!, sectionid:loggedManagement!.section!, Id:loggedManagement!.id!, Academicyear: loggedManagement!.academicYear!)),
+          builder: (context) => HomePage(
+              type: loggedManagement!.type!,
+              sectionid: loggedManagement!.section!,
+              Id: loggedManagement!.id!,
+              Academicyear: loggedManagement!.academicYear!)),
     );
   }
 }

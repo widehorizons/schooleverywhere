@@ -12,6 +12,7 @@ import 'package:flutter_uploader/flutter_uploader.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../Constants/StringConstants.dart';
 import '../Modules/EventObject.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 import '../Networking/ApiConstants.dart';
 import '../Networking/Futures.dart';
@@ -311,7 +312,6 @@ class SMSPageState extends State<SMSPage> {
     final selectedStudent = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
           title: Text("Student"),
           validator: (value) {
             if (value == null) {
@@ -626,10 +626,11 @@ class SMSPageState extends State<SMSPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),

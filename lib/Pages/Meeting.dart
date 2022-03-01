@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 import '../Constants/StringConstants.dart';
 import '../Modules/EventObject.dart';
 import '../Modules/Parent.dart';
@@ -250,7 +251,7 @@ class _MeetingState extends State<Meeting> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              Text(SCHOOL_NAME),
+              Text(FlavorConfig.instance.values.schoolName!),
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -262,7 +263,8 @@ class _MeetingState extends State<Meeting> {
                 },
                 child: CircleAvatar(
                   radius: 20,
-                  backgroundImage: AssetImage('img/logo.png'),
+                  backgroundImage:
+                      AssetImage('${FlavorConfig.instance.values.imagePath!}'),
                 ),
               )
             ],
@@ -424,7 +426,7 @@ class _MeetingState extends State<Meeting> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              Text(SCHOOL_NAME),
+              Text(FlavorConfig.instance.values.schoolName!),
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -436,7 +438,8 @@ class _MeetingState extends State<Meeting> {
                 },
                 child: CircleAvatar(
                   radius: 20,
-                  backgroundImage: AssetImage('img/logo.png'),
+                  backgroundImage:
+                      AssetImage('${FlavorConfig.instance.values.imagePath!}'),
                 ),
               )
             ],

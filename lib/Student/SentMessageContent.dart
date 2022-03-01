@@ -14,6 +14,7 @@ import '../Pages/HomePage.dart';
 import '../Style/theme.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Pages/LoginPage.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class SentMessageContent extends StatefulWidget {
   final String? msgId;
@@ -66,7 +67,8 @@ class _SentMessageContentState extends State<SentMessageContent> {
           data['attachment'],
           data['messageReplayStatus'].toString(),
           recieverName,
-          data['path'].toString());
+          data['path'].toString(),
+          data['url'].toString());
       setState(() {
         data;
         if (msg.messageReplayStatus.toString() == "true") {
@@ -230,7 +232,7 @@ class _SentMessageContentState extends State<SentMessageContent> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -242,7 +244,8 @@ class _SentMessageContentState extends State<SentMessageContent> {
               },
               child: CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],

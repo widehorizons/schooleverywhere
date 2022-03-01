@@ -1,25 +1,19 @@
-import 'dart:io';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:file_picker/file_picker.dart';
 //import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_uploader/flutter_uploader.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
-import 'package:path/path.dart' as path;
+import 'package:schooleverywhere/config/flavor_config.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../Constants/StringConstants.dart';
+
 import '../Modules/EventObject.dart';
 import '../Modules/Staff.dart';
-import '../Networking/ApiConstants.dart';
 import '../Networking/Futures.dart';
 import '../Pages/HomePage.dart';
+import '../Pages/LoginPage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
-
-import '../Pages/LoginPage.dart';
 
 class LiveStream extends StatefulWidget {
   @override
@@ -157,7 +151,6 @@ class _LiveStreamState extends State<LiveStream> {
     final selectedClasses = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
           title: Text("Class"),
           validator: (value) {
             if (value == null) return 'Please select one or more class(s)';
@@ -436,7 +429,7 @@ class _LiveStreamState extends State<LiveStream> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -448,7 +441,8 @@ class _LiveStreamState extends State<LiveStream> {
               },
               child: CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],

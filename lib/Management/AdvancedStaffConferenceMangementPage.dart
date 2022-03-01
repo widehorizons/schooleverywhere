@@ -1,18 +1,19 @@
 // import 'package:get_version/get_version.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-
-import '../Networking/ApiConstants.dart';
-import 'package:url_launcher/url_launcher.dart';
-import '../Modules/Management.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../Constants/StringConstants.dart';
 import '../Modules/EventObject.dart';
+import '../Modules/Management.dart';
+import '../Networking/ApiConstants.dart';
 import '../Networking/Futures.dart';
+import '../Pages/LoginPage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
-import '../Pages/LoginPage.dart';
 import 'AdvancedStaffJoinConference.dart';
 
 class AdvancedStaffConferenceMangementPage extends StatefulWidget {
@@ -117,10 +118,11 @@ class _AdvancedStaffConferenceMangementPageState
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),

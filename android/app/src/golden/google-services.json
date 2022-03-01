@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "815833167235",
+    "project_id": "golden-school-98c33",
+    "storage_bucket": "golden-school-98c33.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815833167235:android:820ac9540a6b99c0ab72b6",
+        "android_client_info": {
+          "package_name": "com.schooleverywhere.golden"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "815833167235-v85a6bp9710s2f5m82lk7qjg48rj3k9p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCg8B_wbYYxjAV_nAJBQFoYq330U1LXe-0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "815833167235-v85a6bp9710s2f5m82lk7qjg48rj3k9p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

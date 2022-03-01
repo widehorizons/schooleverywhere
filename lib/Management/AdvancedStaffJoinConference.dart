@@ -1,25 +1,20 @@
 import 'dart:io';
-import 'dart:math';
-import 'package:url_launcher/url_launcher.dart';
 
-import '../Modules/Management.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:file_picker/file_picker.dart';
 //import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_uploader/flutter_uploader.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../Constants/StringConstants.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../Modules/EventObject.dart';
-import 'package:jitsi_meet/jitsi_meet.dart';
+import '../Modules/Management.dart';
 import '../Networking/ApiConstants.dart';
 import '../Networking/Futures.dart';
 import '../Pages/LoginPage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
-import 'package:path/path.dart' as path;
 
 class AdvancedStaffJoinConference extends StatefulWidget {
   @override
@@ -181,10 +176,11 @@ class AdvancedStaffJoinConferenceState
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),

@@ -14,6 +14,7 @@ import '../Pages/LoginPage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class GeolocationPage extends StatefulWidget {
   final String routeid;
@@ -71,24 +72,24 @@ class _GeolocationPageState extends State<GeolocationPage> {
       String toto = data!['driver'];
       setState(() {
         driverId = toto;
-        print("id driver:"+ driverId.toString() );
-        db.child(driverId).once().then((DataSnapshot snapshot) {
-            print("tetete  : ${snapshot.value}");
-          Map<dynamic, dynamic> values = {"data": snapshot.value};
-          values.forEach((key, values) {
-            axisone = values["latitude"];
-            axistwo = values["longitude"];
-            setState(() {
-              x = axisone;
-              y = axistwo;
-              _getCurrentLocation2();
-            });
-          });
-        });
+        print("id driver:" + driverId.toString());
+        // db.child(driverId).once().then((DataSnapshot snapshot) {
+        //   print("tetete  : ${snapshot.value}");
+        //   Map<dynamic, dynamic> values = {"data": snapshot.value};
+        //   values.forEach((key, values) {
+        //     axisone = values["latitude"];
+        //     axistwo = values["longitude"];
+        //     setState(() {
+        //       x = axisone;
+        //       y = axistwo;
+        //       _getCurrentLocation2();
+        //     });
+        //   });
+        // });
       });
     } else {
       String? msg = eventObject.object as String?;
-    /*  Flushbar(
+      /*  Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -101,8 +102,7 @@ class _GeolocationPageState extends State<GeolocationPage> {
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
@@ -143,41 +143,41 @@ class _GeolocationPageState extends State<GeolocationPage> {
   @override
   Widget build(BuildContext context) {
     if (driverId != null) {
-      db.child(driverId).onChildChanged.listen((Event event) {
-       // print("EVENT: : ${event.snapshot.value}");
-//        Map<dynamic, dynamic> values = event.snapshot.value;
-//        values.forEach((key, values) {
-//        axisone = values["latitude"];
-//        axistwo = values["longitude"];
-//        print(axisone.toString() + "   " + axistwo.toString());
-//        setState(() {
-//          x = axisone;
-//          y = axistwo;
-//          _getCurrentLocation2();
-//        });
-//        });
-      if(event.snapshot.key == "latitude") {
-        axisone = event.snapshot.value;
-        if (this.mounted) {
-        setState(() {
-          //print("x new value:" + axisone.toString() + "y new value:" + axistwo.toString());
-          x = axisone;
-          y = axistwo;
-          _getCurrentLocation2();
-        });
-        }
-
-      }else if(event.snapshot.key == "longitude"){
-        axistwo = event.snapshot.value;
-        if (this.mounted) {
-        setState(() {
-         // print("y new value:" + axistwo.toString() + "x new value:" + axisone.toString());
-          x = axisone;
-        y = axistwo;
-        _getCurrentLocation2();
-        });
-      }}
-      });
+//       db.child(driverId).onChildChanged.listen((Event event) {
+//         // print("EVENT: : ${event.snapshot.value}");
+// //        Map<dynamic, dynamic> values = event.snapshot.value;
+// //        values.forEach((key, values) {
+// //        axisone = values["latitude"];
+// //        axistwo = values["longitude"];
+// //        print(axisone.toString() + "   " + axistwo.toString());
+// //        setState(() {
+// //          x = axisone;
+// //          y = axistwo;
+// //          _getCurrentLocation2();
+// //        });
+// //        });
+//         if (event.snapshot.key == "latitude") {
+//           axisone = event.snapshot.value;
+//           if (this.mounted) {
+//             setState(() {
+//               //print("x new value:" + axisone.toString() + "y new value:" + axistwo.toString());
+//               x = axisone;
+//               y = axistwo;
+//               _getCurrentLocation2();
+//             });
+//           }
+//         } else if (event.snapshot.key == "longitude") {
+//           axistwo = event.snapshot.value;
+//           if (this.mounted) {
+//             setState(() {
+//               // print("y new value:" + axistwo.toString() + "x new value:" + axisone.toString());
+//               x = axisone;
+//               y = axistwo;
+//               _getCurrentLocation2();
+//             });
+//           }
+//         }
+//       });
     }
     return Scaffold(
       appBar: new AppBar(
@@ -185,11 +185,12 @@ class _GeolocationPageState extends State<GeolocationPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               backgroundColor: Colors.transparent,
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),

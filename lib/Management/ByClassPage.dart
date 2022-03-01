@@ -19,6 +19,7 @@ import '../Pages/LoginPage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import 'package:path/path.dart' as path;
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class ByClassPage extends StatefulWidget {
   @override
@@ -72,7 +73,7 @@ class ByClassPageState extends State<ByClassPage> {
     if (_pickingType != FileType.custom || _hasValidMime) {
       setState(() => loadingPath = true);
       try {
-         FilePickerResult? result = await FilePicker.platform
+        FilePickerResult? result = await FilePicker.platform
             .pickFiles(allowMultiple: true, type: FileType.any);
 
         if (result != null) {
@@ -282,7 +283,6 @@ class ByClassPageState extends State<ByClassPage> {
     final managementclass = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
           title: Text("Student"),
           validator: (value) {
             if (value == null) {
@@ -519,10 +519,11 @@ class ByClassPageState extends State<ByClassPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),

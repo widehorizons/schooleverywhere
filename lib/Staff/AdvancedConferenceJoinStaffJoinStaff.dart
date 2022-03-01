@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../config/flavor_config.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../Networking/ApiConstants.dart';
-import '../Constants/StringConstants.dart';
 import '../Modules/EventObject.dart';
 import '../Modules/Staff.dart';
 import '../Networking/Futures.dart';
@@ -12,7 +12,6 @@ import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import '../Pages/LoginPage.dart';
 
-
 class AdvancedConferenceJoinStaffJoinStaff extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -20,8 +19,8 @@ class AdvancedConferenceJoinStaffJoinStaff extends StatefulWidget {
   }
 }
 
-class _AdvancedConferenceJoinStaffJoinStaffState extends State<AdvancedConferenceJoinStaffJoinStaff> {
-
+class _AdvancedConferenceJoinStaffJoinStaffState
+    extends State<AdvancedConferenceJoinStaffJoinStaff> {
   Staff? loggedStaff;
 
   String StaffSection = "Loading...";
@@ -36,30 +35,30 @@ class _AdvancedConferenceJoinStaffJoinStaffState extends State<AdvancedConferenc
   String StaffClassId = "";
   String StaffSubject = "Loading...";
   String StaffSubjectId = "";
-  String academicYearValue ="Loading...";
+  String academicYearValue = "Loading...";
   String? staffid;
-  bool isLoading = false, checkSync =true;
+  bool isLoading = false, checkSync = true;
   String? urlConference;
   int? JoinStaff;
   String? IdRowJoin;
-  List<dynamic>  listOfMessage = [];
+  List<dynamic> listOfMessage = [];
   @override
   void initState() {
     super.initState();
     getLoggedStaff();
   }
 
-  Future<void> getUrlConference()async{
+  Future<void> getUrlConference() async {
     EventObject objectEvent = new EventObject();
     objectEvent = await getUrlConferenceData(StaffSectionId);
     // print("kkkkkkk" + objectEvent.object);
     Map? data = objectEvent.object as Map?;
     if (objectEvent.success!) {
       urlConference = data!['conference'];
-      print( data['conference']);
+      print(data['conference']);
     }
-
   }
+
   Future<void> getLoggedStaff() async {
     loggedStaff = await getUserData() as Staff;
     StaffSection = loggedStaff!.sectionName!;
@@ -74,12 +73,10 @@ class _AdvancedConferenceJoinStaffJoinStaffState extends State<AdvancedConferenc
     StaffClassId = loggedStaff!.staffClass!;
     StaffSubject = loggedStaff!.subjectName!;
     StaffSubjectId = loggedStaff!.subject!;
-    staffid=loggedStaff!.id;
+    staffid = loggedStaff!.id;
     academicYearValue = loggedStaff!.academicYear!;
     getUrlConference();
     _getMessages();
-
-
   }
 
   Future<void> _getMessages() async {
@@ -91,61 +88,85 @@ class _AdvancedConferenceJoinStaffJoinStaffState extends State<AdvancedConferenc
         listOfMessage = listOfColumns;
       });
     }
-
-
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     final showData = Center(
         child: ListView(
-          children: <Widget>[
-            DataTable(
-              columns: [
-                DataColumn(label: Text("Staff Name",style: TextStyle(color: AppTheme.appColor, fontSize: 16),overflow: TextOverflow.ellipsis,)),
-
-                DataColumn(label: Text("Start",style: TextStyle(color: AppTheme.appColor, fontSize: 16),)),
-                DataColumn(label: Text("Join",style: TextStyle(color: AppTheme.appColor, fontSize: 16),)),
-              ],
-              rows:
+      children: <Widget>[
+        DataTable(
+          columns: [
+            DataColumn(
+                label: Text(
+              "Staff Name",
+              style: TextStyle(color: AppTheme.appColor, fontSize: 16),
+              overflow: TextOverflow.ellipsis,
+            )),
+            DataColumn(
+                label: Text(
+              "Start",
+              style: TextStyle(color: AppTheme.appColor, fontSize: 16),
+            )),
+            DataColumn(
+                label: Text(
+              "Join",
+              style: TextStyle(color: AppTheme.appColor, fontSize: 16),
+            )),
+          ],
+          rows:
               listOfMessage // Loops through dataColumnText, each iteration assigning the value to element
                   .map(
-                ((element) => DataRow(
-                  cells: <DataCell>[
-                    DataCell(Text(element["staffname"],style: TextStyle(color: Colors.black, fontSize: 14),)),
+                    ((element) => DataRow(
+                          cells: <DataCell>[
+                            DataCell(Text(
+                              element["staffname"],
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 14),
+                            )),
 
-                    DataCell(Text(element["startdate"],style: TextStyle(color: Colors.black, fontSize: 14),)),
+                            DataCell(Text(
+                              element["startdate"],
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 14),
+                            )),
 
-                    //Extracting from Map element the value
-                    DataCell(
-                      Text("Conference",style: TextStyle(color: Colors.lightBlue, fontSize: 14),),
-                      onTap: () async {
+                            //Extracting from Map element the value
+                            DataCell(
+                              Text(
+                                "Conference",
+                                style: TextStyle(
+                                    color: Colors.lightBlue, fontSize: 14),
+                              ),
+                              onTap: () async {
 //                        _joinMeeting(ApiConstants.ConferenceSchoolName+"Schooleverywhere"+element["staffid"]);
 //                        SetConferenceJoinId(element["id"]);
 //                        JoinConferenceStatus(element["id"]);
-                        await launch(
-                            ApiConstants.BASE_URL+"staff/joinStaffAdvancedConferenceStaffOne.php?s="+element["staffid"]+"&myid="+staffid!+"&i="+element["id"]+"&section="+StaffSectionId);
-
-
-                      },
-                    ),
-                  ],
-                )),
-              )
+                                await launch(ApiConstants.BASE_URL +
+                                    "staff/joinStaffAdvancedConferenceStaffOne.php?s=" +
+                                    element["staffid"] +
+                                    "&myid=" +
+                                    staffid! +
+                                    "&i=" +
+                                    element["id"] +
+                                    "&section=" +
+                                    StaffSectionId);
+                              },
+                            ),
+                          ],
+                        )),
+                  )
                   .toList(),
-            )
-          ],
-        ));
+        )
+      ],
+    ));
     return Scaffold(
       appBar: new AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -157,7 +178,8 @@ class _AdvancedConferenceJoinStaffJoinStaffState extends State<AdvancedConferenc
               },
               child: CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],
@@ -172,29 +194,29 @@ class _AdvancedConferenceJoinStaffJoinStaffState extends State<AdvancedConferenc
             fit: BoxFit.cover,
           ),
         ),
-        child:
-        Padding(padding: EdgeInsets.symmetric(vertical: 10.0), child: showData),
+        child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.0), child: showData),
       ),
-
       floatingActionButton: FloatingActionButton(
           elevation: 55,
-          onPressed: (){
+          onPressed: () {
             logOut(loggedStaff!.type!, loggedStaff!.id!);
             removeUserData();
-            while(Navigator.canPop(context)){
+            while (Navigator.canPop(context)) {
               Navigator.pop(context);
             }
             Navigator.of(context).pushReplacement(
-                new  MaterialPageRoute(builder: (context) => LoginPage()));
+                new MaterialPageRoute(builder: (context) => LoginPage()));
           },
-          child:Icon(FontAwesomeIcons.doorOpen,color: AppTheme.floatingButtonColor, size: 30,),
+          child: Icon(
+            FontAwesomeIcons.doorOpen,
+            color: AppTheme.floatingButtonColor,
+            size: 30,
+          ),
           backgroundColor: Colors.transparent,
-          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0),)
-
-      ),
+          shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(30.0),
+          )),
     );
   }
-
 }
-
-

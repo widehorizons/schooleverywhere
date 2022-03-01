@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:schooleverywhere/Chat/chat.dart';
 import '../Staff/SendToClass.dart';
 import '../Modules/Staff.dart';
 import '../Constants/StringConstants.dart';
@@ -12,11 +13,8 @@ import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import '../Pages/HomePage.dart';
 import '../Pages/LoginPage.dart';
-import 'Assignments.dart';
-import 'PreviousAssignment.dart';
-import 'StaffReplyAssignments.dart';
-import 'StudentReplyAssignmentsFromStaffContent.dart';
 import 'StudentReplySendtoclassFromStaffContent.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class StudentSendtoclassReplyFromStaff extends StatefulWidget {
   @override
@@ -53,19 +51,21 @@ class _StudentSendtoclassReplyFromStaffState
     StaffSubjectId = loggedStaff!.subject;
     academicYearValue = loggedStaff!.academicYear;
     userId = loggedStaff!.id;
+
     syncStudentReplySendtoclassShow();
   }
 
   Future<void> syncStudentReplySendtoclassShow() async {
     EventObject objectEvents = new EventObject();
-    objectEvents = await getStudentReplySendtoclassFromStaff(
+    objectEvents = await getreplayfromsendtoclassfromstudents(
         academicYearValue!,
         userId!,
         StaffSectionId!,
         StaffStageId!,
         StaffGradeId!,
         StaffSubjectId!,
-        StaffClassId!);
+        StaffClassId!,
+        StaffSemesterId!);
     if (objectEvents.success!) {
       Map? dataShowContentdata = objectEvents.object as Map?;
       List<dynamic> listOfColumns = dataShowContentdata!['data'];
@@ -129,7 +129,7 @@ class _StudentSendtoclassReplyFromStaffState
                   columns: [
                     DataColumn(label: Text("Name")),
                     DataColumn(label: Text("Date")),
-                    DataColumn(label: Text("Description")),
+                    DataColumn(label: Text("")),
                   ],
                   rows:
                       dataShowContent // Loops through dataColumnText, each iteration assigning the value to element
@@ -137,11 +137,12 @@ class _StudentSendtoclassReplyFromStaffState
                             ((element) => DataRow(
                                   cells: <DataCell>[
                                     DataCell(Text(element["Name"])),
-                                    DataCell(Text(element["Date"])),
+                                    DataCell(Text(
+                                        element["Date"])), //element["Date"]
                                     //Extracting from Map element the value
                                     DataCell(
                                       Text(
-                                        'Read Description',
+                                        'Reply',
                                         style: TextStyle(
                                             color: Colors.lightBlue,
                                             fontSize: 14),
@@ -150,10 +151,12 @@ class _StudentSendtoclassReplyFromStaffState
                                         Navigator.push(
                                             context,
                                             new MaterialPageRoute(
-                                                builder: (context) =>
-                                                    StudentReplySendtoclassFromStaffContent(
-                                                        element["id"]
-                                                            .toString())));
+                                                builder: (context) => Chat(
+                                                    element["regno"].toString(),
+                                                    element["mainid"]
+                                                        .toString(),
+                                                    "Staff",
+                                                    element["Subjectid"])));
                                       },
                                     ),
                                   ],
@@ -178,7 +181,7 @@ class _StudentSendtoclassReplyFromStaffState
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -191,7 +194,8 @@ class _StudentSendtoclassReplyFromStaffState
               child: CircleAvatar(
                 radius: 20,
                 backgroundColor: Colors.transparent,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],
@@ -213,11 +217,11 @@ class _StudentSendtoclassReplyFromStaffState
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.add_comment),
-            title: Text('New'),
+            label: 'New',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.announcement),
-            title: Text('Student Reply'),
+            label: 'Student Reply',
           ),
         ],
         type: BottomNavigationBarType.fixed,

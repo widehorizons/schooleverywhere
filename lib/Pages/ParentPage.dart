@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../config/flavor_config.dart';
 import '../Constants/StringConstants.dart';
 import '../Modules/Parent.dart';
 import '../SharedPreferences/Prefs.dart';
@@ -36,8 +37,8 @@ class _ParentPageState extends State<ParentPage> {
         onTap: () {
           String regno = loggedParent!.childrenId[i].toString();
           String section = loggedParent!.childrenSection[i].toString();
-              goParentHomeS(section,regno);
-            },
+          goParentHomeS(section, regno);
+        },
         child: Row(
           children: <Widget>[
             CircleAvatar(
@@ -95,11 +96,12 @@ class _ParentPageState extends State<ParentPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               radius: 20,
               backgroundColor: Colors.transparent,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),
@@ -129,35 +131,40 @@ class _ParentPageState extends State<ParentPage> {
       ),
       floatingActionButton: FloatingActionButton(
           elevation: 55,
-          onPressed: (){
-            logOut(loggedParent!.type!,loggedParent!.id!);
+          onPressed: () {
+            logOut(loggedParent!.type!, loggedParent!.id!);
             removeUserData();
-            while(Navigator.canPop(context)){
+            while (Navigator.canPop(context)) {
               Navigator.pop(context);
             }
             Navigator.of(context).pushReplacement(
-                new  MaterialPageRoute(builder: (context) => LoginPage()));
+                new MaterialPageRoute(builder: (context) => LoginPage()));
           },
-          child:Icon(FontAwesomeIcons.doorOpen,color: AppTheme.floatingButtonColor, size: 30,),
+          child: Icon(
+            FontAwesomeIcons.doorOpen,
+            color: AppTheme.floatingButtonColor,
+            size: 30,
+          ),
           backgroundColor: Colors.transparent,
-          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0),)
-
-      ),
+          shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(30.0),
+          )),
     );
   }
-  Future<void> goParentHomeS(String section,String regno) async {
+
+  Future<void> goParentHomeS(String section, String regno) async {
     loggedParent!.regno = regno;
     loggedParent!.childeSectionSelected = section;
     await setUserData(loggedParent!);
-print(regno);
-   // print(loggedParent.academicYear);
-  // bool getData = await goParentHome(loggedParent.regno, loggedParent.academicYear);
-  // if(getData == true){
+    print(regno);
+    // print(loggedParent.academicYear);
+    // bool getData = await goParentHome(loggedParent.regno, loggedParent.academicYear);
+    // if(getData == true){
     Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => ParentIndexPage(),
         ));
-   // }
+    // }
   }
 }

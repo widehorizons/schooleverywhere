@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "727402805038",
+    "project_id": "alrowad-71e1b",
+    "storage_bucket": "alrowad-71e1b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:727402805038:android:d0a61e4e25559a74bb6cbf",
+        "android_client_info": {
+          "package_name": "com.schooleverywhere.alrowad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "727402805038-6rd8c960rm5nheejl1ludcpdq54eqg2s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.schooleverywhere.alrowad",
+            "certificate_hash": "cf7fd48420506b1b728e1f0c17b29763c0f15e22"
+          }
+        },
+        {
+          "client_id": "727402805038-q72nu1ti19rapfnkgu91e64qoobm7vg5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLD1sT_emSE0SSjmytnG9Jx2voIHLILLA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "727402805038-q72nu1ti19rapfnkgu91e64qoobm7vg5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

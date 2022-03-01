@@ -16,6 +16,7 @@ import '../Networking/Futures.dart';
 import '../Pages/HomePage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 import '../Pages/LoginPage.dart';
 
@@ -734,7 +735,7 @@ class _StaffMailState extends State<StaffMail> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -746,7 +747,8 @@ class _StaffMailState extends State<StaffMail> {
               },
               child: CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],

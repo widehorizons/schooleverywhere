@@ -18,6 +18,7 @@ import '../Style/theme.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import '../Pages/LoginPage.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class Memo extends StatefulWidget {
   @override
@@ -333,7 +334,6 @@ class _MemoState extends State<Memo> {
     final selectedIWas = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
           title: Text("I was"),
           validator: (value) {
             if (value == null) return 'Please select one or more';
@@ -353,7 +353,6 @@ class _MemoState extends State<Memo> {
     final selectedINeed = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
           title: Text("I need"),
           validator: (value) {
             if (value == null) return 'Please select one or more';
@@ -414,9 +413,7 @@ class _MemoState extends State<Memo> {
                               maxLines: 1,
                               decoration: new InputDecoration(labelText: ""),
                               keyboardType: TextInputType.number,
-                              inputFormatters: <TextInputFormatter>[
-                                WhitelistingTextInputFormatter.digitsOnly
-                              ],
+                              inputFormatters: <TextInputFormatter>[],
                             ))
                           ],
                         )),
@@ -836,7 +833,7 @@ class _MemoState extends State<Memo> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -848,7 +845,8 @@ class _MemoState extends State<Memo> {
               },
               child: CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],

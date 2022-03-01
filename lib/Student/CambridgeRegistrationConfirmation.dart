@@ -12,6 +12,7 @@ import '../Pages/HomePage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import '../Pages/LoginPage.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class CambridgeRegistrationConfirmation extends StatefulWidget {
   final String type;
@@ -23,25 +24,37 @@ class CambridgeRegistrationConfirmation extends StatefulWidget {
   }
 }
 
-class _CambridgeRegistrationConfirmationState extends State<CambridgeRegistrationConfirmation> {
+class _CambridgeRegistrationConfirmationState
+    extends State<CambridgeRegistrationConfirmation> {
+  Parent? loggedParent;
+  Student? loggedStudent;
 
-   Parent? loggedParent;
-   Student? loggedStudent;
+  String? userSection,
+      userAcademicYear,
+      userStage,
+      userGrade,
+      userId,
+      userType,
+      userClass,
+      userSemester,
+      sessionValue,
+      userChildren,
+      subjectValue,
+      subSubjectValue,
+      statusValue;
 
-   String? userSection,userAcademicYear,userStage,userGrade,userId,userType,userClass,userSemester,sessionValue,userChildren,subjectValue,subSubjectValue,statusValue;
-
-  bool sessionSelected=false;
-  bool subjectSelected=false;
-  bool subSubjectSelected=false;
-  bool stausSelected=false;
+  bool sessionSelected = false;
+  bool subjectSelected = false;
+  bool subSubjectSelected = false;
+  bool stausSelected = false;
   bool isLoading = false;
   bool isLoadingBtn = false;
-  Map sessionOption=Map();
-  Map subjectOption=Map();
-  Map ColumnOption=Map();
-  Map FeesOption=Map();
+  Map sessionOption = Map();
+  Map subjectOption = Map();
+  Map ColumnOption = Map();
+  Map FeesOption = Map();
   List rowHeaders = [];
-  List rowHeadersid=[];
+  List rowHeadersid = [];
   List columnHeaders = [];
   Map selected = new Map();
   Map confirmationData = new Map();
@@ -53,7 +66,6 @@ class _CambridgeRegistrationConfirmationState extends State<CambridgeRegistratio
   void initState() {
     super.initState();
     getLoggedInUser();
-
   }
 
   saveHeaders() {
@@ -61,36 +73,36 @@ class _CambridgeRegistrationConfirmationState extends State<CambridgeRegistratio
   }
 
   Future<void> getLoggedInUser() async {
-    if(widget.type == PARENT_TYPE){
+    if (widget.type == PARENT_TYPE) {
       loggedParent = await getUserData() as Parent;
       userSection = loggedParent!.childeSectionSelected;
       userAcademicYear = loggedParent!.academicYear;
       userStage = loggedParent!.stage;
       userGrade = loggedParent!.grade;
-      userClass= loggedParent!.classChild;
-      userSemester= loggedParent!.semester;
+      userClass = loggedParent!.classChild;
+      userSemester = loggedParent!.semester;
       userId = loggedParent!.id;
       userType = loggedParent!.type;
-      userChildren=loggedParent!.regno;
-    }
-    else if(widget.type == STUDENT_TYPE){
+      userChildren = loggedParent!.regno;
+    } else if (widget.type == STUDENT_TYPE) {
       loggedStudent = await getUserData() as Student;
       userSection = loggedStudent!.section;
       userAcademicYear = loggedStudent!.academicYear;
       userStage = loggedStudent!.stage;
       userGrade = loggedStudent!.grade;
-      userClass= loggedStudent!.studentClass;
-      userSemester= loggedStudent!.semester;
+      userClass = loggedStudent!.studentClass;
+      userSemester = loggedStudent!.semester;
       userId = loggedStudent!.id;
       userType = loggedStudent!.type;
-      userChildren=loggedStudent!.id;
+      userChildren = loggedStudent!.id;
     }
     getSessionCambridge();
   }
 
-  Future<void> getSessionCambridge()async{
+  Future<void> getSessionCambridge() async {
     EventObject objectEvent = new EventObject();
-    objectEvent = await getSessionCamb(userSection!,userAcademicYear!,userStage!,userGrade!,userChildren!);
+    objectEvent = await getSessionCamb(
+        userSection!, userAcademicYear!, userStage!, userGrade!, userChildren!);
     if (objectEvent.success!) {
       Map? data = objectEvent.object as Map?;
       List<dynamic> y = data!['sessionId'];
@@ -101,11 +113,9 @@ class _CambridgeRegistrationConfirmationState extends State<CambridgeRegistratio
       setState(() {
         sessionOption = SessionArr;
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEvent.object as String?;
-     /* Flushbar(
+      /* Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -119,17 +129,16 @@ class _CambridgeRegistrationConfirmationState extends State<CambridgeRegistratio
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
-
   Future<void> syncGetColumnForSession() async {
     EventObject objectEvent = new EventObject();
-    objectEvent = await getColumnForSessionConf(userSection!,userAcademicYear!,userStage!,userGrade!,userChildren!,sessionValue!);
+    objectEvent = await getColumnForSessionConf(userSection!, userAcademicYear!,
+        userStage!, userGrade!, userChildren!, sessionValue!);
     if (objectEvent.success!) {
-    confirmationData = objectEvent.object as Map;
+      confirmationData = objectEvent.object as Map;
       List<dynamic> listOfColumn = confirmationData['columname'];
       List<dynamic> subjectData = confirmationData['subjectName'];
       setState(() {
@@ -137,11 +146,9 @@ class _CambridgeRegistrationConfirmationState extends State<CambridgeRegistratio
         listOfSubjects = subjectData;
         isLoading = true;
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEvent.object as String?;
-    /*  Flushbar(
+      /*  Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -155,8 +162,7 @@ class _CambridgeRegistrationConfirmationState extends State<CambridgeRegistratio
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
@@ -194,10 +200,11 @@ class _CambridgeRegistrationConfirmationState extends State<CambridgeRegistratio
       isLoadingBtn = true;
     });
     EventObject objectEvent = new EventObject();
-    objectEvent = await addCambrigeRegistrationConf(userSection!,userAcademicYear!,userChildren!,sessionValue!);
+    objectEvent = await addCambrigeRegistrationConf(
+        userSection!, userAcademicYear!, userChildren!, sessionValue!);
 
-    if (objectEvent.success!){
-  /*    Flushbar(
+    if (objectEvent.success!) {
+      /*    Flushbar(
         title: "Added",
         message: "DONE",
         icon: Icon(Icons.close),
@@ -211,16 +218,13 @@ class _CambridgeRegistrationConfirmationState extends State<CambridgeRegistratio
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
       setState(() {
         isLoading = false;
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEvent.object as String?;
-   /*   Flushbar(
+      /*   Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -234,8 +238,7 @@ class _CambridgeRegistrationConfirmationState extends State<CambridgeRegistratio
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
     setState(() {
       isLoading = false;
@@ -264,56 +267,61 @@ class _CambridgeRegistrationConfirmationState extends State<CambridgeRegistratio
           },
           items: sessionOption
               .map((key, value) {
-            return MapEntry(
-                value,
-                DropdownMenuItem<String>(
-                  value: key,
-                  child: Text(value),
-                ));
-          })
+                return MapEntry(
+                    value,
+                    DropdownMenuItem<String>(
+                      value: key,
+                      child: Text(value),
+                    ));
+              })
               .values
               .toList()),
     );
 
-    final showData =!isLoading ? Container()
-        :Center(
-        child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-              columns: [
-                DataColumn(label: Text(" Subject",
-                    style: TextStyle(
-                        color: AppTheme.appColor,
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18))),
-                for ( var i in listOfColumns )
-                  DataColumn(label: Text(i.toString(), style: TextStyle(
-                      color: AppTheme.appColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16))),
-              ],
-              rows:
-              listOfSubjects // Loops through dataColumnText, each iteration assigning the value to element
-                  .map(
-                ((element) =>
-                    DataRow(
-                      cells: <DataCell>[
-                        DataCell(Text(element.toString(),
+    final showData = !isLoading
+        ? Container()
+        : Center(
+            child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: DataTable(
+                  columns: [
+                    DataColumn(
+                        label: Text(" Subject",
                             style: TextStyle(
-                                color: Colors.black,
+                                color: AppTheme.appColor,
+                                fontStyle: FontStyle.italic,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18))),
-                        for ( var names in confirmationData[element] ) //Extracting from Map element the value
-                          DataCell(Text(names.toString(), style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16))),
-                      ],
-                    )),
-              )
-                  .toList(),
-            )));
+                    for (var i in listOfColumns)
+                      DataColumn(
+                          label: Text(i.toString(),
+                              style: TextStyle(
+                                  color: AppTheme.appColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16))),
+                  ],
+                  rows:
+                      listOfSubjects // Loops through dataColumnText, each iteration assigning the value to element
+                          .map(
+                            ((element) => DataRow(
+                                  cells: <DataCell>[
+                                    DataCell(Text(element.toString(),
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18))),
+                                    for (var names in confirmationData[
+                                        element]) //Extracting from Map element the value
+                                      DataCell(Text(names.toString(),
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16))),
+                                  ],
+                                )),
+                          )
+                          .toList(),
+                )));
 
     final loginButton = Padding(
       padding: EdgeInsets.symmetric(vertical: 30.0),
@@ -330,32 +338,29 @@ class _CambridgeRegistrationConfirmationState extends State<CambridgeRegistratio
       ),
     );
 
-    final body = Column(
-        children: <Widget>[
-          SizedBox(
-            width: MediaQuery.of(context).size.width * .5,
-            child: session,
-          ),
-  sessionSelected?
-    new Expanded(
-    child: ListView(
-    children: <Widget>[
-      SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child:
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: showData,
+    final body = Column(children: <Widget>[
+      SizedBox(
+        width: MediaQuery.of(context).size.width * .5,
+        child: session,
+      ),
+      sessionSelected
+          ? new Expanded(
+              child: ListView(children: <Widget>[
+              SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: showData,
+                  ))
+            ]))
+          : Container(),
+      sessionSelected
+          ? SizedBox(
+              width: MediaQuery.of(context).size.width * .3,
+              child: !isLoadingBtn ? loginButton : Container(),
             )
-          )
-    ])):Container(),
-          sessionSelected?
-          SizedBox(
-            width: MediaQuery.of(context).size.width * .3,
-            child:  !isLoadingBtn ? loginButton : Container(),
-          ):Container()
-        ] );
-
+          : Container()
+    ]);
 
     return Scaffold(
       appBar: new AppBar(
@@ -363,16 +368,21 @@ class _CambridgeRegistrationConfirmationState extends State<CambridgeRegistratio
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
-                Navigator.of(context).pushReplacement(
-                    new  MaterialPageRoute(builder: (context) => HomePage(type: userType!, sectionid: userSection!, Id: userChildren!, Academicyear: userAcademicYear!)));
+                Navigator.of(context).pushReplacement(new MaterialPageRoute(
+                    builder: (context) => HomePage(
+                        type: userType!,
+                        sectionid: userSection!,
+                        Id: userChildren!,
+                        Academicyear: userAcademicYear!)));
               },
               child: CircleAvatar(
                 radius: 20,
                 backgroundColor: Colors.transparent,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],
@@ -391,27 +401,25 @@ class _CambridgeRegistrationConfirmationState extends State<CambridgeRegistratio
       ),
       floatingActionButton: FloatingActionButton(
           elevation: 55,
-          onPressed: (){
-            logOut(userType!,userId!);
+          onPressed: () {
+            logOut(userType!, userId!);
             removeUserData();
-            while(Navigator.canPop(context)){
+            while (Navigator.canPop(context)) {
               Navigator.pop(context);
             }
 //          Navigator.pop(context);
             Navigator.of(context).pushReplacement(
-                new  MaterialPageRoute(builder: (context) => LoginPage()));
+                new MaterialPageRoute(builder: (context) => LoginPage()));
           },
-          child:Icon(FontAwesomeIcons.doorOpen,color: AppTheme.floatingButtonColor, size: 30,),
+          child: Icon(
+            FontAwesomeIcons.doorOpen,
+            color: AppTheme.floatingButtonColor,
+            size: 30,
+          ),
           backgroundColor: Colors.transparent,
-          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0),)
-
-      ),
+          shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(30.0),
+          )),
     );
-
-
   }
-
-
-
 }
-

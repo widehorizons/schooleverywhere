@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jitsi_meet/jitsi_meet.dart';
+// import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../Networking/ApiConstants.dart';
 import '../Constants/StringConstants.dart';
@@ -11,6 +11,7 @@ import '../Pages/HomePage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import '../Pages/LoginPage.dart';
+import '../config/flavor_config.dart';
 
 class ConferenceStaffstaff extends StatefulWidget {
   @override
@@ -20,7 +21,7 @@ class ConferenceStaffstaff extends StatefulWidget {
 }
 
 class _ConferenceStaffstaffState extends State<ConferenceStaffstaff> {
-   Staff? loggedStaff;
+  Staff? loggedStaff;
 
   String StaffSection = "Loading...";
   String StaffSectionId = "";
@@ -34,9 +35,9 @@ class _ConferenceStaffstaffState extends State<ConferenceStaffstaff> {
   String StaffClassId = "";
   String StaffSubject = "Loading...";
   String StaffSubjectId = "";
-  String academicYearValue ="Loading...";
-   String? staffid;
-  bool isLoading = false, checkSync =true;
+  String academicYearValue = "Loading...";
+  String? staffid;
+  bool isLoading = false, checkSync = true;
   int? JoinStaff;
   String? urlConference;
 
@@ -45,9 +46,9 @@ class _ConferenceStaffstaffState extends State<ConferenceStaffstaff> {
   var isVideoMuted = true;
 
   Map staffclassOptions = new Map();
-   List? classSelected;
-  List<dynamic> classstaff=[];
-   String? channel;
+  List? classSelected;
+  List<dynamic> classstaff = [];
+  String? channel;
 
   initState() {
     super.initState();
@@ -55,14 +56,14 @@ class _ConferenceStaffstaffState extends State<ConferenceStaffstaff> {
     getLoggedStaff();
   }
 
-  Future<void> getUrlConference()async{
+  Future<void> getUrlConference() async {
     EventObject objectEvent = new EventObject();
     objectEvent = await getUrlConferenceData(StaffSectionId);
     // print("kkkkkkk" + objectEvent.object);
     Map? data = objectEvent.object as Map?;
     if (objectEvent.success!) {
       urlConference = data!['conference'];
-print( data['conference']);
+      print(data['conference']);
     }
   }
 
@@ -80,50 +81,42 @@ print( data['conference']);
     StaffClassId = loggedStaff!.staffClass!;
     StaffSubject = loggedStaff!.subjectName!;
     StaffSubjectId = loggedStaff!.subject!;
-    staffid=loggedStaff!.id;
+    staffid = loggedStaff!.id;
     academicYearValue = loggedStaff!.academicYear!;
 
-
-    JitsiMeet.addListener(JitsiMeetingListener(
-        onConferenceWillJoin: _onConferenceWillJoin,
-        onConferenceJoined: _onConferenceJoined,
-        onConferenceTerminated: _onConferenceTerminated,
-        onError: _onError));
+    // JitsiMeet.addListener(JitsiMeetingListener(
+    //     onConferenceWillJoin: _onConferenceWillJoin,
+    //     onConferenceJoined: _onConferenceJoined,
+    //     onConferenceTerminated: _onConferenceTerminated,
+    //     onError: _onError));
 
     getUrlConference();
-
   }
 
-  Future<void> JoinConferenceStatus() async{
+  Future<void> JoinConferenceStatus() async {
     EventObject objectEvent = new EventObject();
     objectEvent = await JoinConferenceStaffMain(staffid!);
     // print("kkkkkkk" + objectEvent.object);
     Map? data = objectEvent.object as Map?;
     if (objectEvent.success!) {
       JoinStaff = data!['data'];
-
     }
   }
-  Future<void> ConferenceTerminatedStatus() async{
+
+  Future<void> ConferenceTerminatedStatus() async {
     EventObject objectEvent = new EventObject();
     objectEvent = await ConferenceTerminatedStaff(JoinStaff!);
-
   }
 
   @override
   void dispose() {
     super.dispose();
-    JitsiMeet.removeAllListeners();
+    // JitsiMeet.removeAllListeners();
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
-
-
-    final data=SingleChildScrollView(
+    final data = SingleChildScrollView(
       child: Column(
         children: <Widget>[
           SizedBox(
@@ -159,9 +152,8 @@ print( data['conference']);
             width: double.maxFinite,
             child: RaisedButton(
               onPressed: () {
-               JoinConferenceStatus();
-                _joinMeeting();
-
+                JoinConferenceStatus();
+                // _joinMeeting();
               },
               child: Text(
                 "Conference",
@@ -183,7 +175,7 @@ print( data['conference']);
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -195,7 +187,8 @@ print( data['conference']);
               },
               child: CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],
@@ -266,44 +259,45 @@ print( data['conference']);
     });
   }
 
-  _joinMeeting() async {
+  // _joinMeeting() async {
+  //   try {
+  //     var options = JitsiMeetingOptions(
+  //         room:
+  //             ApiConstants.ConferenceSchoolName + "Schooleverywhere" + staffid!)
+  //       ..serverURL = urlConference
+  //       ..subject = "Schooleverywhere Conference"
+  //       ..userDisplayName = loggedStaff!.name
+  //       ..audioOnly = isAudioOnly
+  //       ..audioMuted = isAudioMuted
+  //       ..videoMuted = isVideoMuted;
 
+  //     debugPrint("JitsiMeetingOptions: $options");
+  //     await JitsiMeet.joinMeeting(
+  //       options,
+  //       listener: JitsiMeetingListener(
+  //           onConferenceWillJoin: (message) {
+  //             debugPrint("${options.room} will join with message: $message");
+  //           },
+  //           onConferenceJoined: (message) {
+  //             debugPrint("${options.room} joined with message: $message");
+  //           },
+  //           onConferenceTerminated: (message) {
+  //             debugPrint("${options.room} terminated with message: $message");
+  //           },
+  //           genericListeners: [
+  //             JitsiGenericListener(
+  //                 eventName: 'readyToClose',
+  //                 callback: (dynamic message) {
+  //                   debugPrint("readyToClose callback");
+  //                 }),
+  //           ]),
+  //     );
+  //   } catch (error) {
+  //     debugPrint("error: $error");
+  //   }
+  // }
 
-    try {
-      var options = JitsiMeetingOptions(room: ApiConstants.ConferenceSchoolName+"Schooleverywhere"+staffid!)
-        ..serverURL = urlConference
-        ..subject = "Schooleverywhere Conference"
-        ..userDisplayName = loggedStaff!.name
-
-        ..audioOnly = isAudioOnly
-        ..audioMuted = isAudioMuted
-        ..videoMuted = isVideoMuted;
-
-      debugPrint("JitsiMeetingOptions: $options");
-      await JitsiMeet.joinMeeting(options,
-          listener: JitsiMeetingListener(
-          onConferenceWillJoin: (message) {
-            debugPrint("${options.room} will join with message: $message");
-          },
-          onConferenceJoined: (message) {
-            debugPrint("${options.room} joined with message: $message");
-          },
-          onConferenceTerminated: (message) {
-            debugPrint("${options.room} terminated with message: $message");
-          },
-          genericListeners: [
-            JitsiGenericListener(
-                eventName: 'readyToClose',
-                callback: (dynamic message) {
-                  debugPrint("readyToClose callback");
-                }),
-          ]),);
-    } catch (error) {
-      debugPrint("error: $error");
-    }
-  }
-
-void _onConferenceWillJoin(message) {
+  void _onConferenceWillJoin(message) {
     debugPrint("_onConferenceWillJoin broadcasted with message: $message");
   }
 

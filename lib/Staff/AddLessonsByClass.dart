@@ -10,6 +10,7 @@ import 'package:flutter_uploader/flutter_uploader.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
 import 'package:path/path.dart' as path;
+import 'package:schooleverywhere/config/flavor_config.dart';
 import '../Constants/StringConstants.dart';
 import '../Modules/EventObject.dart';
 import '../Modules/Staff.dart';
@@ -160,7 +161,6 @@ class _AddLessonsByClassState extends State<AddLessonsByClass> {
     final selectedClasses = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
           title: Text("Class"),
           validator: (value) {
             if (value == null) return 'Please select one or more class(s)';
@@ -580,7 +580,7 @@ class _AddLessonsByClassState extends State<AddLessonsByClass> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -592,7 +592,8 @@ class _AddLessonsByClassState extends State<AddLessonsByClass> {
               },
               child: CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],

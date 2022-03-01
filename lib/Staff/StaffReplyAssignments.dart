@@ -15,6 +15,7 @@ import 'Assignments.dart';
 import 'PreviousAssignment.dart';
 import 'StaffReplyAssignmentsContent.dart';
 import 'StudentAssignmentsReply.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class StaffReplyAssignments extends StatefulWidget {
   @override
@@ -138,7 +139,7 @@ class _StaffReplyAssignmentsState extends State<StaffReplyAssignments> {
                   columns: [
                     DataColumn(label: Text("Name")),
                     DataColumn(label: Text("Date")),
-                    DataColumn(label: Text("Description")),
+                    DataColumn(label: Text("")),
                   ],
                   rows:
                       dataShowContent // Loops through dataColumnText, each iteration assigning the value to element
@@ -187,7 +188,7 @@ class _StaffReplyAssignmentsState extends State<StaffReplyAssignments> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -200,7 +201,8 @@ class _StaffReplyAssignmentsState extends State<StaffReplyAssignments> {
               child: CircleAvatar(
                 radius: 20,
                 backgroundColor: Colors.transparent,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],
@@ -222,19 +224,19 @@ class _StaffReplyAssignmentsState extends State<StaffReplyAssignments> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.add_comment),
-            title: Text('New'),
+            label: 'New',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.low_priority),
-            title: Text('Previous'),
+            label: 'Previous',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.announcement),
-            title: Text('Student Reply'),
+            label: 'Student Reply',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.reply_all),
-            title: Text('My Reply'),
+            label: 'My Reply',
           ),
         ],
         type: BottomNavigationBarType.fixed,

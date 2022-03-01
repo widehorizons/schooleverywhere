@@ -13,9 +13,10 @@ import 'CambridgeConferenceStaff.dart';
 import 'CambridgeStaffConference.dart';
 import 'CambridgeSupervisourAdvancedStaffConference.dart';
 import 'CambridgeSupervisourConferenceStaff.dart';
+import '../config/flavor_config.dart';
 
 class staffcambridgeConference extends StatefulWidget {
-      final int type;
+  final int type;
   const staffcambridgeConference(this.type);
 
   @override
@@ -24,14 +25,18 @@ class staffcambridgeConference extends StatefulWidget {
   }
 }
 
-
 class staffcambridgeConferenceState extends State<staffcambridgeConference> {
-
-   Staff? loggedStaff;
-   String? userSection,userAcademicYear,userStage,userGrade,userId,userType,userClass;
+  Staff? loggedStaff;
+  String? userSection,
+      userAcademicYear,
+      userStage,
+      userGrade,
+      userId,
+      userType,
+      userClass;
   Map sessionOptions = new Map();
-   String? sessionValue;
-  bool sessionSelected=false;
+  String? sessionValue;
+  bool sessionSelected = false;
 
   initState() {
     super.initState();
@@ -39,9 +44,7 @@ class staffcambridgeConferenceState extends State<staffcambridgeConference> {
     getLoggedInUser();
   }
 
-
   Future<void> getLoggedInUser() async {
-
     loggedStaff = await getUserData() as Staff;
     userAcademicYear = loggedStaff!.academicYear;
     userSection = loggedStaff!.section;
@@ -49,13 +52,11 @@ class staffcambridgeConferenceState extends State<staffcambridgeConference> {
     userType = loggedStaff!.type;
 
     syncSessionOptions();
-
   }
 
-
   Future<void> syncSessionOptions() async {
-    EventObject objectEventStage = await sessionCambridgeOptions(
-        userSection!, userAcademicYear!);
+    EventObject objectEventStage =
+        await sessionCambridgeOptions(userSection!, userAcademicYear!);
     if (objectEventStage.success!) {
       Map? data = objectEventStage.object as Map?;
       List<dynamic> x = data!['sessionId'];
@@ -67,9 +68,7 @@ class staffcambridgeConferenceState extends State<staffcambridgeConference> {
         sessionOptions = Sessionarr;
         print("session map:" + Sessionarr.toString());
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEventStage.object as String?;
       /*Flushbar(
         title: "Failed",
@@ -85,14 +84,12 @@ class staffcambridgeConferenceState extends State<staffcambridgeConference> {
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     final session = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: DropdownButton<String>(
@@ -112,23 +109,24 @@ class staffcambridgeConferenceState extends State<staffcambridgeConference> {
           },
           items: sessionOptions
               .map((key, value) {
-            return MapEntry(
-                value,
-                DropdownMenuItem<String>(
-                  value: key,
-                  child: Text(value),
-                ));
-          })
+                return MapEntry(
+                    value,
+                    DropdownMenuItem<String>(
+                      value: key,
+                      child: Text(value),
+                    ));
+              })
               .values
               .toList()),
     );
 
-    final body= SingleChildScrollView(
+    final body = SingleChildScrollView(
       child: Center(
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * .02),
+              padding:
+                  EdgeInsets.only(top: MediaQuery.of(context).size.width * .02),
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
@@ -141,44 +139,41 @@ class staffcambridgeConferenceState extends State<staffcambridgeConference> {
                   SizedBox(
                     height: 40.0,
                     width: 150,
-                    child:
-                    RaisedButton(
-                      onPressed: ()
-                      async {
+                    child: RaisedButton(
+                      onPressed: () async {
                         if (widget.type == 1) {
-                           Navigator.push(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    CambridgeStaffConference(sessionValue!)
-                            ),
+                                    CambridgeStaffConference(sessionValue!)),
                           );
                         }
                         if (widget.type == 2) {
-                           Navigator.push(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    CambridgeSupervisourConferenceStaff(sessionValue!)
-                            ),
+                                    CambridgeSupervisourConferenceStaff(
+                                        sessionValue!)),
                           );
                         }
                         if (widget.type == 3) {
-                           Navigator.push(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    CambridgeAdvancedStaffConference(sessionValue!)
-                            ),
+                                    CambridgeAdvancedStaffConference(
+                                        sessionValue!)),
                           );
                         }
                         if (widget.type == 4) {
-                           Navigator.push(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    CambridgeSupervisourAdvancedStaffConference(sessionValue!)
-                            ),
+                                    CambridgeSupervisourAdvancedStaffConference(
+                                        sessionValue!)),
                           );
                         }
                       },
@@ -197,10 +192,7 @@ class staffcambridgeConferenceState extends State<staffcambridgeConference> {
       ),
     );
 
-
-
     Widget _buildBody() {
-
       return body;
     }
 
@@ -210,10 +202,11 @@ class staffcambridgeConferenceState extends State<staffcambridgeConference> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),
@@ -230,7 +223,6 @@ class staffcambridgeConferenceState extends State<staffcambridgeConference> {
         ),
         child: _buildBody(),
       ),
-
       floatingActionButton: FloatingActionButton(
           elevation: 55,
           onPressed: () {

@@ -15,6 +15,7 @@ import '../Style/theme.dart';
 import '../Pages/LoginPage.dart';
 import 'StaffConferennce.dart';
 import 'StaffConferennceJoin.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class StaffConferenceMangementPage extends StatefulWidget {
   final String type;
@@ -109,10 +110,11 @@ class _StaffConferenceMangementPageState
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),

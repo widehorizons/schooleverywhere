@@ -15,6 +15,7 @@ import '../Style/theme.dart';
 
 import '../Pages/LoginPage.dart';
 import 'PreviousUnPaidVacationRequest.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class UnPaidVacationRequest extends StatefulWidget {
   @override
@@ -403,7 +404,7 @@ class _UnPaidVacationRequestState extends State<UnPaidVacationRequest> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -415,7 +416,8 @@ class _UnPaidVacationRequestState extends State<UnPaidVacationRequest> {
               },
               child: CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],
@@ -436,11 +438,11 @@ class _UnPaidVacationRequestState extends State<UnPaidVacationRequest> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.add_comment),
-            title: Text('New Request'),
+            label: 'New Request',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.low_priority),
-            title: Text('Previous'),
+            label: 'Previous',
           ),
         ],
         currentIndex: _selectedIndex,

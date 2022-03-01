@@ -2,6 +2,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 import '../Constants/StringConstants.dart';
 import '../Modules/EventObject.dart';
 import '../Modules/Staff.dart';
@@ -20,7 +21,7 @@ class StaffPage extends StatefulWidget {
 }
 
 class _StaffPageState extends State<StaffPage> {
-   String? academicYearValue,
+  String? academicYearValue,
       semesterValue,
       semesterName,
       sectionValue,
@@ -66,7 +67,8 @@ class _StaffPageState extends State<StaffPage> {
         loggedStaff!.grade != null &&
         loggedStaff!.semester != null &&
         loggedStaff!.staffClass != null &&
-        loggedStaff!.subject != null && !checkSupervisor) {
+        loggedStaff!.subject != null &&
+        !checkSupervisor) {
       sectionValue = loggedStaff!.section;
       sectionName = loggedStaff!.sectionName;
       academicYearValue = loggedStaff!.academicYear;
@@ -94,8 +96,8 @@ class _StaffPageState extends State<StaffPage> {
       syncSemesterOptions();
       syncClassOptions();
       syncSubjectOptions();
-    }
-    else syncSectionOptions();
+    } else
+      syncSectionOptions();
   }
 
   Future<void> syncAcademicYearOptions() async {
@@ -110,11 +112,9 @@ class _StaffPageState extends State<StaffPage> {
         academicYearsOptions = convert;
       });
       print("Data: " + toto.toString());
-    }
-    else
-    {
+    } else {
       String? msg = objectEventYear.object as String?;
-     /* Flushbar(
+      /* Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -128,13 +128,13 @@ class _StaffPageState extends State<StaffPage> {
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
   Future<void> syncSectionOptions() async {
-    EventObject objectEventSection = await sectionStaffOptions(loggedStaff!.id!);
+    EventObject objectEventSection =
+        await sectionStaffOptions(loggedStaff!.id!);
     if (objectEventSection.success!) {
       Map? toto = objectEventSection.object as Map?;
       List<dynamic> x = toto!['idSection'];
@@ -146,11 +146,9 @@ class _StaffPageState extends State<StaffPage> {
         sectionsOptions = Sectionarr;
         print("section map:" + Sectionarr.toString());
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEventSection.object as String?;
-    /*  Flushbar(
+      /*  Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -164,8 +162,7 @@ class _StaffPageState extends State<StaffPage> {
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
@@ -183,11 +180,9 @@ class _StaffPageState extends State<StaffPage> {
         stageOptions = Stagearr;
         print("stage map:" + Stagearr.toString());
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEventStage.object as String?;
-   /*   Flushbar(
+      /*   Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -201,14 +196,13 @@ class _StaffPageState extends State<StaffPage> {
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
   Future<void> syncGradeOptions() async {
-    EventObject objectEventGarde =
-    await gradeStaffOptions(sectionValue!, stageValue!, academicYearValue!, loggedStaff!.id!);
+    EventObject objectEventGarde = await gradeStaffOptions(
+        sectionValue!, stageValue!, academicYearValue!, loggedStaff!.id!);
     if (objectEventGarde.success!) {
       Map? data = objectEventGarde.object as Map?;
       List<dynamic> y = data!['gardeId'];
@@ -220,11 +214,9 @@ class _StaffPageState extends State<StaffPage> {
         gradeOptions = Gardearr;
         print("grade map:" + Gardearr.toString());
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEventGarde.object as String?;
-   /*   Flushbar(
+      /*   Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -238,8 +230,7 @@ class _StaffPageState extends State<StaffPage> {
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
@@ -257,11 +248,9 @@ class _StaffPageState extends State<StaffPage> {
         semestersOptions = Semesterarr;
         print("semester map:" + Semesterarr.toString());
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEventSemester.object as String?;
-    /*  Flushbar(
+      /*  Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -275,15 +264,13 @@ class _StaffPageState extends State<StaffPage> {
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
   Future<void> syncClassOptions() async {
-    EventObject objectEventClass = await classStaffOptions(
-        sectionValue!, stageValue!, gradeValue!,
-        academicYearValue!, loggedStaff!.id!);
+    EventObject objectEventClass = await classStaffOptions(sectionValue!,
+        stageValue!, gradeValue!, academicYearValue!, loggedStaff!.id!);
     if (objectEventClass.success!) {
       Map? data = objectEventClass.object as Map?;
       List<dynamic> m = data!['classId'];
@@ -295,11 +282,9 @@ class _StaffPageState extends State<StaffPage> {
         staffclassOptions = Classarr;
         print("class map:" + Classarr.toString());
       });
-    }
-    else
-    {
+    } else {
       String? msg = objectEventClass.object as String?;
-    /*  Flushbar(
+      /*  Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -313,14 +298,19 @@ class _StaffPageState extends State<StaffPage> {
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
   Future<void> syncSubjectOptions() async {
-    EventObject objectEventSubject = await subjectStaffOptions(sectionValue!, stageValue!, gradeValue!,
-        academicYearValue!, loggedStaff!.id!, semesterValue!, staffclassValue!);
+    EventObject objectEventSubject = await subjectStaffOptions(
+        sectionValue!,
+        stageValue!,
+        gradeValue!,
+        academicYearValue!,
+        loggedStaff!.id!,
+        semesterValue!,
+        staffclassValue!);
     if (objectEventSubject.success!) {
       Map? data = objectEventSubject.object as Map?;
       List<dynamic> n = data!['subjectId'];
@@ -332,11 +322,9 @@ class _StaffPageState extends State<StaffPage> {
         subjectOptions = Subjectarr;
         print("subject map:" + Subjectarr.toString());
       });
-    }
-    else
-    {
+    } else {
       Object? msg = objectEventSubject.object;
-   /*   Flushbar(
+      /*   Flushbar(
         title: "Failed",
         message: msg.toString(),
         icon: Icon(Icons.close),
@@ -350,8 +338,7 @@ class _StaffPageState extends State<StaffPage> {
           timeInSecForIosWeb: 3,
           backgroundColor: AppTheme.appColor,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 
@@ -374,27 +361,27 @@ class _StaffPageState extends State<StaffPage> {
               sectionValue = newValue!;
               sectionName = sectionsOptions[newValue];
               academicYearsOptions.clear();
-              academicYearValue=null;
+              academicYearValue = null;
               academicYearSelected = false;
               stageOptions.clear();
-              stageValue=null;
-              stageName=null;
+              stageValue = null;
+              stageName = null;
               stageSelected = false;
               gradeOptions.clear();
-              gradeValue=null ;
-              gradeName=null ;
+              gradeValue = null;
+              gradeName = null;
               gradeSelected = false;
               semestersOptions.clear();
-              semesterValue=null;
-              semesterName=null ;
+              semesterValue = null;
+              semesterName = null;
               semesterSelected = false;
               staffclassOptions.clear();
-              staffclassValue=null ;
-              staffclassName=null ;
+              staffclassValue = null;
+              staffclassName = null;
               staffclassSelected = false;
               subjectOptions.clear();
-              subjectValue=null ;
-              subjectName=null ;
+              subjectValue = null;
+              subjectName = null;
               subjectSelected = false;
               syncAcademicYearOptions();
             });
@@ -427,24 +414,24 @@ class _StaffPageState extends State<StaffPage> {
             academicYearSelected = true;
             academicYearValue = newValue!;
             stageOptions.clear();
-            stageValue=null ;
-            stageName=null;
+            stageValue = null;
+            stageName = null;
             stageSelected = false;
             gradeOptions.clear();
-            gradeValue=null ;
-            gradeName=null ;
+            gradeValue = null;
+            gradeName = null;
             gradeSelected = false;
             semestersOptions.clear();
-            semesterValue=null ;
-            semesterName=null ;
+            semesterValue = null;
+            semesterName = null;
             semesterSelected = false;
             staffclassOptions.clear();
-            staffclassValue=null ;
-            staffclassName=null;
+            staffclassValue = null;
+            staffclassName = null;
             staffclassSelected = false;
             subjectOptions.clear();
-            subjectValue=null ;
-            subjectName=null ;
+            subjectValue = null;
+            subjectName = null;
             subjectSelected = false;
             syncStageOptions();
           });
@@ -475,20 +462,20 @@ class _StaffPageState extends State<StaffPage> {
               stageValue = newValue!;
               stageName = stageOptions[newValue];
               gradeOptions.clear();
-              gradeValue=null ;
-              gradeName=null ;
+              gradeValue = null;
+              gradeName = null;
               gradeSelected = false;
               semestersOptions.clear();
-              semesterValue=null;
-              semesterName=null ;
+              semesterValue = null;
+              semesterName = null;
               semesterSelected = false;
               staffclassOptions.clear();
-              staffclassValue=null ;
-              staffclassName=null;
+              staffclassValue = null;
+              staffclassName = null;
               staffclassSelected = false;
               subjectOptions.clear();
-              subjectValue=null;
-              subjectName=null ;
+              subjectValue = null;
+              subjectName = null;
               subjectSelected = false;
               syncGradeOptions();
             });
@@ -522,16 +509,16 @@ class _StaffPageState extends State<StaffPage> {
               gradeValue = newValue!;
               gradeName = gradeOptions[newValue];
               semestersOptions.clear();
-              semesterValue=null ;
-              semesterName=null ;
+              semesterValue = null;
+              semesterName = null;
               semesterSelected = false;
               staffclassOptions.clear();
-              staffclassValue=null ;
-              staffclassName=null ;
+              staffclassValue = null;
+              staffclassName = null;
               staffclassSelected = false;
               subjectOptions.clear();
-              subjectValue=null ;
-              subjectName=null ;
+              subjectValue = null;
+              subjectName = null;
               subjectSelected = false;
               syncSemesterOptions();
             });
@@ -565,12 +552,12 @@ class _StaffPageState extends State<StaffPage> {
               semesterValue = newValue!;
               semesterName = semestersOptions[newValue];
               staffclassOptions.clear();
-              staffclassValue=null ;
-              staffclassName=null ;
+              staffclassValue = null;
+              staffclassName = null;
               staffclassSelected = false;
               subjectOptions.clear();
-              subjectValue=null;
-              subjectName=null ;
+              subjectValue = null;
+              subjectName = null;
               subjectSelected = false;
               syncClassOptions();
             });
@@ -604,8 +591,8 @@ class _StaffPageState extends State<StaffPage> {
               staffclassValue = newValue!;
               staffclassName = staffclassOptions[newValue];
               subjectOptions.clear();
-              subjectValue=null ;
-              subjectName=null ;
+              subjectValue = null;
+              subjectName = null;
               subjectSelected = false;
               syncSubjectOptions();
             });
@@ -653,7 +640,8 @@ class _StaffPageState extends State<StaffPage> {
               .toList()),
     );
     final goButton = Padding(
-      padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: MediaQuery.of(context).size.width * .25),
+      padding: EdgeInsets.symmetric(
+          vertical: 30.0, horizontal: MediaQuery.of(context).size.width * .25),
       child: RaisedButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
@@ -674,7 +662,8 @@ class _StaffPageState extends State<StaffPage> {
         child: ListView(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * .02),
+              padding:
+                  EdgeInsets.only(top: MediaQuery.of(context).size.width * .02),
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width * .5,
@@ -682,45 +671,45 @@ class _StaffPageState extends State<StaffPage> {
             ),
             sectionSelected
                 ? SizedBox(
-              width: MediaQuery.of(context).size.width * .5,
-              child: academicYear,
-            )
+                    width: MediaQuery.of(context).size.width * .5,
+                    child: academicYear,
+                  )
                 : Container(),
             academicYearSelected
                 ? SizedBox(
-              width: MediaQuery.of(context).size.width * .5,
-              child: stage,
-            )
+                    width: MediaQuery.of(context).size.width * .5,
+                    child: stage,
+                  )
                 : Container(),
             stageSelected
                 ? SizedBox(
-              width: MediaQuery.of(context).size.width * .5,
-              child: grade,
-            )
+                    width: MediaQuery.of(context).size.width * .5,
+                    child: grade,
+                  )
                 : Container(),
             gradeSelected
                 ? SizedBox(
-              width: MediaQuery.of(context).size.width * .5,
-              child: semester,
-            )
+                    width: MediaQuery.of(context).size.width * .5,
+                    child: semester,
+                  )
                 : Container(),
             semesterSelected
                 ? SizedBox(
-              width: MediaQuery.of(context).size.width * .5,
-              child: staffclass,
-            )
+                    width: MediaQuery.of(context).size.width * .5,
+                    child: staffclass,
+                  )
                 : Container(),
             staffclassSelected
                 ? SizedBox(
-              width: MediaQuery.of(context).size.width * .5,
-              child: subject,
-            )
+                    width: MediaQuery.of(context).size.width * .5,
+                    child: subject,
+                  )
                 : Container(),
             subjectSelected
                 ? SizedBox(
-              width: MediaQuery.of(context).size.width * .4,
-              child: goButton,
-            )
+                    width: MediaQuery.of(context).size.width * .4,
+                    child: goButton,
+                  )
                 : Container(),
           ],
         ),
@@ -733,11 +722,12 @@ class _StaffPageState extends State<StaffPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               radius: 20,
               backgroundColor: Colors.transparent,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),
@@ -754,21 +744,25 @@ class _StaffPageState extends State<StaffPage> {
       ),
       floatingActionButton: FloatingActionButton(
           elevation: 55,
-          onPressed: (){
-            logOut(loggedStaff!.type!,loggedStaff!.id!);
+          onPressed: () {
+            logOut(loggedStaff!.type!, loggedStaff!.id!);
             removeUserData();
-            while(Navigator.canPop(context)){
+            while (Navigator.canPop(context)) {
               Navigator.pop(context);
             }
 //          Navigator.pop(context);
             Navigator.of(context).pushReplacement(
-                new  MaterialPageRoute(builder: (context) => LoginPage()));
+                new MaterialPageRoute(builder: (context) => LoginPage()));
           },
-          child:Icon(FontAwesomeIcons.doorOpen,color: AppTheme.floatingButtonColor, size: 30,),
+          child: Icon(
+            FontAwesomeIcons.doorOpen,
+            color: AppTheme.floatingButtonColor,
+            size: 30,
+          ),
           backgroundColor: Colors.transparent,
-          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0),)
-
-      ),
+          shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(30.0),
+          )),
     );
   }
 
@@ -788,10 +782,13 @@ class _StaffPageState extends State<StaffPage> {
     loggedStaff!.subjectName = subjectName!;
     await setUserData(loggedStaff!);
     Navigator.push(
-    context,
-    MaterialPageRoute(
-    builder: (context) =>
-    HomePage(type: loggedStaff!.type!, sectionid: loggedStaff!.section!, Id: loggedStaff!.id!, Academicyear: loggedStaff!.academicYear!)),
+      context,
+      MaterialPageRoute(
+          builder: (context) => HomePage(
+              type: loggedStaff!.type!,
+              sectionid: loggedStaff!.section!,
+              Id: loggedStaff!.id!,
+              Academicyear: loggedStaff!.academicYear!)),
     );
   }
 }

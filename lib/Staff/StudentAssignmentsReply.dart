@@ -15,6 +15,7 @@ import 'Assignments.dart';
 import 'PreviousAssignment.dart';
 import 'StaffReplyAssignments.dart';
 import 'StudentReplyAssignmentsFromStaffContent.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class StudentAssignmentsReplyFromStaff extends StatefulWidget {
   @override
@@ -188,7 +189,7 @@ class _StudentAssignmentsReplyFromStaffState
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -201,7 +202,8 @@ class _StudentAssignmentsReplyFromStaffState
               child: CircleAvatar(
                 radius: 20,
                 backgroundColor: Colors.transparent,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],
@@ -223,19 +225,19 @@ class _StudentAssignmentsReplyFromStaffState
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.add_comment),
-            title: Text('New'),
+            label: 'New',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.low_priority),
-            title: Text('Previous'),
+            label: 'Previous',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.announcement),
-            title: Text('Student Reply'),
+            label: 'Student Reply',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.reply_all),
-            title: Text('My Reply'),
+            label: 'My Reply',
           ),
         ],
         type: BottomNavigationBarType.fixed,

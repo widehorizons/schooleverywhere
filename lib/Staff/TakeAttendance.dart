@@ -16,6 +16,7 @@ import '../Pages/HomePage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import '../Pages/LoginPage.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class TakeAttendance extends StatefulWidget {
   @override
@@ -208,7 +209,6 @@ class _TakeAttendanceState extends State<TakeAttendance> {
     final selectedPrecent = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
           title: Text("Present"),
           validator: (value) {
             if (value == null) return 'Please select one or more option(s)';
@@ -243,7 +243,6 @@ class _TakeAttendanceState extends State<TakeAttendance> {
     final selectedOD = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
           title: Text("OD"),
           validator: (value) {
             if (value == null) return 'Please select one or more option(s)';
@@ -278,7 +277,6 @@ class _TakeAttendanceState extends State<TakeAttendance> {
     final selectedAbsent = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
           title: Text("Absent"),
           validator: (value) {
             if (value == null) return 'Please select one or more option(s)';
@@ -313,7 +311,6 @@ class _TakeAttendanceState extends State<TakeAttendance> {
     final selectedMedical = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
           title: Text("Medical"),
           validator: (value) {
             if (value == null) return 'Please select one or more option(s)';
@@ -348,7 +345,6 @@ class _TakeAttendanceState extends State<TakeAttendance> {
     final selectedLate = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
           title: Text("Late"),
           validator: (value) {
             if (value == null) return 'Please select one or more option(s)';
@@ -383,7 +379,6 @@ class _TakeAttendanceState extends State<TakeAttendance> {
     final selectedExcuse = Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: MultiSelectFormField(
-          autovalidate: false,
           title: Text("Excuse"),
           validator: (value) {
             if (value == null) return 'Please select one or more option(s)';
@@ -476,7 +471,7 @@ class _TakeAttendanceState extends State<TakeAttendance> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -488,7 +483,8 @@ class _TakeAttendanceState extends State<TakeAttendance> {
               },
               child: CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage('img/logo.png'),
+                backgroundImage:
+                    AssetImage('${FlavorConfig.instance.values.imagePath!}'),
               ),
             )
           ],

@@ -21,6 +21,7 @@ class DownloadList extends StatefulWidget with WidgetsBindingObserver {
 }
 
 class DownloadListState extends State<DownloadList> {
+  static const debug = true;
   List<_TaskInfo>? _tasks;
   late List<_ItemHolder> _items;
   late bool _isLoading;
@@ -36,7 +37,7 @@ class DownloadListState extends State<DownloadList> {
     _bindBackgroundIsolate();
 
     FlutterDownloader.registerCallback(downloadCallback);
-
+    print("Attached Files here ${widget.Attachment}");
     _isLoading = true;
     _permissionReady = false;
 
@@ -77,10 +78,20 @@ class DownloadListState extends State<DownloadList> {
     IsolateNameServer.removePortNameMapping('downloader_send_port');
   }
 
+  // static void downloadCallback(
+  //     String id, DownloadTaskStatus status, int progress) {
+  //   print(
+  //       'Background Isolate Callback: task ($id) is in status ($status) and process ($progress)');
+  //   final SendPort send =
+  //       IsolateNameServer.lookupPortByName('downloader_send_port')!;
+  //   send.send([id, status, progress]);
+  // }
   static void downloadCallback(
       String id, DownloadTaskStatus status, int progress) {
-    print(
-        'Background Isolate Callback: task ($id) is in status ($status) and process ($progress)');
+    if (debug) {
+      print(
+          'Background Isolate Callback: task ($id) is in status ($status) and process ($progress)');
+    }
     final SendPort send =
         IsolateNameServer.lookupPortByName('downloader_send_port')!;
     send.send([id, status, progress]);
@@ -96,6 +107,9 @@ class DownloadListState extends State<DownloadList> {
             : _permissionReady
                 ? new Expanded(
                     child: new ListView(
+                      physics: (_items.length <= 1)
+                          ? NeverScrollableScrollPhysics()
+                          : BouncingScrollPhysics(),
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       children: _items
                           .map((item) => item.task == null
@@ -132,7 +146,8 @@ class DownloadListState extends State<DownloadList> {
                                       children: <Widget>[
                                         new Container(
                                           width: double.infinity,
-                                          height: 64.0,
+                                          height:
+                                              (_items.length <= 1) ? 20 : 64.0,
                                           child: new Row(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.center,
@@ -299,11 +314,13 @@ class DownloadListState extends State<DownloadList> {
         ],
       );
     } else {
-      return null!;
+      return Icon(Icons.error_outline);
     }
   }
 
   void _requestDownload(_TaskInfo task) async {
+    print(
+        "downloading task ${task.name} has status [${task.status}] and ${task.progress}");
     task.taskId = (await FlutterDownloader.enqueue(
         url: task.link!,
         headers: {"auth": "test_for_sql_encoding"},
@@ -356,19 +373,6 @@ class DownloadListState extends State<DownloadList> {
           Permission.storage,
         ].request();
       }
-      // PermissionStatus permission = await PermissionHandler()
-      //     .checkPermissionStatus(PermissionGroup.storage);
-      // if (permission != PermissionStatus.granted) {
-      //   Map<PermissionGroup, PermissionStatus> permissions =
-      //       await PermissionHandler()
-      //           .requestPermissions([PermissionGroup.storage]);
-      //   if (permissions[PermissionGroup.storage] == PermissionStatus.granted) {
-      //     return true;
-      //   }
-      // } else {
-      //   return true;
-      // }
-      // return true;
     } else {
       return true;
     }
@@ -383,7 +387,7 @@ class DownloadListState extends State<DownloadList> {
     _items = [];
 
     _tasks!.addAll(_documents.map((document) =>
-        _TaskInfo(name: document['name'], link: document['link'])));
+        _TaskInfo(name: document['name'] ?? "", link: document['link'])));
 
     // _items.add(_ItemHolder(name: 'Documents', task: null));
     for (int i = count; i < _tasks!.length; i++) {

@@ -8,6 +8,7 @@ import '../Style/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Pages/LoginPage.dart';
+import '../config/flavor_config.dart';
 
 class ProgressReportPage extends StatefulWidget {
   final String studentId;
@@ -23,8 +24,8 @@ class ProgressReportPage extends StatefulWidget {
 }
 
 class _ProgressReportPageState extends State<ProgressReportPage> {
-   Staff? loggedStaff;
-   String? StaffSection,
+  Staff? loggedStaff;
+  String? StaffSection,
       StaffSectionId,
       StaffStageId,
       StaffGradeId,
@@ -50,7 +51,6 @@ class _ProgressReportPageState extends State<ProgressReportPage> {
 
   @override
   Widget build(BuildContext context) {
-
     final goButtonPortrait = Padding(
       padding: EdgeInsets.symmetric(vertical: 30.0),
       child: RaisedButton(
@@ -59,10 +59,17 @@ class _ProgressReportPageState extends State<ProgressReportPage> {
         ),
         onPressed: () async {
           await launch(
-              ProgressReport.SCHOOL_PROGRESS_REPORT_STAFF_PORTRAIT_LINK + "?myyears=" +
-                  StaffYear! + "&regno=" + widget.studentId + "&sections=" +
-                  StaffSectionId! + "&hisdate=" + widget.dateId +
-                  "&progress=" + widget.reportId);
+              ProgressReport.SCHOOL_PROGRESS_REPORT_STAFF_PORTRAIT_LINK +
+                  "?myyears=" +
+                  StaffYear! +
+                  "&regno=" +
+                  widget.studentId +
+                  "&sections=" +
+                  StaffSectionId! +
+                  "&hisdate=" +
+                  widget.dateId +
+                  "&progress=" +
+                  widget.reportId);
         },
         padding: EdgeInsets.all(12),
         color: AppTheme.appColor,
@@ -77,10 +84,17 @@ class _ProgressReportPageState extends State<ProgressReportPage> {
         ),
         onPressed: () async {
           await launch(
-              ProgressReport.SCHOOL_PROGRESS_REPORT_STAFF_LAND_SCAPE_LINK + "?myyears=" +
-                  StaffYear! + "&regno=" + widget.studentId + "&sections=" +
-                  StaffSectionId! + "&hisdate=" + widget.dateId +
-                  "&progress=" + widget.reportId);
+              ProgressReport.SCHOOL_PROGRESS_REPORT_STAFF_LAND_SCAPE_LINK +
+                  "?myyears=" +
+                  StaffYear! +
+                  "&regno=" +
+                  widget.studentId +
+                  "&sections=" +
+                  StaffSectionId! +
+                  "&hisdate=" +
+                  widget.dateId +
+                  "&progress=" +
+                  widget.reportId);
         },
         padding: EdgeInsets.all(12),
         color: AppTheme.appColor,
@@ -94,11 +108,15 @@ class _ProgressReportPageState extends State<ProgressReportPage> {
           borderRadius: BorderRadius.circular(24),
         ),
         onPressed: () async {
-          await launch(
-              ProgressReport.SCHOOL_PROGRESS_REPORT_STAFF_CORE_LINK + "?myyears=" +
-                  StaffYear! + "&regno=" + widget.studentId + "&sections=" +
-                  StaffSectionId! + "&hisdate=" + widget.dateId
-                  );
+          await launch(ProgressReport.SCHOOL_PROGRESS_REPORT_STAFF_CORE_LINK +
+              "?myyears=" +
+              StaffYear! +
+              "&regno=" +
+              widget.studentId +
+              "&sections=" +
+              StaffSectionId! +
+              "&hisdate=" +
+              widget.dateId);
         },
         padding: EdgeInsets.all(12),
         color: AppTheme.appColor,
@@ -112,11 +130,17 @@ class _ProgressReportPageState extends State<ProgressReportPage> {
           borderRadius: BorderRadius.circular(24),
         ),
         onPressed: () async {
-          await launch(
-              ProgressReport.SCHOOL_PROGRESS_REPORT_STAFF_NEW_LINK + "?myyears=" +
-                  StaffYear! + "&regno=" + widget.studentId + "&sections=" +
-                  StaffSectionId! + "&hisdate=" + widget.dateId +
-                  "&progress=" + widget.reportId);
+          await launch(ProgressReport.SCHOOL_PROGRESS_REPORT_STAFF_NEW_LINK +
+              "?myyears=" +
+              StaffYear! +
+              "&regno=" +
+              widget.studentId +
+              "&sections=" +
+              StaffSectionId! +
+              "&hisdate=" +
+              widget.dateId +
+              "&progress=" +
+              widget.reportId);
         },
         padding: EdgeInsets.all(12),
         color: AppTheme.appColor,
@@ -130,11 +154,23 @@ class _ProgressReportPageState extends State<ProgressReportPage> {
           borderRadius: BorderRadius.circular(24),
         ),
         onPressed: () async {
-          await launch(
-              ProgressReport.SCHOOL_PROGRESS_REPORT_STAFF_PRINT2_LINK + "?myyears=" +
-                  StaffYear! + "&sections="  + StaffSectionId! + "&stage=" + StaffStageId! + "&grade=" + StaffGradeId! +
-                  "&class=" + StaffClassId! + "&hisdate=" + widget.dateId +
-                  "&hidprogressReportName=" + widget.reportId + "&stregvb=" + widget.studentId);
+          await launch(ProgressReport.SCHOOL_PROGRESS_REPORT_STAFF_PRINT2_LINK +
+              "?myyears=" +
+              StaffYear! +
+              "&sections=" +
+              StaffSectionId! +
+              "&stage=" +
+              StaffStageId! +
+              "&grade=" +
+              StaffGradeId! +
+              "&class=" +
+              StaffClassId! +
+              "&hisdate=" +
+              widget.dateId +
+              "&hidprogressReportName=" +
+              widget.reportId +
+              "&stregvb=" +
+              widget.studentId);
         },
         padding: EdgeInsets.all(12),
         color: AppTheme.appColor,
@@ -176,11 +212,12 @@ class _ProgressReportPageState extends State<ProgressReportPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               backgroundColor: Colors.transparent,
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),

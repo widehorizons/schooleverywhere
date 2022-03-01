@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 // import 'package:downloads_path_provider/downloads_path_provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:flushbar/flushbar.dart';
@@ -12,14 +11,14 @@ import '../Modules/Student.dart';
 import '../Networking/Futures.dart';
 import '../Pages/DownloadList.dart';
 import '../Pages/LoginPage.dart';
-import '../Student/MailInboxContentsPage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import 'SendToClassReplyPage.dart';
 import '../Student/viewAudioPage.dart';
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 class ShowReceiveFromTeacherContentPage extends StatefulWidget {
-  dynamic id;
+  final dynamic id;
   final String type;
 
   ShowReceiveFromTeacherContentPage(this.id, this.type);
@@ -215,10 +214,11 @@ class _ShowReceiveFromTeacherContentPageState
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(SCHOOL_NAME),
+            Text(FlavorConfig.instance.values.schoolName!),
             CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage('img/logo.png'),
+              backgroundImage:
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
             )
           ],
         ),

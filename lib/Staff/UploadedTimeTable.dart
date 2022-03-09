@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_uploader/flutter_uploader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:schooleverywhere/Modules/Parent.dart';
 import '../Constants/StringConstants.dart';
 import '../Modules/EventObject.dart';
 import '../Modules/Management.dart';
@@ -83,6 +84,7 @@ class _UploadedTimeTableState extends State<UploadedTimeTable> {
 
   Staff? loggedStaff;
   Student? loggedStudent;
+  Parent? loggedParent;
   List<dynamic> dataShowContent = [];
   String? TeacherValue;
 
@@ -116,6 +118,24 @@ class _UploadedTimeTableState extends State<UploadedTimeTable> {
       userId = loggedStudent!.id;
       userType = loggedStudent!.type;
       childern = loggedStudent!.id;
+      setState(() {});
+    }
+    if (widget.type == PARENT_TYPE) {
+      loggedParent = await getUserData() as Parent;
+      userAcademicYear = loggedParent!.academicYear;
+      userSemester = loggedParent!.semester;
+      userId = loggedParent!.id;
+      userType = loggedParent!.type;
+      childern = loggedParent!.id;
+      userAcademicYear = loggedParent!.academicYear;
+      userSection = loggedParent!.childeSectionSelected;
+      userStage = loggedParent!.stage;
+      userGrade = loggedParent!.grade;
+      childern = loggedParent!.regno;
+      userClass = loggedParent!.classChild;
+      userSemester = loggedParent!.semester;
+      userId = loggedParent!.id;
+
       setState(() {});
     }
   }
@@ -757,28 +777,82 @@ class _UploadedTimeTableState extends State<UploadedTimeTable> {
                   },
                 ),
               )
-            : Column(
-                children: <Widget>[
-                  if (widget.type == MANAGEMENT_TYPE)
-                    Expanded(
-                        child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('img/bg.png'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      child: filterBody,
-                    )),
-                  if (dataShowContent.isNotEmpty)
-                    Expanded(
-                        child: ListView(
-                      children: <Widget>[showData],
-                    )),
-                ],
-              )
+            : (widget.type == PARENT_TYPE && loggedParent != null)
+                ? Center(
+                    child: FutureBuilder(
+                      future: getStudentUploadedTable(
+                          loggedParent!.childeSectionSelected ?? "",
+                          loggedParent!.academicYear,
+                          loggedParent!.stage,
+                          loggedParent!.grade,
+                          loggedParent!.classChild,
+                          loggedParent!.semester),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16.0),
+                              child: SpinKitPouringHourGlass(
+                                color: AppTheme.appColor,
+                              ),
+                            ),
+                          );
+                        } else {
+                          EventObject eventObject = snapshot.data;
+                          if (!eventObject.success!) {
+                            return Center(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 16.0),
+                                child: Text(eventObject.object.toString()),
+                              ),
+                            );
+                          } else {
+                            EventObject eventObject = snapshot.data;
+                            Map? mapValue = eventObject.object as Map?;
+                            return Container(
+                              height: MediaQuery.of(context).size.height,
+                              padding: new EdgeInsets.all(
+                                  MediaQuery.of(context).size.width * 0.01),
+                              child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    (mapValue!['file'] != 'not found')
+                                        ? DownloadList(
+                                            [mapValue['file']],
+                                            platform: platform,
+                                            title: '',
+                                          )
+                                        : Container(),
+                                  ]),
+                            );
+                          }
+                        }
+                      },
+                    ),
+                  )
+                : Column(
+                    children: <Widget>[
+                      if (widget.type == MANAGEMENT_TYPE)
+                        Expanded(
+                            child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('img/bg.png'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          child: filterBody,
+                        )),
+                      if (dataShowContent.isNotEmpty)
+                        Expanded(
+                            child: ListView(
+                          children: <Widget>[showData],
+                        )),
+                    ],
+                  )
         // : SpinKitPouringHourGlass(
         //     color: AppTheme.appColor,
         //   ),

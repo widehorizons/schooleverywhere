@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:schooleverywhere/Modules/Parent.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'cubit/chatcubit_cubit.dart';
 import '../Constants/StringConstants.dart';
@@ -91,6 +92,7 @@ class ChatScreenState extends State<ChatScreen> {
   Staff? loggedStaff;
   String? year;
   Student? loggedStudent;
+  Parent? loggedParent;
   late File imageFile;
   late bool isLoading;
   late bool isShowSticker;
@@ -128,6 +130,11 @@ class ChatScreenState extends State<ChatScreen> {
       year = loggedStudent!.academicYear!;
       print("studentData " + loggedStudent!.id! + " " + widget.id);
       getData();
+    } else if (widget.type == PARENT_TYPE) {
+      loggedParent = await getUserData() as Parent;
+      year = loggedParent!.academicYear!;
+      print("studentData " + loggedParent!.regno + " " + widget.id);
+      getData();
     } else {
       loggedStaff = await getUserData() as Staff;
       year = loggedStaff!.academicYear!;
@@ -135,7 +142,6 @@ class ChatScreenState extends State<ChatScreen> {
       print("staffData " + loggedStaff!.id.toString() + widget.id);
       getData();
     }
-    // InsertSeenRec();
   }
 
   Future<void> getData() async {
@@ -153,6 +159,14 @@ class ChatScreenState extends State<ChatScreen> {
         widget.id,
         widget.regno,
         staffid: loggedStaff!.id!,
+      );
+    }
+    if (widget.type == PARENT_TYPE) {
+      BlocProvider.of<ChatCubit>(context).getAllMessages(
+        STUDENT_TYPE,
+        widget.id,
+        widget.regno,
+        staffid: loggedParent!.id!,
       );
     }
   }
@@ -668,117 +682,119 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   Widget buildInput() {
-    return Container(
-      child: Row(
-        children: <Widget>[
-          // Button send image
-          // Material(
-          //   child: Container(
-          //     margin: EdgeInsets.symmetric(horizontal: 1.0),
-          //     child: IconButton(
-          //       icon: Icon(Icons.image),
-          //       onPressed: getImage,
-          //       color: AppTheme.appColor,
-          //     ),
-          //   ),
-          //   color: Colors.white,
-          // ),
-          Material(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 1.0),
-              child: IconButton(
-                icon: Icon(Icons.attach_file),
-                onPressed: _openFileExplorer,
-                color: AppTheme.appColor,
-              ),
-            ),
-            color: Colors.white,
-          ),
-
-          // Edit text
-          Flexible(
-            child: Container(
-              child: TextField(
-                style: TextStyle(color: AppTheme.appColor, fontSize: 15.0),
-                controller: textEditingController,
-                decoration: InputDecoration.collapsed(
-                  hintText: 'Type your message...',
-                  hintStyle: TextStyle(color: Colors.grey),
-                ),
-                focusNode: focusNode,
-              ),
-            ),
-          ),
-
-          // Button send message
-          BlocListener<ChatCubit, ChatState>(
-            listener: (context, state) {
-              if (state is ChatcubitSendSuccess) {
-                Fluttertoast.showToast(
-                    msg: "Message Sent",
-                    toastLength: Toast.LENGTH_LONG,
-                    timeInSecForIosWeb: 3,
-                    backgroundColor: AppTheme.appColor,
-                    textColor: Colors.white,
-                    fontSize: 16.0);
-                textEditingController.clear();
-                setState(() {
-                  selectedFilesList.clear();
-                  selectedFilesNameList.clear();
-                  listScrollController.animateTo(0,
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeOut);
-                });
-              }
-              if (state is ChatcubitError) {
-                String msg = state.error;
-
-                Fluttertoast.showToast(
-                    msg: msg,
-                    toastLength: Toast.LENGTH_LONG,
-                    timeInSecForIosWeb: 3,
-                    backgroundColor: AppTheme.appColor,
-                    textColor: Colors.white,
-                    fontSize: 16.0);
-              }
-            },
-            child: Material(
+    if (widget.type != PARENT_TYPE)
+      return Container(
+        child: Row(
+          children: <Widget>[
+            // Button send image
+            // Material(
+            //   child: Container(
+            //     margin: EdgeInsets.symmetric(horizontal: 1.0),
+            //     child: IconButton(
+            //       icon: Icon(Icons.image),
+            //       onPressed: getImage,
+            //       color: AppTheme.appColor,
+            //     ),
+            //   ),
+            //   color: Colors.white,
+            // ),
+            Material(
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 8.0),
+                margin: EdgeInsets.symmetric(horizontal: 1.0),
                 child: IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: () {
-                    if (textEditingController.text.trim() != '' ||
-                        selectedFilesList.isNotEmpty) {
-                      KeyboardUtil().hideKeyboard(context);
-                      BlocProvider.of<ChatCubit>(context).sendReply(
-                          widget.type,
-                          selectedFilesList,
-                          textEditingController.text,
-                          widget.regno,
-                          widget.id,
-                          chatMessages!.staffid!,
-                          chatMessages!.staffname!,
-                          widget.subjectId,
-                          year!);
-                    } else {
-                      Fluttertoast.showToast(msg: 'Nothing to send');
-                    }
-                  },
+                  icon: Icon(Icons.attach_file),
+                  onPressed: _openFileExplorer,
                   color: AppTheme.appColor,
                 ),
               ),
               color: Colors.white,
             ),
-          ),
-        ],
-      ),
-      width: double.infinity,
-      height: 50.0,
-      decoration: BoxDecoration(
-          border: Border(top: BorderSide(color: Colors.grey, width: 0.5)),
-          color: Colors.white),
-    );
+
+            // Edit text
+            Flexible(
+              child: Container(
+                child: TextField(
+                  style: TextStyle(color: AppTheme.appColor, fontSize: 15.0),
+                  controller: textEditingController,
+                  decoration: InputDecoration.collapsed(
+                    hintText: 'Type your message...',
+                    hintStyle: TextStyle(color: Colors.grey),
+                  ),
+                  focusNode: focusNode,
+                ),
+              ),
+            ),
+
+            // Button send message
+            BlocListener<ChatCubit, ChatState>(
+              listener: (context, state) {
+                if (state is ChatcubitSendSuccess) {
+                  Fluttertoast.showToast(
+                      msg: "Message Sent",
+                      toastLength: Toast.LENGTH_LONG,
+                      timeInSecForIosWeb: 3,
+                      backgroundColor: AppTheme.appColor,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                  textEditingController.clear();
+                  setState(() {
+                    selectedFilesList.clear();
+                    selectedFilesNameList.clear();
+                    listScrollController.animateTo(0,
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeOut);
+                  });
+                }
+                if (state is ChatcubitError) {
+                  String msg = state.error;
+
+                  Fluttertoast.showToast(
+                      msg: msg,
+                      toastLength: Toast.LENGTH_LONG,
+                      timeInSecForIosWeb: 3,
+                      backgroundColor: AppTheme.appColor,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                }
+              },
+              child: Material(
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: IconButton(
+                    icon: Icon(Icons.send),
+                    onPressed: () {
+                      if (textEditingController.text.trim() != '' ||
+                          selectedFilesList.isNotEmpty) {
+                        KeyboardUtil().hideKeyboard(context);
+                        BlocProvider.of<ChatCubit>(context).sendReply(
+                            widget.type,
+                            selectedFilesList,
+                            textEditingController.text,
+                            widget.regno,
+                            widget.id,
+                            chatMessages!.staffid!,
+                            chatMessages!.staffname!,
+                            widget.subjectId,
+                            year!);
+                      } else {
+                        Fluttertoast.showToast(msg: 'Nothing to send');
+                      }
+                    },
+                    color: AppTheme.appColor,
+                  ),
+                ),
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+        width: double.infinity,
+        height: 50.0,
+        decoration: BoxDecoration(
+            border: Border(top: BorderSide(color: Colors.grey, width: 0.5)),
+            color: Colors.white),
+      );
+    return Container();
   }
 
   Widget buildListMessage(List<ReplyMessage>? messages) {

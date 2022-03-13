@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "803882513497",
+    "project_id": "merryland-c0ddc",
+    "storage_bucket": "merryland-c0ddc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:803882513497:android:63eab4e137bedbb4d36d48",
+        "android_client_info": {
+          "package_name": "com.schooleverywhere.merryland"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "803882513497-vqo7dsbtd8vue80jfm60v58tt2ksdlqd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyqQEfBANoedj_m7UcF5k8e_REdIgZfNY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "803882513497-vqo7dsbtd8vue80jfm60v58tt2ksdlqd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

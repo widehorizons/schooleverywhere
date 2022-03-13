@@ -2,7 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'string_utils.dart';
 
-enum Flavor { SCHOOLEVERYWHERE, ALROWAD, GOLDEN, TANTAROYAL, INNOVATION }
+enum Flavor {
+  SCHOOLEVERYWHERE,
+  ALROWAD,
+  GOLDEN,
+  TANTAROYAL,
+  INNOVATION,
+  MERRYLAND,
+  SPS
+}
 
 class FlavorValues {
   FlavorValues({

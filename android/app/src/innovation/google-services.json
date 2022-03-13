@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "957690518461",
+    "firebase_url": "https://innovation-6ee0b.firebaseio.com",
+    "project_id": "innovation-6ee0b",
+    "storage_bucket": "innovation-6ee0b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:957690518461:android:377c57d7578c01e85710d4",
+        "android_client_info": {
+          "package_name": "com.schooleverywhere.innovation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "957690518461-8pmvgs2oa3ro3jel9qipg2hfnv8ubg8k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.schooleverywhere.innovation",
+            "certificate_hash": "ccc1299bc2b52e07f4dc544ce118a49c5b3db074"
+          }
+        },
+        {
+          "client_id": "957690518461-824v1ij9obp9bgrtnp6aoplcp4l0r9gf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3crGqkilJ-gVxSP_jesX0rUV6XIOzoCs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "957690518461-824v1ij9obp9bgrtnp6aoplcp4l0r9gf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "957690518461-pkbc5st7t0vhkh6h90vkkk709qgkkrsf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.schooleverywhere.innovation"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

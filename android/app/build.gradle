@@ -106,6 +106,12 @@ signingConfigs {
                            applicationIdSuffix ".smart"
 
         }
+        innovation {
+            dimension "app"
+            resValue "string", "app_name", "innovation"
+                           applicationIdSuffix ".innovation"
+
+        }
      
     }
 }

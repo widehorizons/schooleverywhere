@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "329700175350",
+    "project_id": "tantaroyal-b7f08",
+    "storage_bucket": "tantaroyal-b7f08.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:329700175350:android:64adb29abc9bac80256bd7",
+        "android_client_info": {
+          "package_name": "com.schooleverywhere"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "329700175350-s5dl9mk0j60csvnlpv8hkk86psgvdh63.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqj_ujho981EtMnFgdr-ZGhPTLc983aro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "329700175350-s5dl9mk0j60csvnlpv8hkk86psgvdh63.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "329700175350-m6nm2su65mleqqjb0k0f7tqf5hh22otf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.schooleverywhere.tantaroyal"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:329700175350:android:08ca81007c5ba7b6256bd7",
+        "android_client_info": {
+          "package_name": "com.schooleverywhere.tantaroyal.tantaroyal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "329700175350-u42341mrftf185pi6l8iktfqs3c2n7fo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.schooleverywhere.tantaroyal.tantaroyal",
+            "certificate_hash": "cf7fd48420506b1b728e1f0c17b29763c0f15e22"
+          }
+        },
+        {
+          "client_id": "329700175350-s5dl9mk0j60csvnlpv8hkk86psgvdh63.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqj_ujho981EtMnFgdr-ZGhPTLc983aro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "329700175350-s5dl9mk0j60csvnlpv8hkk86psgvdh63.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "329700175350-m6nm2su65mleqqjb0k0f7tqf5hh22otf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.schooleverywhere.tantaroyal"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

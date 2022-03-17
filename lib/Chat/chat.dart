@@ -344,77 +344,119 @@ class ChatScreenState extends State<ChatScreen> {
         Column(
           children: [
             if (message.files != null && message.files!.isNotEmpty)
-              Column(
-                children: List.generate(
-                  message.files!.length,
-                  (index) => (message.files![index].filetype == "image")
-                      ? Container(
-                          padding: EdgeInsets.all(3),
-                          // width: 200.0,
-                          decoration: BoxDecoration(
-                              color: isCurrentUserMessage(message)
-                                  ? Colors.grey.shade800
-                                  : AppTheme.appColor,
-                              borderRadius: BorderRadius.circular(8.0)),
+              Wrap(
+                children: [
+                  Column(
+                    children: List.generate(
+                        message.files!.length,
+                        (index) => (message.files![index].filetype == "image")
+                            ? Container(
+                                padding: EdgeInsets.all(3),
+                                // width: 200.0,
+                                decoration: BoxDecoration(
+                                    color: isCurrentUserMessage(message)
+                                        ? Colors.grey.shade800
+                                        : AppTheme.appColor,
+                                    borderRadius: BorderRadius.circular(8.0)),
 
-                          child: FlatButton(
-                            child: Material(
-                              child: CachedNetworkImage(
-                                placeholder: (context, url) => Container(
-                                  child: Loading(),
-                                  width: 200.0,
-                                  height: 200.0,
-                                  padding: EdgeInsets.all(70.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey.shade300,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
+                                child: FlatButton(
+                                  child: Material(
+                                    child: CachedNetworkImage(
+                                      placeholder: (context, url) => Container(
+                                        child: Loading(),
+                                        width: 200.0,
+                                        height: 200.0,
+                                        padding: EdgeInsets.all(70.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade300,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0),
+                                          ),
+                                        ),
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          Material(
+                                        child: Image.asset(
+                                          'img/img_not_available.jpeg',
+                                          width: 200.0,
+                                          height: 200.0,
+                                          fit: BoxFit.cover,
+                                        ),
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(8.0),
+                                        ),
+                                        clipBehavior: Clip.hardEdge,
+                                      ),
+                                      imageUrl: message.files![index].link!,
+                                      width: 200.0,
+                                      height: 200.0,
+                                      fit: BoxFit.fitWidth,
                                     ),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8.0)),
+                                    clipBehavior: Clip.hardEdge,
                                   ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => FullPhoto(
+                                                url: message
+                                                    .files![index].link)));
+                                  },
+                                  padding: EdgeInsets.all(0),
                                 ),
-                                errorWidget: (context, url, error) => Material(
-                                  child: Image.asset(
-                                    'img/img_not_available.jpeg',
-                                    width: 200.0,
-                                    height: 200.0,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(8.0),
-                                  ),
-                                  clipBehavior: Clip.hardEdge,
+                                margin: EdgeInsets.only(
+                                    bottom:
+                                        isLastMessageRight(index) ? 20.0 : 10.0,
+                                    right: 10.0),
+                              )
+                            : InkWell(
+                                onTap: () async => await launch(
+                                  message.files![index].link!,
                                 ),
-                                imageUrl: message.files![index].link!,
-                                width: 200.0,
-                                height: 200.0,
-                                fit: BoxFit.fitWidth,
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8.0)),
-                              clipBehavior: Clip.hardEdge,
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => FullPhoto(
-                                          url: message.files![index].link)));
-                            },
-                            padding: EdgeInsets.all(0),
-                          ),
-                          margin: EdgeInsets.only(
-                              bottom: isLastMessageRight(index) ? 20.0 : 10.0,
-                              right: 10.0),
-                        )
-                      : Container(
-                          height: 60,
-                          width: 200,
-                          child: DownloadList(
-                            message.files!.map((e) => e.toJson()).toList(),
-                            platform: Theme.of(context).platform,
-                            title: '',
-                          )),
-                ),
+                                child: Container(
+                                  padding: EdgeInsets.fromLTRB(
+                                      15.0, 10.0, 15.0, 10.0),
+                                  width: 200.0,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        message.files![index].name!,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      Icon(
+                                        Icons.download,
+                                        color: Colors.white,
+                                      )
+                                    ],
+                                  ),
+                                  decoration: BoxDecoration(
+                                      color: isCurrentUserMessage(message)
+                                          ? AppTheme.appColor
+                                          : Colors.grey.shade800,
+                                      borderRadius: BorderRadius.circular(8.0)),
+                                  margin: EdgeInsets.only(
+                                      bottom: isLastMessageRight(index)
+                                          ? 20.0
+                                          : 5.0,
+                                      right: 10.0),
+                                ),
+                              )
+
+                        // Container(
+                        //     height: 60,
+                        //     width: 200,
+                        //     child: DownloadList(
+                        //       message.files!.map((e) => e.toJson()).toList(),
+                        //       platform: Theme.of(context).platform,
+                        //       title: '',
+                        //     )),
+                        ),
+                  ),
+                ],
               ),
             if (message.voice != null)
               Container(
@@ -521,9 +563,8 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   bool isLastMessageRight(int index) {
-    if ((index > 0 &&
-            listMessage != null &&
-            listMessage![index - 1].sendertype != widget.type) ||
+    if ((index > 0 && listMessage != null) ||
+        //!&&listMessage![index - 1].sendertype != widget.type
         index == 0) {
       return true;
     } else {
@@ -663,14 +704,11 @@ class ChatScreenState extends State<ChatScreen> {
     print(p.extension(file.path));
     if ([".png", ".jpg", ".svg", ".jpeg"]
         .contains(p.extension(file.path).toString())) {
-      print("is Image");
       return "assets/icons/file-image.svg";
     }
     if ((p.extension(file.path).toString()) == ".pdf") {
-      print("is Image");
       return "assets/icons/file-pdf.svg";
     } else {
-      print("is File");
       return "assets/icons/file.svg";
     }
   }

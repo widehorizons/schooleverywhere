@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
@@ -323,7 +322,9 @@ class DownloadListState extends State<DownloadList> {
         "downloading task ${task.name} has status [${task.status}] and ${task.progress}");
     task.taskId = (await FlutterDownloader.enqueue(
         url: task.link!,
-        headers: {"auth": "test_for_sql_encoding"},
+        headers: {
+          "auth": "test_for_sql_encoding",
+        },
         savedDir: _localPath,
         showNotification: true,
         openFileFromNotification: true))!;

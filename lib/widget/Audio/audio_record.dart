@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:record/record.dart';
-import 'package:schooleverywhere/config/flavor_config.dart';
 
 class AudioRecorder extends StatefulWidget {
   final void Function(String path) onStop;

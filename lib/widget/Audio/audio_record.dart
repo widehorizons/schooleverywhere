@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:record/record.dart';
 
@@ -140,16 +141,18 @@ class _AudioRecorderState extends State<AudioRecorder> {
 
   Future<void> _start() async {
     try {
-      if (await _audioRecorder.hasPermission()) {
-        await _audioRecorder.start(
-            path: '/storage/emulated/0/Download/temp.wav');
-        bool isRecording = await _audioRecorder.isRecording();
-        setState(() {
-          _isRecording = isRecording;
-          _recordDuration = 0;
-        });
+      if (await Permission.manageExternalStorage.request().isGranted) {
+        if (await _audioRecorder.hasPermission()) {
+          await _audioRecorder.start(
+              path: '/storage/emulated/0/Download/temp.wav');
+          bool isRecording = await _audioRecorder.isRecording();
+          setState(() {
+            _isRecording = isRecording;
+            _recordDuration = 0;
+          });
 
-        _startTimer();
+          _startTimer();
+        }
       }
     } catch (e) {
       print(e);

@@ -1191,12 +1191,16 @@ addSendToClass(
 
     var request = http.MultipartRequest('POST', Uri.parse(myUrl));
     request.fields.addAll(body);
-    if (voice != null)
+    if (voice != null) {
+      print("you send a voice record ===> $body");
       request.files.add(await http.MultipartFile.fromPath('voice', voice.path));
+    }
     final http.StreamedResponse streamedResponse = await request.send();
     final response = await http.Response.fromStream(streamedResponse);
+    print(request.files.length);
     if (response != null) {
       print('Response URL : ${response.request!.url}');
+      print('Request Data : ${response.request!.toString()}');
       print('Response status : ${response.statusCode}');
       print('Response body : ${response.body}');
       mapValue = json.decode(response.body);

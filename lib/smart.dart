@@ -18,6 +18,7 @@ Future<void> main() async {
         schoolName: 'Smart School',
         imagePath: 'img/smart.png',
         schoolWebsite: 'http://smartschool-egy.com/',
+        storagePath: '/data/user/0/com.schooleverywhere.schooleverywhere',
       ));
 
   WidgetsFlutterBinding.ensureInitialized();

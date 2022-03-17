@@ -5,6 +5,8 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'package:record/record.dart';
 
+import '../../config/flavor_config.dart';
+
 class AudioRecorder extends StatefulWidget {
   final void Function(String path) onStop;
 
@@ -138,13 +140,27 @@ class _AudioRecorderState extends State<AudioRecorder> {
 
     return numberStr;
   }
+//   Future _getStoragePermission() async {
+//   if (await Permission.storage.request().isGranted) {
+//     setState(() {
+//       permissionGranted = true;
+//     });
+//   } else if (await Permission.storage.request().isPermanentlyDenied) {
+//     await openAppSettings();
+//   } else if (await Permission.storage.request().isDenied) {
+//     setState(() {
+//       permissionGranted = false;
+//     });
+//   }
+// }
 
   Future<void> _start() async {
     try {
-      if (await Permission.manageExternalStorage.request().isGranted) {
+      if (await Permission.storage.request().isGranted) {
         if (await _audioRecorder.hasPermission()) {
           await _audioRecorder.start(
-              path: '/storage/emulated/0/Download/temp.wav');
+              path:
+                  '${FlavorConfig.instance.values.storagePath}/cache/audio.wav');
           bool isRecording = await _audioRecorder.isRecording();
           setState(() {
             _isRecording = isRecording;

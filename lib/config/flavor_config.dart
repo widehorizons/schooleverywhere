@@ -14,6 +14,7 @@ enum Flavor {
 
 class FlavorValues {
   FlavorValues({
+    required this.storagePath,
     required this.imagePath,
     required this.schoolName,
     required this.schoolWebsite,
@@ -24,6 +25,7 @@ class FlavorValues {
   final String? schoolName;
   final String? schoolWebsite;
   final String? imagePath;
+  final String? storagePath;
   //Add other flavor specific values, e.g database name
 
 }

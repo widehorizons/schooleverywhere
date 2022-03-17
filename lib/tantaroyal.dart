@@ -17,6 +17,7 @@ Future<void> main() async {
         schoolName: 'Tanta Royal School ',
         imagePath: 'img/tantaroyal.png',
         schoolWebsite: 'https://tanta-royal.com/',
+        storagePath: '/data/user/0/com.schooleverywhere.tantaroyal.tantaroyal',
       ));
 
   WidgetsFlutterBinding.ensureInitialized();

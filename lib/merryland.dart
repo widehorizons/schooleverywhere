@@ -17,6 +17,7 @@ Future<void> main() async {
         baseUrl: "https://schooleverywhere-merryland.com/schooleverywhere/",
         schoolName: 'MerrylanD International School',
         schoolWebsite: 'https://merryland-school.com/',
+        storagePath: '/data/user/0/com.schooleverywhere.merryland',
         imagePath: 'img/merryland.png',
       ));
 

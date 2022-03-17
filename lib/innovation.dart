@@ -17,6 +17,7 @@ Future<void> main() async {
         schoolName: 'Innovation International School',
         imagePath: 'img/innovation.png',
         schoolWebsite: 'https://innovation-schools.com/',
+        storagePath: '/data/user/0/com.schooleverywhere.innovation',
       ));
 
   WidgetsFlutterBinding.ensureInitialized();

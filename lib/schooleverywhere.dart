@@ -18,6 +18,7 @@ Future<void> main() async {
         schoolName: 'Schooleverywhere',
         schoolWebsite: 'https://schooleverywhere-try.com/',
         imagePath: 'img/schooleverywhere.png',
+        storagePath: '/data/user/0/com.schooleverywhere.schooleverywhere',
       ));
 
   WidgetsFlutterBinding.ensureInitialized();

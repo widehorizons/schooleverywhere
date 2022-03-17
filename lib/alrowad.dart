@@ -18,6 +18,7 @@ Future<void> main() async {
         schoolName: 'Al Rowad Language School Tanta',
         imagePath: 'img/alrowad.png',
         schoolWebsite: 'https://schooleverywhere-alrowad.com/',
+        storagePath: '/data/user/0/com.schooleverywhere.alrowad',
       ));
 
   WidgetsFlutterBinding.ensureInitialized();

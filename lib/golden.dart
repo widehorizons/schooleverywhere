@@ -17,6 +17,7 @@ Future<void> main() async {
         schoolName: 'Golden Language School ',
         imagePath: 'img/golden.png',
         schoolWebsite: 'https://schooleverywhere-golden.com/',
+        storagePath: '/data/user/0/com.schooleverywhere.golden',
       ));
 
   WidgetsFlutterBinding.ensureInitialized();

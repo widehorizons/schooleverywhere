@@ -39,7 +39,7 @@ dependencies:
   flutter_local_notifications: ^9.0.0
   flutter_uploader: ^3.0.0-beta.3
   dio: ^4.0.0
-  flutter_downloader: ^1.7.1
+  flutter_downloader: ^1.7.2
   # downloads_path_provider: ^0.1.0
   path_provider: ^2.0.5
   random_string: ^2.3.1
@@ -68,7 +68,7 @@ dependencies:
   flutter_svg: ^1.0.3
   flutter_bloc: ^8.0.1
   just_audio: ^0.9.18
-  record: ^3.0.2
+  record: ^3.0.3
   html2md: ^1.2.5
 
 dev_dependencies:

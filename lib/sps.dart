@@ -14,8 +14,8 @@ Future<void> main() async {
   FlavorConfig(
       flavor: Flavor.SPS,
       values: FlavorValues(
-        baseUrl: "https://schooleverywhere-sps.com/schooleverywhere/",
-        schoolName: 'SPS School',
+        baseUrl: "https://schooleverywhere-stpeter.com/schooleverywhere/",
+        schoolName: "St. Peter's School",
         schoolWebsite: 'https://schooleverywhere-try.com/',
         imagePath: 'img/stpeters.png',
       ));

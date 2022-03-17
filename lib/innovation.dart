@@ -14,7 +14,7 @@ Future<void> main() async {
       flavor: Flavor.INNOVATION,
       values: FlavorValues(
         baseUrl: "https://schooleverywhere-innovation.com/schooleverywhere/",
-        schoolName: 'Innovation International School ',
+        schoolName: 'Innovation International School',
         imagePath: 'img/innovation.png',
         schoolWebsite: 'https://innovation-schools.com/',
       ));

@@ -73,7 +73,7 @@ class SplashScreenState extends State<SplashScreen> {
     User? user = await getUserData();
     print("Retrived user data  is $user");
     loggedUser = user ?? null;
-    if (loggedUser!.type == STAFF_TYPE) {
+    if (loggedUser?.type == STAFF_TYPE) {
       checkLoginStaff();
     }
   }

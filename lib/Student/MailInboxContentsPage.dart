@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../Constants/StringConstants.dart';
 import '../Modules/EventObject.dart';
 import '../Modules/Messages.dart';
 import '../Networking/Futures.dart';

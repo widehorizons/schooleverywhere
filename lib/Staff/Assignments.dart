@@ -24,7 +24,6 @@ import 'PreviousAssignment.dart';
 import 'StaffReplyAssignments.dart';
 import 'StudentAssignmentsReply.dart';
 import 'package:schooleverywhere/config/flavor_config.dart';
-import 'package:schooleverywhere/config/flavor_config.dart';
 
 class Assignments extends StatefulWidget {
   @override
@@ -214,29 +213,46 @@ class _AssignmentsState extends State<Assignments> {
     );
 
     final data = SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: SizedBox(
             // constraints: BoxConstraints.tightFor(
             //   height: MediaQuery.of(context).size.height * 1.2,
             // ),
             child: Column(
-      mainAxisSize: MainAxisSize.max,
-      children: <Widget>[
-        Padding(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            child: Table(
-                border: TableBorder.all(color: AppTheme.appColor),
-                children: [
-                  TableRow(
-                      //decoration: ,
-                      children: <Widget>[
-                        Text(" Section: ",
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Padding(
+                padding: EdgeInsets.symmetric(vertical: 50, horizontal: 20),
+                child: Table(
+                    border: TableBorder.all(color: AppTheme.appColor),
+                    children: [
+                      TableRow(
+                          //decoration: ,
+                          children: <Widget>[
+                            Text(" Section: ",
+                                style: TextStyle(
+                                    wordSpacing: 10,
+                                    color: AppTheme.appColor,
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18)),
+                            Text(" " + StaffSection,
+                                style: TextStyle(
+                                    wordSpacing: 10,
+                                    color: AppTheme.appColor,
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18)),
+                          ]),
+                      TableRow(children: <Widget>[
+                        Text(" Stage: ",
                             style: TextStyle(
                                 wordSpacing: 10,
                                 color: AppTheme.appColor,
                                 fontStyle: FontStyle.italic,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18)),
-                        Text(" " + StaffSection,
+                        Text(" " + StaffStage,
                             style: TextStyle(
                                 wordSpacing: 10,
                                 color: AppTheme.appColor,
@@ -244,348 +260,165 @@ class _AssignmentsState extends State<Assignments> {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18)),
                       ]),
-                  TableRow(children: <Widget>[
-                    Text(" Stage: ",
-                        style: TextStyle(
-                            wordSpacing: 10,
-                            color: AppTheme.appColor,
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18)),
-                    Text(" " + StaffStage,
-                        style: TextStyle(
-                            wordSpacing: 10,
-                            color: AppTheme.appColor,
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18)),
-                  ]),
-                  TableRow(children: <Widget>[
-                    Text(" Grade: ",
-                        style: TextStyle(
-                            wordSpacing: 10,
-                            color: AppTheme.appColor,
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18)),
-                    Text(" " + StaffGrade,
-                        style: TextStyle(
-                            wordSpacing: 10,
-                            color: AppTheme.appColor,
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18)),
-                  ]),
-                  TableRow(children: <Widget>[
-                    Text(" Semester: ",
-                        style: TextStyle(
-                            wordSpacing: 10,
-                            color: AppTheme.appColor,
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18)),
-                    Text(" " + StaffSemester,
-                        style: TextStyle(
-                            wordSpacing: 10,
-                            color: AppTheme.appColor,
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18)),
-                  ]),
-                  TableRow(children: <Widget>[
-                    Text(" Subject: ",
-                        style: TextStyle(
-                            wordSpacing: 10,
-                            color: AppTheme.appColor,
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18)),
-                    Text(" " + StaffSubject,
-                        style: TextStyle(
-                            wordSpacing: 10,
-                            color: AppTheme.appColor,
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18)),
-                  ]),
-                ])),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * .75,
-          child: selectedClasses,
-        ),
-        Text('From',
-            style: TextStyle(
-                color: AppTheme.appColor,
-                fontStyle: FontStyle.italic,
-                fontWeight: FontWeight.bold,
-                fontSize: 18)),
-        Padding(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 70),
-            child: Container(
-                width: MediaQuery.of(context).size.width * .5,
-                height: MediaQuery.of(context).size.height * .05,
-                child: DateTimeField(
-                  format: format,
-                  controller: Datefrom,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppTheme.appColor)),
-                  ),
-                  onShowPicker: (context, currentValue) {
-                    return showDatePicker(
-                        context: context,
-                        firstDate: DateTime(1996),
-                        initialDate: DateTime.now(),
-                        lastDate: DateTime(2050));
-                  },
-                ))),
-        Text('To',
-            style: TextStyle(
-                color: AppTheme.appColor,
-                fontStyle: FontStyle.italic,
-                fontWeight: FontWeight.bold,
-                fontSize: 18)),
-        Padding(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 70),
-            child: Container(
-                width: MediaQuery.of(context).size.width * .5,
-                height: MediaQuery.of(context).size.height * .05,
-                child: DateTimeField(
-                  format: format,
-                  controller: Dateto,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppTheme.appColor)),
-                  ),
-                  onShowPicker: (context, currentValue) {
-                    return showDatePicker(
-                        context: context,
-                        firstDate: DateTime(1996),
-                        initialDate: DateTime.now(),
-                        lastDate: DateTime(2050));
-                  },
-                ))),
-        Text(" Description ",
-            style: TextStyle(
-                color: AppTheme.appColor,
-                fontStyle: FontStyle.italic,
-                fontWeight: FontWeight.bold,
-                fontSize: 18)),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          child: TextField(
-            controller: CommentValue,
-            maxLines: null,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                  borderSide: BorderSide(color: AppTheme.appColor)),
+                      TableRow(children: <Widget>[
+                        Text(" Grade: ",
+                            style: TextStyle(
+                                wordSpacing: 10,
+                                color: AppTheme.appColor,
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18)),
+                        Text(" " + StaffGrade,
+                            style: TextStyle(
+                                wordSpacing: 10,
+                                color: AppTheme.appColor,
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18)),
+                      ]),
+                      TableRow(children: <Widget>[
+                        Text(" Semester: ",
+                            style: TextStyle(
+                                wordSpacing: 10,
+                                color: AppTheme.appColor,
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18)),
+                        Text(" " + StaffSemester,
+                            style: TextStyle(
+                                wordSpacing: 10,
+                                color: AppTheme.appColor,
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18)),
+                      ]),
+                      TableRow(children: <Widget>[
+                        Text(" Subject: ",
+                            style: TextStyle(
+                                wordSpacing: 10,
+                                color: AppTheme.appColor,
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18)),
+                        Text(" " + StaffSubject,
+                            style: TextStyle(
+                                wordSpacing: 10,
+                                color: AppTheme.appColor,
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18)),
+                      ]),
+                    ])),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * .75,
+              child: selectedClasses,
             ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-          child: RaisedButton(
-            color: AppTheme.appColor,
-            textColor: Colors.white,
-            onPressed: () => _openFileExplorer(),
-            child: new Text("Choose File"),
-          ),
-        ),
-        (selectedFilesList.length > 0)
-            ? Container(
-                width: MediaQuery.of(context).size.width * .7,
-                child: Expanded(
-                    // padding: const EdgeInsets.only(bottom: 10.0),
-                    child: Scrollbar(
-                        child: new ListView.separated(
-                  shrinkWrap: true,
-                  itemCount: selectedFilesList.length > 0 &&
-                          selectedFilesList.isNotEmpty
-                      ? selectedFilesList.length
-                      : 1,
-                  itemBuilder: (BuildContext context, int index) {
-                    return new ListTile(
-                      title: new Text(
-                        path.basename(selectedFilesList[index].path),
+            Text('From',
+                style: TextStyle(
+                    color: AppTheme.appColor,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18)),
+            Padding(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 70),
+                child: Container(
+                    width: MediaQuery.of(context).size.width * .5,
+                    height: MediaQuery.of(context).size.height * .05,
+                    child: DateTimeField(
+                      format: format,
+                      controller: Datefrom,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppTheme.appColor)),
                       ),
-                      //subtitle: new Text(path),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      new Divider(),
-                ))),
-              )
-            : Center(child: new Text("No file chosen")),
-        isLoading
-            ? loadingSign
-            : Padding(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  onPressed: () async {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    if (selectedFilesList.isNotEmpty) {
-                      var lengthoffile = 0, toto;
-                      for (int y = 0; y < selectedFilesList.length; y++) {
-                        File f = selectedFilesList[y];
-                        try {
-                          toto = await f.length();
-                          lengthoffile = toto;
-                          print(lengthoffile.toString());
-                          if (lengthoffile > 5000000) {
-                            filesize = false;
-                            break;
-                          }
-                        } on PlatformException catch (e) {
-                          print("Unsupported File" + e.toString());
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Assignments()),
-                          );
-                          /* Flushbar(
-                            title: "Failed",
-                            message: "Unsupported File",
-                            icon: Icon(Icons.close),
-                            backgroundColor: AppTheme.appColor,
-                            duration: Duration(seconds: 3),
-                          )..show(context);*/
-                          Fluttertoast.showToast(
-                              msg: "Unsupported File",
-                              toastLength: Toast.LENGTH_LONG,
-                              timeInSecForIosWeb: 3,
-                              backgroundColor: AppTheme.appColor,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                        }
-                      }
-                      if (filesize) {
-                        NewFileName = await uploadFile(selectedFilesList, Url);
-                      } else {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Assignments()),
-                        );
-                        /*  Flushbar(
-                          title: "Failed",
-                          message: "max size of one file allowed 5 MB",
-                          icon: Icon(Icons.close),
-                          backgroundColor: AppTheme.appColor,
-                          duration: Duration(seconds: 3),
-                        )..show(context);*/
-                        Fluttertoast.showToast(
-                            msg: "max size of one file allowed 5 MB",
-                            toastLength: Toast.LENGTH_LONG,
-                            timeInSecForIosWeb: 3,
-                            backgroundColor: AppTheme.appColor,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
-                      }
-                    }
-                    if (filesize) {
-                      if (Datefrom.text != "" &&
-                          Dateto.text != "" &&
-                          classSelected.isNotEmpty) {
-                        datasend = await addAssignments(
-                            NewFileName,
-                            Datefrom.text.toString(),
-                            Dateto.text.toString(),
-                            CommentValue.text,
-                            loggedStaff!.id!,
-                            loggedStaff!.name!,
-                            loggedStaff!.academicYear!,
-                            loggedStaff!.section!,
-                            loggedStaff!.stage!,
-                            loggedStaff!.grade!,
-                            classSelected,
-                            loggedStaff!.semester!,
-                            loggedStaff!.subject!);
-                        setState(() {
-                          isLoading = false;
-                        });
-                        if (datasend!.success!) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Assignments()),
-                          );
-                          /*  Flushbar(
-                            title: "Success",
-                            message: "Assignments Sent",
-                            icon: Icon(Icons.done_outline),
-                            backgroundColor: AppTheme.appColor,
-                            duration: Duration(seconds: 3),
-                          )..show(context);*/
-                          Fluttertoast.showToast(
-                              msg: "Assignments Sent",
-                              toastLength: Toast.LENGTH_LONG,
-                              timeInSecForIosWeb: 3,
-                              backgroundColor: AppTheme.appColor,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                          //  }
-                        } else {
-                          String? msg = datasend!.object as String?;
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Assignments()),
-                          );
-                          /*   Flushbar(
-                            title: "Failed",
-                            message: msg.toString(),
-                            icon: Icon(Icons.close),
-                            backgroundColor: AppTheme.appColor,
-                            duration: Duration(seconds: 3),
-                          )..show(context);*/
-                          Fluttertoast.showToast(
-                              msg: msg.toString(),
-                              toastLength: Toast.LENGTH_LONG,
-                              timeInSecForIosWeb: 3,
-                              backgroundColor: AppTheme.appColor,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                        }
-                      } else {
-                        if (classSelected.isEmpty) {
-                          msgclass = "Please Select Class";
-                        } else {
-                          msgclass = "Please Enter Date from & Date to";
-                        }
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Assignments()),
-                        );
-                        /*   Flushbar(
-                          title: "Failed",
-                          message: msgclass,
-                          icon: Icon(Icons.close),
-                          backgroundColor: AppTheme.appColor,
-                          duration: Duration(seconds: 3),
-                        )..show(context);*/
-                        Fluttertoast.showToast(
-                            msg: msgclass,
-                            toastLength: Toast.LENGTH_LONG,
-                            timeInSecForIosWeb: 3,
-                            backgroundColor: AppTheme.appColor,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
-                      }
-                    }
-                  },
-                  padding: EdgeInsets.all(12),
-                  color: AppTheme.appColor,
-                  child: Text('Send', style: TextStyle(color: Colors.white)),
+                      onShowPicker: (context, currentValue) {
+                        return showDatePicker(
+                            context: context,
+                            firstDate: DateTime(1996),
+                            initialDate: DateTime.now(),
+                            lastDate: DateTime(2050));
+                      },
+                    ))),
+            Text('To',
+                style: TextStyle(
+                    color: AppTheme.appColor,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18)),
+            Padding(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 70),
+                child: Container(
+                    width: MediaQuery.of(context).size.width * .5,
+                    height: MediaQuery.of(context).size.height * .05,
+                    child: DateTimeField(
+                      format: format,
+                      controller: Dateto,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppTheme.appColor)),
+                      ),
+                      onShowPicker: (context, currentValue) {
+                        return showDatePicker(
+                            context: context,
+                            firstDate: DateTime(1996),
+                            initialDate: DateTime.now(),
+                            lastDate: DateTime(2050));
+                      },
+                    ))),
+            Text(" Description ",
+                style: TextStyle(
+                    color: AppTheme.appColor,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18)),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: TextField(
+                controller: CommentValue,
+                maxLines: null,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppTheme.appColor)),
                 ),
-              )
-      ],
-    )));
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+              child: RaisedButton(
+                color: AppTheme.appColor,
+                textColor: Colors.white,
+                onPressed: () => _openFileExplorer(),
+                child: new Text("Choose File"),
+              ),
+            ),
+            (selectedFilesList.length > 0)
+                ? Padding(
+                    padding: const EdgeInsets.only(bottom: 30),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * .9,
+                      child: Scrollbar(
+                          child: new ListView.separated(
+                        shrinkWrap: true,
+                        itemCount: selectedFilesList.length > 0 &&
+                                selectedFilesList.isNotEmpty
+                            ? selectedFilesList.length
+                            : 1,
+                        itemBuilder: (BuildContext context, int index) {
+                          return new ListTile(
+                            title: new Text(
+                              path.basename(selectedFilesList[index].path),
+                            ),
+                            //subtitle: new Text(path),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) =>
+                            new Divider(),
+                      )),
+                    ),
+                  )
+                : Center(child: new Text("No file chosen")),
+          ],
+        )));
 
     return Scaffold(
       appBar: new AppBar(
@@ -622,16 +455,202 @@ class _AssignmentsState extends State<Assignments> {
             constraints: BoxConstraints.tightFor(
               height: MediaQuery.of(context).size.height * .88,
             ),
-            child: Container(
-              height: double.infinity,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('img/bg.png'),
-                  fit: BoxFit.cover,
+            child: Stack(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  height: double.infinity,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('img/bg.png'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: data,
                 ),
-              ),
-              child: data,
+                Positioned(
+                    bottom: 10,
+                    right: 0,
+                    left: 0,
+                    child: isLoading
+                        ? loadingSign
+                        : Center(
+                            child: RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              onPressed: () async {
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                if (selectedFilesList.isNotEmpty) {
+                                  var lengthoffile = 0, toto;
+                                  for (int y = 0;
+                                      y < selectedFilesList.length;
+                                      y++) {
+                                    File f = selectedFilesList[y];
+                                    try {
+                                      toto = await f.length();
+                                      lengthoffile = toto;
+                                      print(lengthoffile.toString());
+                                      if (lengthoffile > 5000000) {
+                                        filesize = false;
+                                        break;
+                                      }
+                                    } on PlatformException catch (e) {
+                                      print("Unsupported File" + e.toString());
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Assignments()),
+                                      );
+                                      /* Flushbar(
+                            title: "Failed",
+                            message: "Unsupported File",
+                            icon: Icon(Icons.close),
+                            backgroundColor: AppTheme.appColor,
+                            duration: Duration(seconds: 3),
+                          )..show(context);*/
+                                      Fluttertoast.showToast(
+                                          msg: "Unsupported File",
+                                          toastLength: Toast.LENGTH_LONG,
+                                          timeInSecForIosWeb: 3,
+                                          backgroundColor: AppTheme.appColor,
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
+                                    }
+                                  }
+                                  if (filesize) {
+                                    NewFileName = await uploadFile(
+                                        selectedFilesList, Url);
+                                  } else {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Assignments()),
+                                    );
+                                    /*  Flushbar(
+                          title: "Failed",
+                          message: "max size of one file allowed 5 MB",
+                          icon: Icon(Icons.close),
+                          backgroundColor: AppTheme.appColor,
+                          duration: Duration(seconds: 3),
+                        )..show(context);*/
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            "max size of one file allowed 5 MB",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        timeInSecForIosWeb: 3,
+                                        backgroundColor: AppTheme.appColor,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  }
+                                }
+                                if (filesize) {
+                                  if (Datefrom.text != "" &&
+                                      Dateto.text != "" &&
+                                      classSelected.isNotEmpty) {
+                                    datasend = await addAssignments(
+                                        NewFileName,
+                                        Datefrom.text.toString(),
+                                        Dateto.text.toString(),
+                                        CommentValue.text,
+                                        loggedStaff!.id!,
+                                        loggedStaff!.name!,
+                                        loggedStaff!.academicYear!,
+                                        loggedStaff!.section!,
+                                        loggedStaff!.stage!,
+                                        loggedStaff!.grade!,
+                                        classSelected,
+                                        loggedStaff!.semester!,
+                                        loggedStaff!.subject!);
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    if (datasend!.success!) {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Assignments()),
+                                      );
+                                      /*  Flushbar(
+                            title: "Success",
+                            message: "Assignments Sent",
+                            icon: Icon(Icons.done_outline),
+                            backgroundColor: AppTheme.appColor,
+                            duration: Duration(seconds: 3),
+                          )..show(context);*/
+                                      Fluttertoast.showToast(
+                                          msg: "Assignments Sent",
+                                          toastLength: Toast.LENGTH_LONG,
+                                          timeInSecForIosWeb: 3,
+                                          backgroundColor: AppTheme.appColor,
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
+                                      //  }
+                                    } else {
+                                      String? msg = datasend!.object as String?;
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Assignments()),
+                                      );
+                                      /*   Flushbar(
+                            title: "Failed",
+                            message: msg.toString(),
+                            icon: Icon(Icons.close),
+                            backgroundColor: AppTheme.appColor,
+                            duration: Duration(seconds: 3),
+                          )..show(context);*/
+                                      Fluttertoast.showToast(
+                                          msg: msg.toString(),
+                                          toastLength: Toast.LENGTH_LONG,
+                                          timeInSecForIosWeb: 3,
+                                          backgroundColor: AppTheme.appColor,
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
+                                    }
+                                  } else {
+                                    if (classSelected.isEmpty) {
+                                      msgclass = "Please Select Class";
+                                    } else {
+                                      msgclass =
+                                          "Please Enter Date from & Date to";
+                                    }
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Assignments()),
+                                    );
+                                    /*   Flushbar(
+                          title: "Failed",
+                          message: msgclass,
+                          icon: Icon(Icons.close),
+                          backgroundColor: AppTheme.appColor,
+                          duration: Duration(seconds: 3),
+                        )..show(context);*/
+                                    Fluttertoast.showToast(
+                                        msg: msgclass,
+                                        toastLength: Toast.LENGTH_LONG,
+                                        timeInSecForIosWeb: 3,
+                                        backgroundColor: AppTheme.appColor,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  }
+                                }
+                              },
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 80),
+                              color: AppTheme.appColor,
+                              child: Text('Send',
+                                  style: TextStyle(color: Colors.white)),
+                            ),
+                          )),
+              ],
             ),
           ),
         ),

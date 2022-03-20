@@ -503,7 +503,7 @@
 			buildSettings = {
 				APP_DISPALY_NAME = "Tanta Royal School";
 				APP_DISPLAY_NAME = "Tanta Royal School";
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-tantaroyal";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon-tantaroyal;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = 4;
@@ -582,7 +582,7 @@
 			buildSettings = {
 				APP_DISPALY_NAME = "Tanta Royal School";
 				APP_DISPLAY_NAME = "Tanta Royal School";
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-tantaroyal";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon-tantaroyal;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/RunnerRelease.entitlements;
 				CURRENT_PROJECT_VERSION = 4;
@@ -659,7 +659,7 @@
 			buildSettings = {
 				APP_DISPALY_NAME = "Tanta Royal School";
 				APP_DISPLAY_NAME = "Tanta Royal School";
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-tantaroyal";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon-tantaroyal;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = 4;
@@ -1681,5 +1681,6 @@
 /* End XCConfigurationList section */
 	};
 	rootObject = 97C146E61CF9000F007C117D /* Project object */;
+} */;
 } */;
 }

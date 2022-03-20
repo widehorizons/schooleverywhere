@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1070232134267",
+    "project_id": "stpeter-32eb9",
+    "storage_bucket": "stpeter-32eb9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070232134267:android:0d9270e6fdd48a0b59f8de",
+        "android_client_info": {
+          "package_name": "com.schooleverywhere.stpeter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1070232134267-s09d4koff4d3um6ia4n9v5bobr0hl0hb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAB2x7LzrXFzwDksB6ROX-cjNb82fPsc5Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1070232134267-s09d4koff4d3um6ia4n9v5bobr0hl0hb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

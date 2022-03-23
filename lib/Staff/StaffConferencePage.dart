@@ -1,4 +1,6 @@
 // import 'package:get_version/get_version.dart';
+import 'dart:io';
+
 import 'package:package_info_plus/package_info_plus.dart';
 import 'ConferenceStaffJoinStaff.dart';
 import 'ConferenceStaffstaff.dart';
@@ -173,7 +175,12 @@ class _StaffConferencePageState extends State<StaffConferencePage> {
                       print(
                           "Data Retrived here is ===> ${data!['versionCode']}");
 
-                      checkVersionCode = data['versionCode'];
+                      if (FlavorConfig.instance.flavor == Flavor.TANTAROYAL &&
+                          Platform.isAndroid) {
+                        checkVersionCode = data['versionCode_andriod'];
+                      } else {
+                        checkVersionCode = data['versionCode'];
+                      }
                       if ((checkVersionCode == null) ||
                           (checkVersionCode == _projectCode) ||
                           (_projectCode == null)) {

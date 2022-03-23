@@ -1,4 +1,6 @@
 // import 'package:get_version/get_version.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -178,7 +180,12 @@ class _AdvancedStaffConferenceMangementPageState
                       Map? data = objectEvent.object as Map?;
                       print(
                           "Data Retrived here is ===> ${data!['versionCode']}");
-                      checkVersionCode = data['versionCode'];
+                      if (FlavorConfig.instance.flavor == Flavor.TANTAROYAL &&
+                          Platform.isAndroid) {
+                        checkVersionCode = data['versionCode_andriod'];
+                      } else {
+                        checkVersionCode = data['versionCode'];
+                      }
                       if ((checkVersionCode == null) ||
                           (checkVersionCode == _projectCode) ||
                           (_projectCode == null)) {

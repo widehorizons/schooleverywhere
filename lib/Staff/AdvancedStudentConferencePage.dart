@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:upgrader/upgrader.dart';
 import 'AdvancedConferenceSupervisiorStaffJoinStaff.dart';
 import 'createConferenceAdvanced.dart';
 import 'recoredConferenceAdvanced.dart';
@@ -318,24 +319,11 @@ class _AdvancedStudentConferencePageState
                       } else {
                         print(" check try " + checkVersionCode!);
                         print(" check version " + _projectCode!);
-                        return AlertDialog(
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20.0))),
-                            title: Text(
-                              'Welcome',
-                              style: TextStyle(
-                                  color: AppTheme.appColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0),
-                            ),
-                            content: Text(
-                              "Please Check App Update",
-                              style: TextStyle(
-                                  color: AppTheme.appColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0),
-                            ));
+                        return UpgradeAlert(
+                          debugLogging: true,
+                          child:
+                              Center(child: Text('Please Check App Update...')),
+                        );
                       }
                     }
                   },

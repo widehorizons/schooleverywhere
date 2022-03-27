@@ -70,6 +70,7 @@ dependencies:
   just_audio: ^0.9.18
   record: ^3.0.3
   html2md: ^1.2.5
+  upgrader: ^3.13.0
 
 dev_dependencies:
   flutter_test:

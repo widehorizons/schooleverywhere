@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:schooleverywhere/Staff/UploadedTimeTable.dart';
 import 'package:schooleverywhere/config/flavor_config.dart';
+import 'package:upgrader/upgrader.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../Constants/StringConstants.dart';
@@ -1056,12 +1057,13 @@ class _HomePageState extends State<HomePage> {
                       Map? data = objectEvent.object as Map?;
                       print(
                           "Data Retrived here is ===> ${data!['versionCode']}");
-    if (FlavorConfig.instance.flavor == Flavor.TANTAROYAL &&
+                      if (FlavorConfig.instance.flavor == Flavor.TANTAROYAL &&
                           Platform.isAndroid) {
                         checkVersionCode = data['versionCode_andriod'];
                       } else {
                         checkVersionCode = data['versionCode'];
-                      }                      if ((checkVersionCode == null) ||
+                      }
+                      if ((checkVersionCode == null) ||
                           (checkVersionCode == _projectCode) ||
                           (_projectCode == null)) {
                         List<dynamic> y = data['page'];
@@ -1563,24 +1565,11 @@ class _HomePageState extends State<HomePage> {
                       } else {
                         print(" check try " + checkVersionCode!);
                         print(" check version " + _projectCode!);
-                        return AlertDialog(
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20.0))),
-                            title: Text(
-                              'Welcome',
-                              style: TextStyle(
-                                  color: AppTheme.appColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0),
-                            ),
-                            content: Text(
-                              "Please Check App Update",
-                              style: TextStyle(
-                                  color: AppTheme.appColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0),
-                            ));
+                        return UpgradeAlert(
+                          debugLogging: true,
+                          child:
+                              Center(child: Text('Please Check App Update...')),
+                        );
                       }
                     }
                   },

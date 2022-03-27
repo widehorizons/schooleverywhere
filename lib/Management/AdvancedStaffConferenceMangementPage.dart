@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:schooleverywhere/config/flavor_config.dart';
+import 'package:upgrader/upgrader.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'package:schooleverywhere/config/flavor_config.dart';
 
 import '../Constants/StringConstants.dart';
 import '../Modules/EventObject.dart';
@@ -346,24 +348,11 @@ class _AdvancedStaffConferenceMangementPageState
                       } else {
                         print(" check try " + checkVersionCode!);
                         print(" check version " + _projectCode!);
-                        return AlertDialog(
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20.0))),
-                            title: Text(
-                              'Welcome',
-                              style: TextStyle(
-                                  color: AppTheme.appColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0),
-                            ),
-                            content: Text(
-                              "Please Check App Update",
-                              style: TextStyle(
-                                  color: AppTheme.appColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0),
-                            ));
+                        return UpgradeAlert(
+                          debugLogging: true,
+                          child:
+                              Center(child: Text('Please Check App Update...')),
+                        );
                       }
                     }
                   },

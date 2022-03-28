@@ -85,6 +85,7 @@ import '../Student/TimeTable.dart';
 import '../Student/ViewLessons.dart';
 import '../Student/ViewMemo.dart';
 import '../Style/theme.dart';
+import '../widget/updateDialog.dart';
 import 'ChangeLogin.dart';
 import 'LoginPage.dart';
 import 'Meeting.dart';
@@ -1565,11 +1566,8 @@ class _HomePageState extends State<HomePage> {
                       } else {
                         print(" check try " + checkVersionCode!);
                         print(" check version " + _projectCode!);
-                        return UpgradeAlert(
-                          debugLogging: true,
-                          child:
-                              Center(child: Text('Please Check App Update...')),
-                        );
+                                                return UpdateDialog();
+
                       }
                     }
                   },

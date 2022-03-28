@@ -28,6 +28,8 @@ import '../Style/theme.dart';
 import '../Pages/LoginPage.dart';
 import 'package:schooleverywhere/config/flavor_config.dart';
 
+import '../widget/updateDialog.dart';
+
 class StudentConferencePage extends StatefulWidget {
   final String type;
   final String sectionid;
@@ -277,11 +279,7 @@ class _StudentConferencePageState extends State<StudentConferencePage> {
                       } else {
                         print(" check try " + checkVersionCode!);
                         print(" check version " + _projectCode!);
-                        return UpgradeAlert(
-                          debugLogging: true,
-                          child:
-                              Center(child: Text('Please Check App Update...')),
-                        );
+                        return UpdateDialog();
                       }
                     }
                   },

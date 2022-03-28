@@ -16,6 +16,7 @@ import '../Networking/Futures.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
 import '../Pages/LoginPage.dart';
+import '../widget/updateDialog.dart';
 import 'StaffConferennce.dart';
 import 'StaffConferennceJoin.dart';
 import 'package:schooleverywhere/config/flavor_config.dart';
@@ -269,11 +270,7 @@ class _StaffConferenceMangementPageState
                       } else {
                         print(" check try " + checkVersionCode!);
                         print(" check version " + _projectCode!);
-                        return UpgradeAlert(
-                          debugLogging: true,
-                          child:
-                              Center(child: Text('Please Check App Update...')),
-                        );
+                        return UpdateDialog();
                       }
                     }
                   },

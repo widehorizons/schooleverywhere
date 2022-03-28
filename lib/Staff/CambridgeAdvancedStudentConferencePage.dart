@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:upgrader/upgrader.dart';
+import '../widget/updateDialog.dart';
 import 'staffcambridgeConference.dart';
 import '../Modules/Management.dart';
 import '../Modules/Parent.dart';
@@ -272,11 +273,7 @@ class _CambridgeAdvancedStudentConferencePageState
                       } else {
                         print(" check try " + checkVersionCode!);
                         print(" check version " + _projectCode!);
-                        return UpgradeAlert(
-                          debugLogging: true,
-                          child:
-                              Center(child: Text('Please Check App Update...')),
-                        );
+                        return UpdateDialog();
                       }
                     }
                   },

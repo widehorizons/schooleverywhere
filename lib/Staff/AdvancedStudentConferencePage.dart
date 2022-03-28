@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:upgrader/upgrader.dart';
+import '../widget/updateDialog.dart';
 import 'AdvancedConferenceSupervisiorStaffJoinStaff.dart';
 import 'createConferenceAdvanced.dart';
 import 'recoredConferenceAdvanced.dart';
@@ -319,11 +320,7 @@ class _AdvancedStudentConferencePageState
                       } else {
                         print(" check try " + checkVersionCode!);
                         print(" check version " + _projectCode!);
-                        return UpgradeAlert(
-                          debugLogging: true,
-                          child:
-                              Center(child: Text('Please Check App Update...')),
-                        );
+                        return UpdateDialog();
                       }
                     }
                   },

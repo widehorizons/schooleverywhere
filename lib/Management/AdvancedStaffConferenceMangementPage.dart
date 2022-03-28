@@ -18,6 +18,7 @@ import '../Networking/Futures.dart';
 import '../Pages/LoginPage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../Style/theme.dart';
+import '../widget/updateDialog.dart';
 import 'AdvancedStaffJoinConference.dart';
 
 class AdvancedStaffConferenceMangementPage extends StatefulWidget {
@@ -348,11 +349,7 @@ class _AdvancedStaffConferenceMangementPageState
                       } else {
                         print(" check try " + checkVersionCode!);
                         print(" check version " + _projectCode!);
-                        return UpgradeAlert(
-                          debugLogging: true,
-                          child:
-                              Center(child: Text('Please Check App Update...')),
-                        );
+                        return UpdateDialog();
                       }
                     }
                   },

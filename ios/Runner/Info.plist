@@ -47,6 +47,7 @@
 	<string>Photo Library permission is required to allow users to  take and send photos</string>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>fetch</string>
 		<string>processing</string>
 		<string>remote-notification</string>
 	</array>

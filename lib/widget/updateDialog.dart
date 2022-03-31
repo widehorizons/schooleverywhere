@@ -22,6 +22,7 @@ class _UpdateDialogState extends State<UpdateDialog> {
       showReleaseNotes: false,
       debugLogging: true,
       showLater: false,
+      canDismissDialog: false,
       durationToAlertAgain: Duration(hours: 8),
       child: Center(child: widget.child),
     );

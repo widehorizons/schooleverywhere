@@ -177,104 +177,104 @@ class _StaffConferencePageState extends State<StaffConferencePage> {
                       print(
                           "Data Retrived here is ===> ${data!['versionCode']}");
 
-                      if (FlavorConfig.instance.flavor == Flavor.TANTAROYAL &&
-                          Platform.isAndroid) {
-                        checkVersionCode = data['versionCode_andriod'];
-                      } else {
-                        checkVersionCode = data['versionCode'];
-                      }
-                      if ((checkVersionCode == null) ||
-                          (checkVersionCode == _projectCode) ||
-                          (_projectCode == null)) {
-                        List<dynamic> y = data['page'];
-                        List<Widget> PageOptions = [];
-                        Map Pagearr = new Map();
+                      // if (FlavorConfig.instance.flavor == Flavor.TANTAROYAL &&
+                      //     Platform.isAndroid) {
+                      //   checkVersionCode = data['versionCode_andriod'];
+                      // } else {
+                      //   checkVersionCode = data['versionCode'];
+                      // }
+                      // if ((checkVersionCode == null) ||
+                      //     (checkVersionCode == _projectCode) ||
+                      //     (_projectCode == null)) {
+                      List<dynamic> y = data['page'];
+                      List<Widget> PageOptions = [];
+                      Map Pagearr = new Map();
 
-                        for (int i = 0; i < y.length; i++) {
-                          Pagearr[data['page'][i]] = data['url'][i];
-                          if (data['page'][i].toString() ==
-                              "Staff Conference") {
-                            String LinkName = data['page'][i].toString();
-                            String imageUrl = data['url'][i].toString();
-                            PageOptions.add(GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  homePageAllPages(LinkName, widget.type);
-                                });
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  CircleAvatar(
-                                    radius:
-                                        MediaQuery.of(context).size.width * .10,
-                                    backgroundColor: Colors.transparent,
-                                    child: Image.network(imageUrl),
-                                  ),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 20.0),
-                                      child: Center(
-                                        child: Text(
-                                          data['page'][i].toString(),
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic,
-                                              color: AppTheme.appColor),
-                                        ),
-                                      ))
-                                ],
-                              ),
-                            ));
-                          } else if (data['page'][i].toString() ==
-                              "Join Conference") {
-                            String LinkName = data['page'][i].toString();
-                            String imageUrl = data['url'][i].toString();
-                            PageOptions.add(GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  homePageAllPages(LinkName, widget.type);
-                                });
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  CircleAvatar(
-                                    radius:
-                                        MediaQuery.of(context).size.width * .10,
-                                    backgroundColor: Colors.transparent,
-                                    child: Image.network(imageUrl),
-                                  ),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 20.0),
-                                      child: Center(
-                                        child: Text(
-                                          data['page'][i].toString(),
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic,
-                                              color: AppTheme.appColor),
-                                        ),
-                                      ))
-                                ],
-                              ),
-                            ));
-                          }
+                      for (int i = 0; i < y.length; i++) {
+                        Pagearr[data['page'][i]] = data['url'][i];
+                        if (data['page'][i].toString() == "Staff Conference") {
+                          String LinkName = data['page'][i].toString();
+                          String imageUrl = data['url'][i].toString();
+                          PageOptions.add(GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                homePageAllPages(LinkName, widget.type);
+                              });
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                CircleAvatar(
+                                  radius:
+                                      MediaQuery.of(context).size.width * .10,
+                                  backgroundColor: Colors.transparent,
+                                  child: Image.network(imageUrl),
+                                ),
+                                Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 20.0),
+                                    child: Center(
+                                      child: Text(
+                                        data['page'][i].toString(),
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            fontStyle: FontStyle.italic,
+                                            color: AppTheme.appColor),
+                                      ),
+                                    ))
+                              ],
+                            ),
+                          ));
+                        } else if (data['page'][i].toString() ==
+                            "Join Conference") {
+                          String LinkName = data['page'][i].toString();
+                          String imageUrl = data['url'][i].toString();
+                          PageOptions.add(GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                homePageAllPages(LinkName, widget.type);
+                              });
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                CircleAvatar(
+                                  radius:
+                                      MediaQuery.of(context).size.width * .10,
+                                  backgroundColor: Colors.transparent,
+                                  child: Image.network(imageUrl),
+                                ),
+                                Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 20.0),
+                                    child: Center(
+                                      child: Text(
+                                        data['page'][i].toString(),
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            fontStyle: FontStyle.italic,
+                                            color: AppTheme.appColor),
+                                      ),
+                                    ))
+                              ],
+                            ),
+                          ));
                         }
-                        return Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10.0),
-                            child: GridView.count(
-                              crossAxisCount: 2,
-                              children: PageOptions,
-                            ));
-                      } else {
-                        print(" check try " + checkVersionCode!);
-                        print(" check version " + _projectCode!);
-                        return UpdateDialog();
                       }
+                      return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10.0),
+                          child: GridView.count(
+                            crossAxisCount: 2,
+                            children: PageOptions,
+                          ));
+                      //   } else {
+                      //     print(" check try " + checkVersionCode!);
+                      //     print(" check version " + _projectCode!);
+                      //     return UpdateDialog();
+                      //   }
+                      // }
                     }
                   },
                 )

@@ -1064,9 +1064,9 @@ class _HomePageState extends State<HomePage> {
                       } else {
                         checkVersionCode = data['versionCode'];
                       }
-                      if ((checkVersionCode == null) ||
-                          (checkVersionCode == _projectCode) ||
-                          (_projectCode == null)) {
+                      // if ((checkVersionCode == null) ||
+                      //     (checkVersionCode == _projectCode) ||
+                      //     (_projectCode == null)) {
                         List<dynamic> y = data['page'];
                         List<Widget> PageOptions = [];
                         Map Pagearr = new Map();
@@ -1563,12 +1563,12 @@ class _HomePageState extends State<HomePage> {
                               crossAxisCount: 2,
                               children: PageOptions,
                             ));
-                      } else {
-                        print(" check try " + checkVersionCode!);
-                        print(" check version " + _projectCode!);
-                                                return UpdateDialog();
+                      // } else {
+                      //   print(" check try " + checkVersionCode!);
+                      //   print(" check version " + _projectCode!);
+                      //                           return UpdateDialog();
 
-                      }
+                      // }
                     }
                   },
                 )

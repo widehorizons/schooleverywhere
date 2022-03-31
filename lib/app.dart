@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:upgrader/upgrader.dart';
 
 import 'Chat/cubit/chatcubit_cubit.dart';
 import 'Pages/ManagementPage.dart';
@@ -138,10 +139,11 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return UpgradeAlert(
+        child: (new MaterialApp(
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
-    );
+    )));
   }
 }

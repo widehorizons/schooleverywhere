@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:upgrader/upgrader.dart';
 
 import '../Constants/StringConstants.dart';
 import '../Modules/Staff.dart';
@@ -8,6 +9,7 @@ import '../Pages/ManagementPage.dart';
 import '../Pages/StudentPage.dart';
 import '../SharedPreferences/Prefs.dart';
 import '../config/flavor_config.dart';
+import '../widget/updateDialog.dart';
 import 'BusPage.dart';
 import 'LoginPage.dart';
 import 'ParentPage.dart';
@@ -81,27 +83,29 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('img/bg.png'),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          CircleAvatar(
-            backgroundColor: Colors.transparent,
-            radius: MediaQuery.of(context).size.width * .20,
-            backgroundImage:
-                AssetImage('${FlavorConfig.instance.values.imagePath!}'),
+        body: UpdateDialog(
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('img/bg.png'),
+            fit: BoxFit.cover,
           ),
-        ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            CircleAvatar(
+              backgroundColor: Colors.transparent,
+              radius: MediaQuery.of(context).size.width * .20,
+              backgroundImage:
+                  AssetImage('${FlavorConfig.instance.values.imagePath!}'),
+            ),
+          ],
+        ),
       ),
     ));
   }

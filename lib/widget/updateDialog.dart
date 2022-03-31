@@ -18,7 +18,9 @@ class _UpdateDialogState extends State<UpdateDialog> {
       dialogStyle: Platform.isIOS
           ? UpgradeDialogStyle.cupertino
           : UpgradeDialogStyle.material,
+          countryCode: 'eg',
       showReleaseNotes: false,
+      debugLogging: true,
       showLater: false,
       durationToAlertAgain: Duration(hours: 8),
       child: Center(child: widget.child),

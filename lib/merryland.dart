@@ -15,7 +15,7 @@ Future<void> main() async {
       flavor: Flavor.MERRYLAND,
       values: FlavorValues(
         baseUrl: "https://schooleverywhere-merryland.com/schooleverywhere/",
-        schoolName: 'MerrylanD International School',
+        schoolName: 'Merryland International School',
         schoolWebsite: 'https://merryland-school.com/',
         storagePath: '/data/user/0/com.schooleverywhere.merryland',
         imagePath: 'img/merryland.png',

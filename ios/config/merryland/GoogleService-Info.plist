@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>803882513497-b8ab172ve04u5qratugrpdv798osdf31.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.803882513497-b8ab172ve04u5qratugrpdv798osdf31</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAMaYV2RwweXr7XJFSl2e1EpFUmHffKRd0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>803882513497</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.schooleverywhere.merryland</string>
+	<key>PROJECT_ID</key>
+	<string>merryland-c0ddc</string>
+	<key>STORAGE_BUCKET</key>
+	<string>merryland-c0ddc.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:803882513497:ios:51431483ed8af0c6d36d48</string>
+</dict>
+</plist>

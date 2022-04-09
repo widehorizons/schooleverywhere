@@ -16,7 +16,7 @@ Future<void> main() async {
       values: FlavorValues(
         baseUrl: "https://schooleverywhere-stpeter.com/schooleverywhere/",
         schoolName: "St. Peter's School",
-        schoolWebsite: 'https://schooleverywhere-try.com/',
+        schoolWebsite: 'https://www.stpeter-school.com',
         imagePath: 'img/stpeters.png',
         storagePath: '/data/user/0/com.schooleverywhere.stpeter',
       ));

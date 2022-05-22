@@ -26,7 +26,7 @@ class ReportCardIndex4LandScape extends StatefulWidget {
 }
 
 class _ReportCardIndex4LandScapeState extends State<ReportCardIndex4LandScape> {
-  late String monValue;
+  String? monValue;
   Map monOptions = new Map();
   late Student loggedStudent;
   late Parent loggedParent;
@@ -158,7 +158,7 @@ class _ReportCardIndex4LandScapeState extends State<ReportCardIndex4LandScape> {
               "&sections=" +
               userSection +
               "&mydivision=" +
-              monValue +
+              monValue! +
               "&semister=" +
               userSemester +
               "&stage=" +

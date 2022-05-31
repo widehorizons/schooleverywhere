@@ -34,6 +34,8 @@ class ReportCard extends MainConstant {
       BASE_URL_REPORT_CARD + "viewsplastyear_landscap_border.php";
   static final String SCHOOL_REPORT_CARD_SEVEN_LINK =
       BASE_URL_REPORT_CARD + "certinternational.php";
+  static final String SCHOOL_REPORT_CARD_SEVEN_VIEW_2_LINK =
+      BASE_URL_REPORT_CARD + "reportcard7viewtwo.php";
   static final String SCHOOL_REPORT_CARD_EIGHT_LINK =
       BASE_URL_REPORT_CARD + "certinternationalnew.php";
   static final String SCHOOL_REPORT_CARD_NINE_LINK =

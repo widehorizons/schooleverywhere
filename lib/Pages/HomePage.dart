@@ -127,7 +127,6 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         String typeOptions = toto!;
       });
-      print("Data1: " + toto.toString());
     } else {}
   }
 
@@ -149,6 +148,8 @@ class _HomePageState extends State<HomePage> {
           MaterialPageRoute(builder: (context) => MailInboxPage(type)),
         );
       } else if (linkName == "Change Login") {
+        print('Tapped');
+
         return Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => ChangeLogin(type)),
@@ -318,8 +319,6 @@ class _HomePageState extends State<HomePage> {
             "staff/StaffAdvancedConferenceStaffRecorded.php");
       }
     } else if (type == STUDENT_TYPE || type == PARENT_TYPE) {
-      print("from home page");
-
       if (linkName == "Receive From Teacher") {
         return Navigator.push(
           context,
@@ -628,7 +627,27 @@ class _HomePageState extends State<HomePage> {
             "&class=" +
             userClass!);
       } else if (linkName == "Report Card 7") {
+        print('Tapped');
+
         await launch(ReportCard.SCHOOL_REPORT_CARD_SEVEN_LINK +
+            "?myyears=" +
+            userAcademicYear! +
+            "&regno=" +
+            userRegno! +
+            "&sections=" +
+            userSection! +
+            "&semister=" +
+            userSemester! +
+            "&stage=" +
+            userStage! +
+            "&grade=" +
+            userGrade! +
+            "&class=" +
+            userClass!);
+      } else if (linkName == "Report Card 7(View 2)") {
+        print(
+            "${ReportCard.SCHOOL_REPORT_CARD_SEVEN_VIEW_2_LINK + "?myyears=" + userAcademicYear! + "&regno=" + userRegno! + "&sections=" + userSection! + "&semister=" + userSemester! + "&stage=" + userStage! + "&grade=" + userGrade! + "&class=" + userClass!}");
+        await launch(ReportCard.SCHOOL_REPORT_CARD_SEVEN_VIEW_2_LINK +
             "?myyears=" +
             userAcademicYear! +
             "&regno=" +
@@ -970,7 +989,6 @@ class _HomePageState extends State<HomePage> {
       userType = loggedStaff!.type;
       userSupervisor = loggedStaff!.supervisorId;
       checkSupervisor = loggedStaff!.supervisorStaff!;
-      print("userSupervisor" + userSupervisor.toString());
     }
   }
 
@@ -1046,523 +1064,511 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     } else {
-                      print("SNAP_SHOT_DATA: " + objectEvent.toString());
-                      print("DATA_SENT: " +
-                          widget.type +
-                          " " +
-                          widget.sectionid +
-                          "ID" +
-                          widget.Id +
-                          " " +
-                          widget.Academicyear);
                       Map? data = objectEvent.object as Map?;
-                      print(
-                          "Data Retrived here is ===> ${data!['versionCode']}");
+
                       if (FlavorConfig.instance.flavor == Flavor.TANTAROYAL &&
                           Platform.isAndroid) {
-                        checkVersionCode = data['versionCode_andriod'];
+                        checkVersionCode = data!['versionCode_andriod'];
                       } else {
-                        checkVersionCode = data['versionCode'];
+                        checkVersionCode = data!['versionCode'];
                       }
                       // if ((checkVersionCode == null) ||
                       //     (checkVersionCode == _projectCode) ||
                       //     (_projectCode == null)) {
-                        List<dynamic> y = data['page'];
-                        List<Widget> PageOptions = [];
-                        Map Pagearr = new Map();
-                        int studCon = 0;
-                        int stuconadv = 0;
-                        int staffCon = 0;
-                        int advstaffCon = 0;
-                        int studConMan = 0;
-                        int staffConMan = 0;
-                        int AdvstaffConMan = 0;
-                        for (int i = 0; i < y.length; i++) {
-                          Pagearr[data['page'][i]] = data['url'][i];
-                          if ((data['page'][i].toString() == "Conference" ||
-                                  data['page'][i].toString() ==
-                                      "Join Supervisour Conference") &&
-                              studCon == 0 &&
-                              widget.type == STAFF_TYPE) {
-                            studCon++;
-                            String LinkName = "Student Conference";
-                            String imageUrl =
-                                FlavorConfig.instance.values.baseUrl! +
-                                    "staff/linksImages/conference.png";
-                            PageOptions.add(GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  homePageAllPages(LinkName, widget.type);
-                                });
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  CircleAvatar(
-                                    radius:
-                                        MediaQuery.of(context).size.width * .10,
-                                    backgroundColor: Colors.transparent,
-                                    child: Image.network(imageUrl),
-                                  ),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 20.0),
-                                      child: Center(
-                                        child: Text(
-                                          LinkName,
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic,
-                                              color: AppTheme.appColor),
-                                        ),
-                                      ))
-                                ],
-                              ),
-                            ));
-                          } else if ((data['page'][i].toString() ==
-                                  "Create Conference Cambridge") ||
-                              data['page'][i].toString() ==
-                                      "Join Supervisour Conference Cambridge" &&
-                                  studCon == 0 &&
-                                  widget.type == STAFF_TYPE) {
-                            studCon++;
-                            String LinkName =
-                                "Cambridge Advanced Student Conference";
-                            String imageUrl =
-                                FlavorConfig.instance.values.baseUrl! +
-                                    "staff/linksImages/conference.png";
-                            PageOptions.add(GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  homePageAllPages(LinkName, widget.type);
-                                });
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  CircleAvatar(
-                                    radius:
-                                        MediaQuery.of(context).size.width * .10,
-                                    backgroundColor: Colors.transparent,
-                                    child: Image.network(imageUrl),
-                                  ),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 20.0),
-                                      child: Center(
-                                        child: Text(
-                                          LinkName,
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic,
-                                              color: AppTheme.appColor),
-                                        ),
-                                      ))
-                                ],
-                              ),
-                            ));
-                          } else if ((data['page'][i].toString() ==
-                                  "Conference Cambridge") ||
-                              data['page'][i].toString() ==
-                                      "Join Supervisour Advanced Conference Cambridge" &&
-                                  stuconadv == 0 &&
-                                  widget.type == STAFF_TYPE) {
-                            studCon++;
-                            String LinkName = "Cambridge Student Conference";
-                            String imageUrl =
-                                FlavorConfig.instance.values.baseUrl! +
-                                    "staff/linksImages/conference.png";
-                            PageOptions.add(GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  homePageAllPages(LinkName, widget.type);
-                                });
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  CircleAvatar(
-                                    radius:
-                                        MediaQuery.of(context).size.width * .10,
-                                    backgroundColor: Colors.transparent,
-                                    child: Image.network(imageUrl),
-                                  ),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 20.0),
-                                      child: Center(
-                                        child: Text(
-                                          LinkName,
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic,
-                                              color: AppTheme.appColor),
-                                        ),
-                                      ))
-                                ],
-                              ),
-                            ));
-                          } else if ((data['page'][i].toString() ==
-                                      "Create Conference" ||
-                                  data['page'][i].toString() ==
-                                      "Join Supervisour Advanced Conference" ||
-                                  data['page'][i].toString() ==
-                                      "Recorded Conference") &&
-                              stuconadv == 0 &&
-                              widget.type == STAFF_TYPE) {
-                            stuconadv++;
-                            String LinkName = "Advanced Student Conference";
-                            String imageUrl =
-                                FlavorConfig.instance.values.baseUrl! +
-                                    "staff/linksImages/advanced_conference.png";
-                            PageOptions.add(GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  homePageAllPages(LinkName, widget.type);
-                                });
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  CircleAvatar(
-                                    radius:
-                                        MediaQuery.of(context).size.width * .10,
-                                    backgroundColor: Colors.transparent,
-                                    child: Image.network(imageUrl),
-                                  ),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 20.0),
-                                      child: Center(
-                                        child: Text(
-                                          LinkName,
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic,
-                                              color: AppTheme.appColor),
-                                        ),
-                                      ))
-                                ],
-                              ),
-                            ));
-                          } else if ((data['page'][i].toString() ==
-                                      "Staff Conference" ||
-                                  data['page'][i].toString() ==
-                                      "Join Conference") &&
-                              staffCon == 0 &&
-                              widget.type == STAFF_TYPE) {
-                            staffCon++;
-                            String LinkName = "Staff Conference";
-                            String imageUrl =
-                                FlavorConfig.instance.values.baseUrl! +
-                                    "staff/linksImages/staff_conference.png";
-                            PageOptions.add(GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  homePageAllPages(LinkName, widget.type);
-                                });
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  CircleAvatar(
-                                    radius:
-                                        MediaQuery.of(context).size.width * .10,
-                                    backgroundColor: Colors.transparent,
-                                    child: Image.network(imageUrl),
-                                  ),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 20.0),
-                                      child: Center(
-                                        child: Text(
-                                          LinkName,
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic,
-                                              color: AppTheme.appColor),
-                                        ),
-                                      ))
-                                ],
-                              ),
-                            ));
-                          } else if ((data['page'][i].toString() ==
-                                      "Advanced Staff Conference" ||
-                                  data['page'][i].toString() ==
-                                      "Advanced Join Conference" ||
-                                  data['page'][i].toString() ==
-                                      "Staff Recorded Conference" ||
-                                  data['page'][i].toString() ==
-                                      "Other Staff Recorded Conference") &&
-                              advstaffCon == 0 &&
-                              widget.type == STAFF_TYPE) {
-                            advstaffCon++;
-                            String LinkName = "Advanced Staff Conference";
-                            String imageUrl = FlavorConfig
-                                    .instance.values.baseUrl! +
-                                "staff/linksImages/advanced_staff_conference.png";
-                            PageOptions.add(GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  homePageAllPages(LinkName, widget.type);
-                                });
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  CircleAvatar(
-                                    radius:
-                                        MediaQuery.of(context).size.width * .10,
-                                    backgroundColor: Colors.transparent,
-                                    child: Image.network(imageUrl),
-                                  ),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 20.0),
-                                      child: Center(
-                                        child: Text(
-                                          LinkName,
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic,
-                                              color: AppTheme.appColor),
-                                        ),
-                                      ))
-                                ],
-                              ),
-                            ));
-                          } else if ((data['page'][i].toString() ==
-                                      "Conference" ||
-                                  data['page'][i].toString() ==
-                                      "advanced Conference") &&
-                              studConMan == 0 &&
-                              widget.type == MANAGEMENT_TYPE) {
-                            studConMan++;
-                            String LinkName = "Student Conference";
-                            String imageUrl =
-                                FlavorConfig.instance.values.baseUrl! +
-                                    "staff/linksImages/conference.png";
-                            PageOptions.add(GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  homePageAllPages(LinkName, widget.type);
-                                });
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  CircleAvatar(
-                                    radius:
-                                        MediaQuery.of(context).size.width * .10,
-                                    backgroundColor: Colors.transparent,
-                                    child: Image.network(imageUrl),
-                                  ),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 20.0),
-                                      child: Center(
-                                        child: Text(
-                                          LinkName,
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic,
-                                              color: AppTheme.appColor),
-                                        ),
-                                      ))
-                                ],
-                              ),
-                            ));
-                          } else if ((data['page'][i].toString() ==
-                                      "Staff Confernce" ||
-                                  data['page'][i].toString() ==
-                                      "Join Conference") &&
-                              staffConMan == 0 &&
-                              widget.type == MANAGEMENT_TYPE) {
-                            staffConMan++;
-                            String LinkName = "Staff Conference";
-                            String imageUrl =
-                                FlavorConfig.instance.values.baseUrl! +
-                                    "staff/linksImages/staff_conference.png";
-                            PageOptions.add(GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  homePageAllPages(LinkName, widget.type);
-                                });
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  CircleAvatar(
-                                    radius:
-                                        MediaQuery.of(context).size.width * .10,
-                                    backgroundColor: Colors.transparent,
-                                    child: Image.network(imageUrl),
-                                  ),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 20.0),
-                                      child: Center(
-                                        child: Text(
-                                          LinkName,
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic,
-                                              color: AppTheme.appColor),
-                                        ),
-                                      ))
-                                ],
-                              ),
-                            ));
-                          } else if ((data['page'][i].toString() ==
-                                      "Advanced Staff Confernce" ||
-                                  data['page'][i].toString() ==
-                                      "Advanced Staff Join Conference" ||
-                                  data['page'][i].toString() ==
-                                      "Advanced Staff Recorded Conference" ||
-                                  data['page'][i].toString() ==
-                                      "Advanced Other Staff Recorded") &&
-                              AdvstaffConMan == 0 &&
-                              widget.type == MANAGEMENT_TYPE) {
-                            AdvstaffConMan++;
-                            String LinkName = "Advanced Staff Confernce";
-                            String imageUrl = FlavorConfig
-                                    .instance.values.baseUrl! +
-                                "staff/linksImages/advanced_staff_conference.png";
-                            PageOptions.add(GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  homePageAllPages(LinkName, widget.type);
-                                });
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  CircleAvatar(
-                                    radius:
-                                        MediaQuery.of(context).size.width * .10,
-                                    backgroundColor: Colors.transparent,
-                                    child: Image.network(imageUrl),
-                                  ),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 20.0),
-                                      child: Center(
-                                        child: Text(
-                                          LinkName,
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic,
-                                              color: AppTheme.appColor),
-                                        ),
-                                      ))
-                                ],
-                              ),
-                            ));
-                          } else if (!(((data['page'][i].toString() ==
-                                          "Conference" ||
-                                      data['page'][i].toString() ==
-                                          "Join Supervisour Conference" ||
-                                      data['page'][i].toString() ==
-                                          "Create Conference" ||
-                                      data['page'][i].toString() ==
-                                          "Join Supervisour Advanced Conference" ||
-                                      data['page'][i].toString() ==
-                                          "Recorded Conference" ||
-                                      data['page'][i].toString() ==
-                                          "Staff Conference" ||
-                                      data['page'][i].toString() ==
-                                          "Join Conference" ||
-                                      data['page'][i].toString() ==
-                                          "Advanced Staff Conference" ||
-                                      data['page'][i].toString() ==
-                                          "Advanced Join Conference" ||
-                                      data['page'][i].toString() ==
-                                          "Staff Recorded Conference" ||
-                                      data['page'][i].toString() ==
-                                          "Other Staff Recorded Conference") &&
-                                  widget.type == STAFF_TYPE) ||
-                              (data['page'][i].toString() == "Conference" ||
-                                      data['page'][i].toString() ==
-                                          "advanced Conference" ||
-                                      data['page'][i].toString() ==
-                                          "Staff Confernce" ||
-                                      data['page'][i].toString() ==
-                                          "Join Conference" ||
-                                      data['page'][i].toString() ==
-                                          "Advanced Staff Confernce" ||
-                                      data['page'][i].toString() ==
-                                          "Advanced Staff Join Conference" ||
-                                      data['page'][i].toString() ==
-                                          "Advanced Staff Recorded Conference" ||
-                                      data['page'][i].toString() ==
-                                          "Advanced Other Staff Recorded") &&
-                                  widget.type == MANAGEMENT_TYPE)) {
-                            String LinkName = data['page'][i].toString();
-                            String imageUrl = data['url'][i].toString();
-                            String numNot = data['no'][i].toString();
-                            int num = data['no'][i];
-                            print("show no notifization: " + numNot);
-                            PageOptions.add(GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  homePageAllPages(LinkName, widget.type);
-                                });
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  (num != 0)
-                                      ? Badge(
-                                          badgeContent: Text(numNot),
-                                          child: CircleAvatar(
-                                            radius: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                .10,
-                                            backgroundColor: Colors.transparent,
-                                            child: Image.network(imageUrl),
-                                          ))
-                                      : CircleAvatar(
+                      List<dynamic> y = data['page'];
+                      List<Widget> PageOptions = [];
+                      Map Pagearr = new Map();
+                      int studCon = 0;
+                      int stuconadv = 0;
+                      int staffCon = 0;
+                      int advstaffCon = 0;
+                      int studConMan = 0;
+                      int staffConMan = 0;
+                      int AdvstaffConMan = 0;
+                      for (int i = 0; i < y.length; i++) {
+                        Pagearr[data['page'][i]] = data['url'][i];
+                        if ((data['page'][i].toString() == "Conference" ||
+                                data['page'][i].toString() ==
+                                    "Join Supervisour Conference") &&
+                            studCon == 0 &&
+                            widget.type == STAFF_TYPE) {
+                          studCon++;
+                          String LinkName = "Student Conference";
+                          String imageUrl =
+                              FlavorConfig.instance.values.baseUrl! +
+                                  "staff/linksImages/conference.png";
+                          PageOptions.add(GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                homePageAllPages(LinkName, widget.type);
+                              });
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                CircleAvatar(
+                                  radius:
+                                      MediaQuery.of(context).size.width * .10,
+                                  backgroundColor: Colors.transparent,
+                                  child: Image.network(imageUrl),
+                                ),
+                                Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 20.0),
+                                    child: Center(
+                                      child: Text(
+                                        LinkName,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            fontStyle: FontStyle.italic,
+                                            color: AppTheme.appColor),
+                                      ),
+                                    ))
+                              ],
+                            ),
+                          ));
+                        } else if ((data['page'][i].toString() ==
+                                "Create Conference Cambridge") ||
+                            data['page'][i].toString() ==
+                                    "Join Supervisour Conference Cambridge" &&
+                                studCon == 0 &&
+                                widget.type == STAFF_TYPE) {
+                          studCon++;
+                          String LinkName =
+                              "Cambridge Advanced Student Conference";
+                          String imageUrl =
+                              FlavorConfig.instance.values.baseUrl! +
+                                  "staff/linksImages/conference.png";
+                          PageOptions.add(GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                homePageAllPages(LinkName, widget.type);
+                              });
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                CircleAvatar(
+                                  radius:
+                                      MediaQuery.of(context).size.width * .10,
+                                  backgroundColor: Colors.transparent,
+                                  child: Image.network(imageUrl),
+                                ),
+                                Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 20.0),
+                                    child: Center(
+                                      child: Text(
+                                        LinkName,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            fontStyle: FontStyle.italic,
+                                            color: AppTheme.appColor),
+                                      ),
+                                    ))
+                              ],
+                            ),
+                          ));
+                        } else if ((data['page'][i].toString() ==
+                                "Conference Cambridge") ||
+                            data['page'][i].toString() ==
+                                    "Join Supervisour Advanced Conference Cambridge" &&
+                                stuconadv == 0 &&
+                                widget.type == STAFF_TYPE) {
+                          studCon++;
+                          String LinkName = "Cambridge Student Conference";
+                          String imageUrl =
+                              FlavorConfig.instance.values.baseUrl! +
+                                  "staff/linksImages/conference.png";
+                          PageOptions.add(GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                homePageAllPages(LinkName, widget.type);
+                              });
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                CircleAvatar(
+                                  radius:
+                                      MediaQuery.of(context).size.width * .10,
+                                  backgroundColor: Colors.transparent,
+                                  child: Image.network(imageUrl),
+                                ),
+                                Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 20.0),
+                                    child: Center(
+                                      child: Text(
+                                        LinkName,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            fontStyle: FontStyle.italic,
+                                            color: AppTheme.appColor),
+                                      ),
+                                    ))
+                              ],
+                            ),
+                          ));
+                        } else if ((data['page'][i].toString() ==
+                                    "Create Conference" ||
+                                data['page'][i].toString() ==
+                                    "Join Supervisour Advanced Conference" ||
+                                data['page'][i].toString() ==
+                                    "Recorded Conference") &&
+                            stuconadv == 0 &&
+                            widget.type == STAFF_TYPE) {
+                          stuconadv++;
+                          String LinkName = "Advanced Student Conference";
+                          String imageUrl =
+                              FlavorConfig.instance.values.baseUrl! +
+                                  "staff/linksImages/advanced_conference.png";
+                          PageOptions.add(GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                homePageAllPages(LinkName, widget.type);
+                              });
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                CircleAvatar(
+                                  radius:
+                                      MediaQuery.of(context).size.width * .10,
+                                  backgroundColor: Colors.transparent,
+                                  child: Image.network(imageUrl),
+                                ),
+                                Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 20.0),
+                                    child: Center(
+                                      child: Text(
+                                        LinkName,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            fontStyle: FontStyle.italic,
+                                            color: AppTheme.appColor),
+                                      ),
+                                    ))
+                              ],
+                            ),
+                          ));
+                        } else if ((data['page'][i].toString() ==
+                                    "Staff Conference" ||
+                                data['page'][i].toString() ==
+                                    "Join Conference") &&
+                            staffCon == 0 &&
+                            widget.type == STAFF_TYPE) {
+                          staffCon++;
+                          String LinkName = "Staff Conference";
+                          String imageUrl =
+                              FlavorConfig.instance.values.baseUrl! +
+                                  "staff/linksImages/staff_conference.png";
+                          PageOptions.add(GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                homePageAllPages(LinkName, widget.type);
+                              });
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                CircleAvatar(
+                                  radius:
+                                      MediaQuery.of(context).size.width * .10,
+                                  backgroundColor: Colors.transparent,
+                                  child: Image.network(imageUrl),
+                                ),
+                                Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 20.0),
+                                    child: Center(
+                                      child: Text(
+                                        LinkName,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            fontStyle: FontStyle.italic,
+                                            color: AppTheme.appColor),
+                                      ),
+                                    ))
+                              ],
+                            ),
+                          ));
+                        } else if ((data['page'][i].toString() ==
+                                    "Advanced Staff Conference" ||
+                                data['page'][i].toString() ==
+                                    "Advanced Join Conference" ||
+                                data['page'][i].toString() ==
+                                    "Staff Recorded Conference" ||
+                                data['page'][i].toString() ==
+                                    "Other Staff Recorded Conference") &&
+                            advstaffCon == 0 &&
+                            widget.type == STAFF_TYPE) {
+                          advstaffCon++;
+                          String LinkName = "Advanced Staff Conference";
+                          String imageUrl = FlavorConfig
+                                  .instance.values.baseUrl! +
+                              "staff/linksImages/advanced_staff_conference.png";
+                          PageOptions.add(GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                homePageAllPages(LinkName, widget.type);
+                              });
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                CircleAvatar(
+                                  radius:
+                                      MediaQuery.of(context).size.width * .10,
+                                  backgroundColor: Colors.transparent,
+                                  child: Image.network(imageUrl),
+                                ),
+                                Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 20.0),
+                                    child: Center(
+                                      child: Text(
+                                        LinkName,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            fontStyle: FontStyle.italic,
+                                            color: AppTheme.appColor),
+                                      ),
+                                    ))
+                              ],
+                            ),
+                          ));
+                        } else if ((data['page'][i].toString() ==
+                                    "Conference" ||
+                                data['page'][i].toString() ==
+                                    "advanced Conference") &&
+                            studConMan == 0 &&
+                            widget.type == MANAGEMENT_TYPE) {
+                          studConMan++;
+                          String LinkName = "Student Conference";
+                          String imageUrl =
+                              FlavorConfig.instance.values.baseUrl! +
+                                  "staff/linksImages/conference.png";
+                          PageOptions.add(GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                homePageAllPages(LinkName, widget.type);
+                              });
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                CircleAvatar(
+                                  radius:
+                                      MediaQuery.of(context).size.width * .10,
+                                  backgroundColor: Colors.transparent,
+                                  child: Image.network(imageUrl),
+                                ),
+                                Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 20.0),
+                                    child: Center(
+                                      child: Text(
+                                        LinkName,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            fontStyle: FontStyle.italic,
+                                            color: AppTheme.appColor),
+                                      ),
+                                    ))
+                              ],
+                            ),
+                          ));
+                        } else if ((data['page'][i].toString() ==
+                                    "Staff Confernce" ||
+                                data['page'][i].toString() ==
+                                    "Join Conference") &&
+                            staffConMan == 0 &&
+                            widget.type == MANAGEMENT_TYPE) {
+                          staffConMan++;
+                          String LinkName = "Staff Conference";
+                          String imageUrl =
+                              FlavorConfig.instance.values.baseUrl! +
+                                  "staff/linksImages/staff_conference.png";
+                          PageOptions.add(GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                homePageAllPages(LinkName, widget.type);
+                              });
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                CircleAvatar(
+                                  radius:
+                                      MediaQuery.of(context).size.width * .10,
+                                  backgroundColor: Colors.transparent,
+                                  child: Image.network(imageUrl),
+                                ),
+                                Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 20.0),
+                                    child: Center(
+                                      child: Text(
+                                        LinkName,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            fontStyle: FontStyle.italic,
+                                            color: AppTheme.appColor),
+                                      ),
+                                    ))
+                              ],
+                            ),
+                          ));
+                        } else if ((data['page'][i].toString() ==
+                                    "Advanced Staff Confernce" ||
+                                data['page'][i].toString() ==
+                                    "Advanced Staff Join Conference" ||
+                                data['page'][i].toString() ==
+                                    "Advanced Staff Recorded Conference" ||
+                                data['page'][i].toString() ==
+                                    "Advanced Other Staff Recorded") &&
+                            AdvstaffConMan == 0 &&
+                            widget.type == MANAGEMENT_TYPE) {
+                          AdvstaffConMan++;
+                          String LinkName = "Advanced Staff Confernce";
+                          String imageUrl = FlavorConfig
+                                  .instance.values.baseUrl! +
+                              "staff/linksImages/advanced_staff_conference.png";
+                          PageOptions.add(GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                homePageAllPages(LinkName, widget.type);
+                              });
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                CircleAvatar(
+                                  radius:
+                                      MediaQuery.of(context).size.width * .10,
+                                  backgroundColor: Colors.transparent,
+                                  child: Image.network(imageUrl),
+                                ),
+                                Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 20.0),
+                                    child: Center(
+                                      child: Text(
+                                        LinkName,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            fontStyle: FontStyle.italic,
+                                            color: AppTheme.appColor),
+                                      ),
+                                    ))
+                              ],
+                            ),
+                          ));
+                        } else if (!(((data['page'][i].toString() ==
+                                        "Conference" ||
+                                    data['page'][i].toString() ==
+                                        "Join Supervisour Conference" ||
+                                    data['page'][i].toString() ==
+                                        "Create Conference" ||
+                                    data['page'][i].toString() ==
+                                        "Join Supervisour Advanced Conference" ||
+                                    data['page'][i].toString() ==
+                                        "Recorded Conference" ||
+                                    data['page'][i].toString() ==
+                                        "Staff Conference" ||
+                                    data['page'][i].toString() ==
+                                        "Join Conference" ||
+                                    data['page'][i].toString() ==
+                                        "Advanced Staff Conference" ||
+                                    data['page'][i].toString() ==
+                                        "Advanced Join Conference" ||
+                                    data['page'][i].toString() ==
+                                        "Staff Recorded Conference" ||
+                                    data['page'][i].toString() ==
+                                        "Other Staff Recorded Conference") &&
+                                widget.type == STAFF_TYPE) ||
+                            (data['page'][i].toString() == "Conference" ||
+                                    data['page'][i].toString() ==
+                                        "advanced Conference" ||
+                                    data['page'][i].toString() ==
+                                        "Staff Confernce" ||
+                                    data['page'][i].toString() ==
+                                        "Join Conference" ||
+                                    data['page'][i].toString() ==
+                                        "Advanced Staff Confernce" ||
+                                    data['page'][i].toString() ==
+                                        "Advanced Staff Join Conference" ||
+                                    data['page'][i].toString() ==
+                                        "Advanced Staff Recorded Conference" ||
+                                    data['page'][i].toString() ==
+                                        "Advanced Other Staff Recorded") &&
+                                widget.type == MANAGEMENT_TYPE)) {
+                          String LinkName = data['page'][i].toString();
+                          String imageUrl = data['url'][i].toString();
+                          String numNot = data['no'][i].toString();
+                          int num = data['no'][i];
+                          PageOptions.add(GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                homePageAllPages(LinkName, widget.type);
+                              });
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                (num != 0)
+                                    ? Badge(
+                                        badgeContent: Text(numNot),
+                                        child: CircleAvatar(
                                           radius: MediaQuery.of(context)
                                                   .size
                                                   .width *
                                               .10,
                                           backgroundColor: Colors.transparent,
                                           child: Image.network(imageUrl),
-                                        ),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 20.0),
-                                      child: Center(
-                                        child: Text(
-                                          LinkName,
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic,
-                                              color: AppTheme.appColor),
-                                        ),
-                                      ))
-                                ],
-                              ),
-                            ));
-                          }
+                                        ))
+                                    : CircleAvatar(
+                                        radius:
+                                            MediaQuery.of(context).size.width *
+                                                .10,
+                                        backgroundColor: Colors.transparent,
+                                        child: Image.network(imageUrl),
+                                      ),
+                                Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 20.0),
+                                    child: Center(
+                                      child: Text(
+                                        LinkName,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            fontStyle: FontStyle.italic,
+                                            color: AppTheme.appColor),
+                                      ),
+                                    ))
+                              ],
+                            ),
+                          ));
                         }
-                        return Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10.0),
-                            child: GridView.count(
-                              crossAxisCount: 2,
-                              children: PageOptions,
-                            ));
+                      }
+                      return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10.0),
+                          child: GridView.count(
+                            crossAxisCount: 2,
+                            children: PageOptions,
+                          ));
                       // } else {
                       //   print(" check try " + checkVersionCode!);
                       //   print(" check version " + _projectCode!);
